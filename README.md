@@ -1,2 +1,3 @@
-# Minimal-Cmake
-Minimal Cmake, Published by Packt
+# Minimal CMake
+
+Minimal CMake, Published by Packt
