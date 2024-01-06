@@ -1,0 +1,35 @@
+---
+AccessModifierOffset: -2
+AlignAfterOpenBracket: AlwaysBreak
+AllowShortFunctionsOnASingleLine: InlineOnly
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+AlwaysBreakTemplateDeclarations: Yes
+AllowAllArgumentsOnNextLine: true
+ArrayInitializerAlignmentStyle: None
+BinPackArguments: true
+BinPackParameters: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+    SplitEmptyFunction: true
+    SplitEmptyRecord: true
+ColumnLimit: 80
+IndentWidth: 2
+ContinuationIndentWidth: 2
+ConstructorInitializerIndentWidth: 2
+IndentPPDirectives: None
+PenaltyReturnTypeOnItsOwnLine: 1000000
+PenaltyExcessCharacter: 1000000
+PointerAlignment: Left
+SpaceAfterTemplateKeyword: false
+TabWidth: 2
+Cpp11BracedListStyle: true
+IndentCaseLabels: true
+SortIncludes: true
+IncludeBlocks: Preserve
+FixNamespaceComments: true
+NamespaceIndentation: All
+AlignOperands: AlignAfterOperator
+AlignTrailingComments: false
+BreakBeforeBinaryOperators: NonAssignment
+...
