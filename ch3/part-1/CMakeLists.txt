@@ -8,7 +8,7 @@ include(FetchContent)
 FetchContent_Declare(
   timer_lib
   GIT_REPOSITORY https://github.com/pr0g/timer_lib.git
-  GIT_TAG main)
+  GIT_TAG v1.0)
 FetchContent_MakeAvailable(timer_lib)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib)
