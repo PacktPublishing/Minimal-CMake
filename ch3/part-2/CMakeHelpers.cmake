@@ -1,0 +1,6 @@
+function(list_cmake_variables)
+  get_cmake_property(variable_names VARIABLES)
+  foreach(variable_name ${variable_names})
+    message(STATUS "${variable_name}=${${variable_name}}")
+  endforeach()
+endfunction()
