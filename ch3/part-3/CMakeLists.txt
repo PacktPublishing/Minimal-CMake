@@ -11,5 +11,6 @@ target_include_directories(
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/include)
 target_link_directories(
   ${PROJECT_NAME} PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/lib/macos)
-target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib.a)
+  ${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/lib/macos
+  ${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/lib/win)
+target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib)
