@@ -13,8 +13,12 @@ FetchContent_Declare(
   as-c-math
   GIT_REPOSITORY https://github.com/pr0g/as-c-math.git
   GIT_TAG 616fe946956561ef4884fc32c4eec2432fd952c8)
-set(AS_MATH_ENABLE_TEST OFF CACHE INTERNAL "")
-set(AS_MATH_ENABLE_COVERAGE OFF CACHE INTERNAL "")
+set(AS_MATH_ENABLE_TEST
+    OFF
+    CACHE INTERNAL "")
+set(AS_MATH_ENABLE_COVERAGE
+    OFF
+    CACHE INTERNAL "")
 FetchContent_MakeAvailable(timer_lib as-c-math)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib as-c-math)
