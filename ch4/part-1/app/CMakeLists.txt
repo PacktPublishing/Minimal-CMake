@@ -21,10 +21,10 @@ set(AS_MATH_ENABLE_COVERAGE
     CACHE INTERNAL "")
 FetchContent_Declare(
   minimal-cmake-array
-  SOURCE_DIR ../../lib/array) # temp
-  # GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  # GIT_TAG 9bd1050e01ec85a54fef4a0264d47cf1d22f810c
-  # SOURCE_SUBDIR ch4/part-1/lib/array) # look just in array folder
+  # SOURCE_DIR ../../lib/array) # temp
+  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  GIT_TAG e9f596c6d62ab3919a187be3bbfd14d52303ba5c
+  SOURCE_SUBDIR ch4/part-1/lib/array) # look just in array folder
 
 FetchContent_MakeAvailable(timer_lib as-c-math minimal-cmake-array)
 
