@@ -1,4 +1,4 @@
-#include "array.h"
+#include "minimal-cmake/array.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,7 +1,6 @@
-#include "array.h"
-
 // third-party dependencies
 #include <as-ops.h>
+#include <minimal-cmake/array.h>
 #include <timer.h>
 
 // system includes
