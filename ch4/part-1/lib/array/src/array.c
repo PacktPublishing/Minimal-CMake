@@ -7,7 +7,7 @@
 #define ARRAY_CAPACITY(array) (ARRAY_RAW_DATA(array)[0])
 #define ARRAY_SIZE(array) (ARRAY_RAW_DATA(array)[1])
 
-void* internal_array_reserve(
+void* internal_mc_array_reserve(
   void* array, const int new_cap, const int elem_size) {
   if (array == NULL) {
     const int raw_size = sizeof(int) * 2 + elem_size * new_cap;
@@ -27,8 +27,8 @@ void* internal_array_reserve(
   }
 }
 
-void* internal_array_resize(void* array, const int count, const int elem_size) {
-  array = internal_array_reserve(array, count, elem_size);
+void* internal_mc_array_resize(void* array, const int count, const int elem_size) {
+  array = internal_mc_array_reserve(array, count, elem_size);
   ARRAY_SIZE(array) = count;
   return array;
 }
@@ -37,34 +37,34 @@ static int max_int(const int lhs, const int rhs) {
   return lhs > rhs ? lhs : rhs;
 }
 
-void* internal_array_grow(void* array, int elem_size) {
-  const int capacity = array_capacity(array);
-  if (array_size(array) == capacity) {
-    array = internal_array_reserve(array, max_int(capacity * 2, 1), elem_size);
+void* internal_mc_array_grow(void* array, int elem_size) {
+  const int capacity = mc_array_capacity(array);
+  if (mc_array_size(array) == capacity) {
+    array = internal_mc_array_reserve(array, max_int(capacity * 2, 1), elem_size);
   }
   ARRAY_SIZE(array) += 1;
   return array;
 }
 
-void array_pop(void* array) {
-  if (array_size(array) >= 1) {
+void mc_array_pop(void* array) {
+  if (mc_array_size(array) >= 1) {
     ARRAY_SIZE(array) -= 1;
   }
 }
 
-int array_size(void* array) {
+int mc_array_size(void* array) {
   return (array != NULL) ? (ARRAY_SIZE(array)) : 0;
 }
 
-int array_capacity(void* array) {
+int mc_array_capacity(void* array) {
   return (array != NULL) ? (ARRAY_CAPACITY(array)) : 0;
 }
 
-bool array_empty(void* array) {
-  return array_size(array) == 0;
+bool mc_array_empty(void* array) {
+  return mc_array_size(array) == 0;
 }
 
-void array_free(void* array) {
+void mc_array_free(void* array) {
   if (array != NULL) {
     free(ARRAY_RAW_DATA(array));
   }

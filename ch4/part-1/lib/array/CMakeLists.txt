@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(array LANGUAGES C)
+project(mc-array LANGUAGES C)
 add_library(${PROJECT_NAME} STATIC)
 target_sources(${PROJECT_NAME} PRIVATE src/array.c)
 target_include_directories(

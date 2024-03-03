@@ -90,22 +90,22 @@ void update_board(const int32_t width, const int32_t height, bool board[]) {
       if (
         rule_1(position, width, height, board)
         || rule_3(position, width, height, board)) {
-        array_push(
+        mc_array_push(
           changes,
           ((change_t){.offset_ = elem_xy(position, width), .state_ = false}));
       } else if (
         rule_2(position, width, height, board)
         || rule_4(position, width, height, board)) {
-        array_push(
+        mc_array_push(
           changes,
           ((change_t){.offset_ = elem_xy(position, width), .state_ = true}));
       }
     }
   }
-  for (int i = 0, size = array_size(changes); i < size; i++) {
+  for (int i = 0, size = mc_array_size(changes); i < size; i++) {
     board[changes[i].offset_] = changes[i].state_;
   }
-  array_free(changes);
+  mc_array_free(changes);
 }
 
 void print_board(
