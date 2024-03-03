@@ -1,4 +1,4 @@
-#include "array/array.h"
+#include "array.h"
 
 // third-party dependencies
 #include <as-ops.h>

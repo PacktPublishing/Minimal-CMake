@@ -20,10 +20,11 @@ set(AS_MATH_ENABLE_COVERAGE
     OFF
     CACHE INTERNAL "")
 FetchContent_Declare(
-  array
+  minimal-cmake-array
   GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG 1be6144ed7e6e48af97c953a27c97d73725f1cca
+  GIT_TAG 9bd1050e01ec85a54fef4a0264d47cf1d22f810c
   SOURCE_SUBDIR ch4/part-1/lib/array)
-FetchContent_MakeAvailable(timer_lib as-c-math array)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib as-c-math )
+FetchContent_MakeAvailable(timer_lib as-c-math minimal-cmake-array)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib as-c-math array)
