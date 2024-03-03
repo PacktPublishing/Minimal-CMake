@@ -12,7 +12,7 @@ FetchContent_Declare(
 FetchContent_Declare(
   as-c-math
   GIT_REPOSITORY https://github.com/pr0g/as-c-math.git
-  GIT_TAG 616fe946956561ef4884fc32c4eec2432fd952c8)
+  GIT_TAG 05094067885567480271c14c64f3324e000c9c04)
 set(AS_MATH_ENABLE_TEST
     OFF
     CACHE INTERNAL "")
