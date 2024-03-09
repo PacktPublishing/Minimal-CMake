@@ -4,6 +4,7 @@
 #include <minimal-cmake/array.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 struct mc_gol_board_t {
   int32_t width;

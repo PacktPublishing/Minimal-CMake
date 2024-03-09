@@ -12,11 +12,14 @@ FetchContent_Declare(
 FetchContent_Declare(
   minimal-cmake-gol
   SOURCE_DIR ../../lib/gol)
+  # GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  # GIT_TAG 89a61f99c05504043984cb3c50be3c46f330ee0e
+  # SOURCE_SUBDIR ch4/part-3/lib/gol) # look just in gol folder
 FetchContent_MakeAvailable(timer_lib minimal-cmake-gol)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol)
 
-if (WIN32)
+if(WIN32)
   # copy mc-gol.dll to the same folder as the executable
   add_custom_command(
     TARGET ${PROJECT_NAME}
@@ -24,4 +27,4 @@ if (WIN32)
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:mc-gol>
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
     VERBATIM)
-endif ()
+endif()
