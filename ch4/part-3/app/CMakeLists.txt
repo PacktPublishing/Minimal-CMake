@@ -13,13 +13,12 @@ FetchContent_MakeAvailable(timer_lib)
 
 FetchContent_Declare(
   minimal-cmake-gol
-  SOURCE_DIR ../../lib/gol) # temp
-  # GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  # GIT_TAG 6a47f60260b8d0809d15e8a38843daf1a94bd2f2
-  # SOURCE_SUBDIR ch4/part-3/lib/gol) # look just in gol folder  
+  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  GIT_TAG fe7ded7693e8dcc4e6d3028fb2e6a19184081e49
+  SOURCE_SUBDIR ch4/part-3/lib/gol) # look just in gol folder
 
 set(BUILD_SHARED_LIBS_BEFORE ${BUILD_SHARED_LIBS})
-set(BUILD_SHARED_LIBS ON)  
+set(BUILD_SHARED_LIBS ON)
 FetchContent_MakeAvailable(minimal-cmake-gol)
 set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BEFORE})
 
