@@ -74,9 +74,18 @@ static bool rule_4(const as_point2i position, const mc_gol_board_t* board) {
 
 mc_gol_board_t* mc_gol_create_board(int32_t width, int32_t height) {
   mc_gol_board_t* board = malloc(sizeof(board));
+  if (!board) {
+    return NULL;
+  }
+  const int32_t size = width * height;
+  bool* cells = malloc(size);
+  if (!cells) {
+    return NULL;
+  }
+  memset(cells, 0, size);
   board->width = width;
   board->height = height;
-  board->cells = malloc(width * height);
+  board->cells = cells;
   return board;
 }
 
