@@ -16,7 +16,7 @@ target_include_directories(
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/;${CMAKE_CURRENT_BINARY_DIR}/>"
 )
-target_compile_features(${PROJECT_NAME} PRIVATE c_std_99)
+target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
 
 include(FetchContent)
 FetchContent_Declare(
