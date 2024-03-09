@@ -9,17 +9,19 @@ FetchContent_Declare(
   timer_lib
   GIT_REPOSITORY https://github.com/pr0g/timer_lib.git
   GIT_TAG v1.0)
-FetchContent_MakeAvailable(timer_lib)
-
 FetchContent_Declare(
   minimal-cmake-gol
-  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG 3eafd75e33ad0fd424e613ec4d5adb3cf3a6c2bf
-  SOURCE_SUBDIR ch4/part-3/lib/gol) # look just in gol folder
-
-set(BUILD_SHARED_LIBS_BEFORE ${BUILD_SHARED_LIBS})
-set(BUILD_SHARED_LIBS ON)
-FetchContent_MakeAvailable(minimal-cmake-gol)
-set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BEFORE})
+  SOURCE_DIR ../../lib/gol)
+FetchContent_MakeAvailable(timer_lib minimal-cmake-gol)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol)
+
+if (WIN32)
+  # copy mc-gol.dll to the same folder as the executable
+  add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:mc-gol>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    VERBATIM)
+endif ()

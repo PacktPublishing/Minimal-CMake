@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 project(mc-gol LANGUAGES C)
-add_library(${PROJECT_NAME})
+add_library(${PROJECT_NAME} SHARED)
 target_sources(${PROJECT_NAME} PRIVATE src/gol.c)
 target_include_directories(
   ${PROJECT_NAME}
