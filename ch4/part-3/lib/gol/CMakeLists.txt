@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.28)
 project(mc-gol LANGUAGES C)
-add_library(${PROJECT_NAME} SHARED)
+
+option(MC_GOL_SHARED "Enable shared library (dynamic linking)" OFF)
+
+set(MC_GOL_TYPE STATIC)
+if(MC_GOL_SHARED)
+  set(MC_GOL_TYPE SHARED)
+endif()
+
+add_library(${PROJECT_NAME} ${MC_GOL_TYPE})
+
 target_sources(${PROJECT_NAME} PRIVATE src/gol.c)
 target_include_directories(
   ${PROJECT_NAME}
