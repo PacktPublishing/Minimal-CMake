@@ -17,7 +17,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(timer_lib minimal-cmake-gol)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol)
-# set_target_properties(${PROJECT_NAME} PROPERTIES BUILD_RPATH "@loader_path")
+
 set_target_properties(
   ${PROJECT_NAME}
   PROPERTIES
