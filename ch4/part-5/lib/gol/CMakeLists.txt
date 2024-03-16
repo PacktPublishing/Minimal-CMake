@@ -3,12 +3,12 @@ project(mc-gol LANGUAGES C)
 
 option(MC_GOL_SHARED "Enable shared library (dynamic linking)" OFF)
 
-set(MC_GOL_TYPE STATIC)
+set(MC_GOL_LIB_TYPE STATIC)
 if(MC_GOL_SHARED)
-  set(MC_GOL_TYPE SHARED)
+  set(MC_GOL_LIB_TYPE SHARED)
 endif()
 
-add_library(${PROJECT_NAME} ${MC_GOL_TYPE})
+add_library(${PROJECT_NAME} ${MC_GOL_LIB_TYPE})
 
 target_sources(${PROJECT_NAME} PRIVATE src/gol.c)
 target_include_directories(
