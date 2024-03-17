@@ -15,20 +15,20 @@ FetchContent_Declare(minimal-cmake-gol SOURCE_DIR ../../lib/gol)
 FetchContent_MakeAvailable(timer_lib minimal-cmake-gol)
 
 # option 1
-if(WIN32)
-  set_target_properties(mc-gol PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-                                          "${CMAKE_CURRENT_BINARY_DIR}")
-endif()
+# if(WIN32)
+#   set_target_properties(mc-gol PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+#                                           "${CMAKE_CURRENT_BINARY_DIR}")
+# endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol)
 
 # option 2
-# if(WIN32)
-#   # copy mc-gol.dll to the same folder as the executable
-#   add_custom_command(
-#     TARGET ${PROJECT_NAME}
-#     POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:mc-gol>
-#             $<TARGET_FILE_DIR:${PROJECT_NAME}>
-#     VERBATIM)
-# endif()
+if(WIN32)
+  # copy mc-gol.dll to the same folder as the executable
+  add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:mc-gol>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    VERBATIM)
+endif()
