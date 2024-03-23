@@ -22,7 +22,7 @@ FetchContent_Declare(
   minimal-cmake-array
   GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
   GIT_TAG 6a47f60260b8d0809d15e8a38843daf1a94bd2f2
-  SOURCE_SUBDIR ch4/part-2/lib/array) # look just in array folder
+  SOURCE_SUBDIR ch4/part-2/lib/array) # only look in array folder
 
 FetchContent_MakeAvailable(as-c-math minimal-cmake-array)
 
