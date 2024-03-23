@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
   mc_gol_set_board_cell(board, 37, 3, true);
   mc_gol_set_board_cell(board, 37, 4, true);
 
-  // // eater
+  // eater
   mc_gol_set_board_cell(board, 27, 20, true);
   mc_gol_set_board_cell(board, 27, 21, true);
   mc_gol_set_board_cell(board, 28, 20, true);
