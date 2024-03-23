@@ -1,7 +1,6 @@
 // third-party dependencies
-#include <timer.h>
-
 #include <minimal-cmake-gol/gol.h>
+#include <timer.h>
 
 // system includes
 #include <memory.h>
