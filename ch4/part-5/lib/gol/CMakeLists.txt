@@ -39,8 +39,12 @@ FetchContent_MakeAvailable(as-c-math minimal-cmake-array)
 
 include(GenerateExportHeader)
 generate_export_header(${PROJECT_NAME} BASE_NAME mc_gol)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden
-                                                 VISIBILITY_INLINES_HIDDEN ON)
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES C_VISIBILITY_PRESET hidden
+             VISIBILITY_INLINES_HIDDEN ON
+             C_STANDARD_REQUIRED ON
+             C_EXTENSIONS OFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE as-c-math mc-array)
 target_compile_definitions(
   ${PROJECT_NAME}
