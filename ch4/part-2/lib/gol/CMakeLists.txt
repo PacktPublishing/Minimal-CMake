@@ -21,7 +21,7 @@ set(AS_MATH_ENABLE_COVERAGE
 FetchContent_Declare(
   minimal-cmake-array
   GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG 00049e6ccf0acaaa320f3a6eae2b5eb694d6be09
+  GIT_TAG d4b3fef8d2be74c1b6f8eebdf68b3c7bdc9a6668
   SOURCE_SUBDIR ch4/part-2/lib/array) # only look in array folder
 
 FetchContent_MakeAvailable(as-c-math minimal-cmake-array)
