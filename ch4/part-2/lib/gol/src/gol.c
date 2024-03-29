@@ -12,7 +12,7 @@ struct mc_gol_board_t {
   bool* cells;
 };
 
-static int32_t elem_xy(as_point2i position, const int32_t width) {
+static int32_t elem_xy(const as_point2i position, const int32_t width) {
   return position.x + position.y * width;
 }
 
@@ -46,7 +46,7 @@ static int32_t alive_neighbors(
 
 // any live cell with fewer than two live neighbors dies, as if by
 // underpopulation.
-static bool rule_1(as_point2i position, const mc_gol_board_t* board) {
+static bool rule_1(const as_point2i position, const mc_gol_board_t* board) {
   return board->cells[elem_xy(position, board->width)]
       && alive_neighbors(position, board) < 2;
 }
@@ -73,12 +73,12 @@ static bool rule_4(const as_point2i position, const mc_gol_board_t* board) {
       && alive_neighbors(position, board) == 3;
 }
 
-mc_gol_board_t* mc_gol_create_board(int32_t width, int32_t height) {
-  mc_gol_board_t* board = malloc(sizeof(board));
+mc_gol_board_t* mc_gol_create_board(const int32_t width, const int32_t height) {
+  mc_gol_board_t* board = malloc(sizeof(*board));
   if (!board) {
     return NULL;
   }
-  const int32_t size = width * height;
+  const uint32_t size = (uint32_t)(width * height);
   bool* cells = malloc(size);
   if (!cells) {
     return NULL;
