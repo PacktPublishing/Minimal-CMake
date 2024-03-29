@@ -10,7 +10,11 @@ FetchContent_Declare(
   timer_lib
   GIT_REPOSITORY https://github.com/pr0g/timer_lib.git
   GIT_TAG v1.0)
-FetchContent_Declare(minimal-cmake-gol SOURCE_DIR ../../lib/gol)
+FetchContent_Declare(
+  minimal-cmake-gol
+  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  GIT_TAG b2977101048c366aa7572cebe00008d4cacc3365
+  SOURCE_SUBDIR ch4/part-3/lib/gol) # only look in gol folder
 
 FetchContent_MakeAvailable(timer_lib minimal-cmake-gol)
 
