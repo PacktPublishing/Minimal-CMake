@@ -11,7 +11,7 @@ include(FetchContent)
 FetchContent_Declare(
   as-c-math
   GIT_REPOSITORY https://github.com/pr0g/as-c-math.git
-  GIT_TAG 05094067885567480271c14c64f3324e000c9c04)
+  GIT_TAG 1795a41abece464f70a19ee8dc271e586d5cfddc)
 set(AS_MATH_ENABLE_TEST
     OFF
     CACHE INTERNAL "")
@@ -21,7 +21,7 @@ set(AS_MATH_ENABLE_COVERAGE
 FetchContent_Declare(
   minimal-cmake-array
   GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG 6a47f60260b8d0809d15e8a38843daf1a94bd2f2
+  GIT_TAG 00049e6ccf0acaaa320f3a6eae2b5eb694d6be09
   SOURCE_SUBDIR ch4/part-2/lib/array) # only look in array folder
 
 FetchContent_MakeAvailable(as-c-math minimal-cmake-array)
