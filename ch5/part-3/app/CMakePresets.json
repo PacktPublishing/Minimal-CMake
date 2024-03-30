@@ -2,13 +2,23 @@
   "version": 8,
   "configurePresets": [
     {
-      "name": "default",
-      "displayName": "Default Configuration",
-      "description": "The Minimal CMake Game of Life default configuration",
-      "generator": "Ninja Multi-Config",
-      "binaryDir": "${sourceDir}/build",
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "generator": "Ninja Multi-Config"
+    },
+    {
+      "name": "shared",
+      "inherits": "base",
       "cacheVariables": {
         "MC_GOL_SHARED": "ON"
+      }
+    },
+    {
+      "name": "static",
+      "inherits": "base",
+      "cacheVariables": {
+        "MC_GOL_SHARED": "OFF"
       }
     }
   ]
