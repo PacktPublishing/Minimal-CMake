@@ -1,0 +1,15 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "Default Configuration",
+      "description": "The Minimal CMake Game of Life default configuration",
+      "generator": "Ninja Multi-Config",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "MC_GOL_SHARED": "ON"
+      }
+    }
+  ]
+}
