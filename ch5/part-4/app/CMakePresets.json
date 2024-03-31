@@ -21,5 +21,43 @@
         "MC_GOL_SHARED": "OFF"
       }
     }
+  ],
+  "buildPresets": [
+    {
+      "name": "shared",
+      "configurePreset": "shared"
+    },
+    {
+      "name": "static",
+      "configurePreset": "static"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "static",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "static"
+        },
+        {
+          "type": "build",
+          "name": "static"
+        }
+      ]
+    },
+    {
+      "name": "shared",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "shared"
+        },
+        {
+          "type": "build",
+          "name": "shared"
+        }
+      ]
+    }
   ]
 }
