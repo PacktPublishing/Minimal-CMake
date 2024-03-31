@@ -1,3 +1,3 @@
-# ch5/part-3
+# ch5/part-4
 
-Expanding our `CMakePresets.json` file.
+Adding build and workflow presets to `CMakePresets.json`.
