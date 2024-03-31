@@ -1,0 +1,15 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "xcode-static",
+      "inherits": "static",
+      "generator": "Xcode",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    }
+  ]
+}
