@@ -4,12 +4,12 @@
     {
       "name": "base",
       "hidden": true,
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "generator": "Ninja Multi-Config"
+      "binaryDir": "${sourceDir}/build/${presetName}"
     },
     {
       "name": "shared",
       "inherits": "base",
+      "hidden": true,
       "cacheVariables": {
         "MC_GOL_SHARED": "ON"
       }
@@ -17,19 +17,66 @@
     {
       "name": "static",
       "inherits": "base",
+      "hidden": true,
       "cacheVariables": {
         "MC_GOL_SHARED": "OFF"
       }
+    },
+    {
+      "name": "windows",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 17 2022"
+    },
+    {
+      "name": "macos",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "generator": "Xcode"
+    },
+    {
+      "name": "shared-ninja",
+      "inherits": "shared",
+      "generator": "Ninja Multi-Config"
+    },
+    {
+      "name": "static-ninja",
+      "inherits": "static",
+      "generator": "Ninja Multi-Config"
+    },
+    {
+      "name": "shared-visual-studio",
+      "inherits": ["shared", "windows"]
+    },
+    {
+      "name": "static-visual-studio",
+      "inherits": ["shared", "windows"]
+    },
+    {
+      "name": "static-xcode",
+      "inherits": ["static", "macos"]
+    },
+    {
+      "name": "shared-xcode",
+      "inherits": ["shared", "macos"]
     }
   ],
   "buildPresets": [
     {
       "name": "shared",
-      "configurePreset": "shared"
+      "configurePreset": "shared-ninja"
     },
     {
       "name": "static",
-      "configurePreset": "static"
+      "configurePreset": "static-ninja"
     }
   ],
   "workflowPresets": [
@@ -38,7 +85,7 @@
       "steps": [
         {
           "type": "configure",
-          "name": "static"
+          "name": "static-ninja"
         },
         {
           "type": "build",
@@ -51,7 +98,7 @@
       "steps": [
         {
           "type": "configure",
-          "name": "shared"
+          "name": "shared-ninja"
         },
         {
           "type": "build",
