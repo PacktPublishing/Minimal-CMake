@@ -8,7 +8,7 @@
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
-        "rhs": "Windows"
+        "rhs": "Darwin"
       }
     }
   ]
