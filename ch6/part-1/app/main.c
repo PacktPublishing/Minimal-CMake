@@ -1,4 +1,5 @@
 // third-party dependencies
+#include <as-ops.h>
 #include <minimal-cmake-gol/gol.h>
 #include <timer.h>
 
@@ -111,6 +112,12 @@ int main(int argc, char** argv) {
   mc_gol_set_board_cell(board, 34, 25, true);
   mc_gol_set_board_cell(board, 35, 25, true);
 
+  const float aspect_ratio = (float)width / (float)(height);
+  const as_mat44f orthographic_projection =
+    as_mat44f_orthographic_projection_depth_zero_to_one_lh(
+      -100.0f * aspect_ratio, 100.0f * aspect_ratio, -100.0f, 100.0f, 0.0f,
+      1.0f);
+
   // for (;;) {
   //   const double delay = 0.1; // wait for 1/10th of a second
   //   const tick_t time = timer_current();
@@ -130,11 +137,71 @@ int main(int argc, char** argv) {
       }
     }
 
+    // camera (0, 0, 0)
+
+    // clear screen
     SDL_SetRenderDrawColor(renderer, 242, 242, 242, 255);
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderDrawLine(renderer, 50, 50, 100, 100);
+    {
+      as_point3f begin = (as_point3f){.x = -50.0f, .y = 0.0f};
+      as_point3f end = (as_point3f){.x = 50.0f, .y = 0.0f};
+
+      as_point4f ndc_begin = as_mat44f_mul_point4f(
+        &orthographic_projection, as_point4f_from_point3f(begin));
+      as_point4f ndc_end = as_mat44f_mul_point4f(
+        &orthographic_projection, as_point4f_from_point3f(end));
+
+      as_vec2f screen_begin =
+        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_begin));
+      as_vec2f screen_end =
+        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_end));
+
+      screen_begin = as_vec2f_add_vec2f(
+        as_vec2f_mul_float(screen_begin, 0.5f),
+        (as_vec2f){.x = 0.5f, .y = 0.5f});
+      screen_begin.x *= width;
+      screen_begin.y *= height;
+
+      screen_end = as_vec2f_add_vec2f(
+        as_vec2f_mul_float(screen_end, 0.5f), (as_vec2f){.x = 0.5f, .y = 0.5f});
+      screen_end.x *= width;
+      screen_end.y *= height;
+
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_RenderDrawLine(
+        renderer, screen_begin.x, screen_begin.y, screen_end.x, screen_end.y);
+    }
+
+    {
+      as_point3f begin = (as_point3f){.x = 0.0f, .y = -50.0f};
+      as_point3f end = (as_point3f){.x = 0.0f, .y = 50.0f};
+
+      as_point4f ndc_begin = as_mat44f_mul_point4f(
+        &orthographic_projection, as_point4f_from_point3f(begin));
+      as_point4f ndc_end = as_mat44f_mul_point4f(
+        &orthographic_projection, as_point4f_from_point3f(end));
+
+      as_vec2f screen_begin =
+        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_begin));
+      as_vec2f screen_end =
+        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_end));
+
+      screen_begin = as_vec2f_add_vec2f(
+        as_vec2f_mul_float(screen_begin, 0.5f),
+        (as_vec2f){.x = 0.5f, .y = 0.5f});
+      screen_begin.x *= width;
+      screen_begin.y *= height;
+
+      screen_end = as_vec2f_add_vec2f(
+        as_vec2f_mul_float(screen_end, 0.5f), (as_vec2f){.x = 0.5f, .y = 0.5f});
+      screen_end.x *= width;
+      screen_end.y *= height;
+
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_RenderDrawLine(
+        renderer, screen_begin.x, screen_begin.y, screen_end.x, screen_end.y);
+    }
 
     SDL_RenderPresent(renderer);
   }

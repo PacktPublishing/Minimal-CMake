@@ -16,10 +16,19 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
   GIT_TAG d4b3fef8d2be74c1b6f8eebdf68b3c7bdc9a6668
   SOURCE_SUBDIR ch4/part-6/lib/gol) # only look in gol folder
+FetchContent_Declare(
+  as-c-math
+  GIT_REPOSITORY https://github.com/pr0g/as-c-math.git
+  GIT_TAG 108b653154b7e55832d4dc1386feb91b3db88880)
+set(AS_MATH_ENABLE_TEST
+    OFF
+    CACHE INTERNAL "")
+set(AS_MATH_ENABLE_COVERAGE
+    OFF
+    CACHE INTERNAL "")
+FetchContent_MakeAvailable(timer_lib minimal-cmake-gol as-c-math)
 
-FetchContent_MakeAvailable(timer_lib minimal-cmake-gol)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol SDL2::SDL2)
+target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol SDL2::SDL2 as-c-math)
 
 set_target_properties(
   ${PROJECT_NAME}
