@@ -23,6 +23,22 @@
 //   }
 // }
 
+as_point2i screen_from_world(
+  const as_point2f world_position, const as_mat44f* orthographic_projection,
+  const as_vec2i screen_dimensions) {
+  const as_point2f ndc_position_minus_one_to_one =
+    as_point2f_from_point4f(as_mat44f_mul_point4f(
+      orthographic_projection, as_point4f_from_point2f(world_position)));
+  const as_point2f ndc_position_zero_to_one =
+    as_point2f_from_vec2f(as_vec2f_add_vec2f(
+      as_vec2f_mul_float(
+        as_vec2f_from_point2f(ndc_position_minus_one_to_one), 0.5f),
+      (as_vec2f){.x = 0.5f, .y = 0.5f}));
+  return (as_point2i){
+    .x = (int)(ndc_position_zero_to_one.x * screen_dimensions.x),
+    .y = (int)(ndc_position_zero_to_one.y * screen_dimensions.y)};
+}
+
 int main(int argc, char** argv) {
   (void)argc;
   (void)argv;
@@ -33,11 +49,10 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  const int width = 800;
-  const int height = 600;
+  const as_vec2i screen_dimensions = (as_vec2i){.x = 800, .y = 600};
   SDL_Window* window = SDL_CreateWindow(
-    argv[0], SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
-    SDL_WINDOW_SHOWN);
+    argv[0], SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    screen_dimensions.x, screen_dimensions.y, SDL_WINDOW_SHOWN);
 
   if (window == NULL) {
     fprintf(
@@ -53,7 +68,9 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  mc_gol_board_t* board = mc_gol_create_board(40, 27);
+  const int board_width = 40;
+  const int board_height = 27;
+  mc_gol_board_t* board = mc_gol_create_board(board_width, board_height);
 
   // gosper glider gun
   mc_gol_set_board_cell(board, 2, 5, true);
@@ -112,7 +129,8 @@ int main(int argc, char** argv) {
   mc_gol_set_board_cell(board, 34, 25, true);
   mc_gol_set_board_cell(board, 35, 25, true);
 
-  const float aspect_ratio = (float)width / (float)(height);
+  const float aspect_ratio =
+    (float)screen_dimensions.x / (float)(screen_dimensions.y);
   const as_mat44f orthographic_projection =
     as_mat44f_orthographic_projection_depth_zero_to_one_lh(
       -100.0f * aspect_ratio, 100.0f * aspect_ratio, -100.0f, 100.0f, 0.0f,
@@ -144,29 +162,12 @@ int main(int argc, char** argv) {
     SDL_RenderClear(renderer);
 
     {
-      as_point3f begin = (as_point3f){.x = -50.0f, .y = 0.0f};
-      as_point3f end = (as_point3f){.x = 50.0f, .y = 0.0f};
-
-      as_point4f ndc_begin = as_mat44f_mul_point4f(
-        &orthographic_projection, as_point4f_from_point3f(begin));
-      as_point4f ndc_end = as_mat44f_mul_point4f(
-        &orthographic_projection, as_point4f_from_point3f(end));
-
-      as_vec2f screen_begin =
-        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_begin));
-      as_vec2f screen_end =
-        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_end));
-
-      screen_begin = as_vec2f_add_vec2f(
-        as_vec2f_mul_float(screen_begin, 0.5f),
-        (as_vec2f){.x = 0.5f, .y = 0.5f});
-      screen_begin.x *= width;
-      screen_begin.y *= height;
-
-      screen_end = as_vec2f_add_vec2f(
-        as_vec2f_mul_float(screen_end, 0.5f), (as_vec2f){.x = 0.5f, .y = 0.5f});
-      screen_end.x *= width;
-      screen_end.y *= height;
+      as_point2i screen_begin = screen_from_world(
+        (as_point2f){.x = -50.0f, .y = 0.0f}, &orthographic_projection,
+        screen_dimensions);
+      as_point2i screen_end = screen_from_world(
+        (as_point2f){.x = 50.0f, .y = 0.0f}, &orthographic_projection,
+        screen_dimensions);
 
       SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
       SDL_RenderDrawLine(
@@ -174,31 +175,14 @@ int main(int argc, char** argv) {
     }
 
     {
-      as_point3f begin = (as_point3f){.x = 0.0f, .y = -50.0f};
-      as_point3f end = (as_point3f){.x = 0.0f, .y = 50.0f};
+      as_point2i screen_begin = screen_from_world(
+        (as_point2f){.x = 0.0f, .y = -50.0f}, &orthographic_projection,
+        screen_dimensions);
+      as_point2i screen_end = screen_from_world(
+        (as_point2f){.x = 0.0f, .y = 50.0f}, &orthographic_projection,
+        screen_dimensions);
 
-      as_point4f ndc_begin = as_mat44f_mul_point4f(
-        &orthographic_projection, as_point4f_from_point3f(begin));
-      as_point4f ndc_end = as_mat44f_mul_point4f(
-        &orthographic_projection, as_point4f_from_point3f(end));
-
-      as_vec2f screen_begin =
-        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_begin));
-      as_vec2f screen_end =
-        as_vec2f_from_point2f(as_point2f_from_point4f(ndc_end));
-
-      screen_begin = as_vec2f_add_vec2f(
-        as_vec2f_mul_float(screen_begin, 0.5f),
-        (as_vec2f){.x = 0.5f, .y = 0.5f});
-      screen_begin.x *= width;
-      screen_begin.y *= height;
-
-      screen_end = as_vec2f_add_vec2f(
-        as_vec2f_mul_float(screen_end, 0.5f), (as_vec2f){.x = 0.5f, .y = 0.5f});
-      screen_end.x *= width;
-      screen_end.y *= height;
-
-      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
       SDL_RenderDrawLine(
         renderer, screen_begin.x, screen_begin.y, screen_end.x, screen_end.y);
     }
