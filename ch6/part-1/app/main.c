@@ -26,9 +26,12 @@
 as_point2i screen_from_world(
   const as_point2f world_position, const as_mat44f* orthographic_projection,
   const as_vec2i screen_dimensions) {
-  const as_point2f ndc_position_minus_one_to_one =
+  const float aspect_ratio =
+    (float)screen_dimensions.x / (float)(screen_dimensions.y);
+  const as_point2f ndc_position_minus_one_to_one = as_mat22f_mul_point2f_v(
+    (as_mat22f){.elem[0] = 1.0, .elem[3] = aspect_ratio},
     as_point2f_from_point4f(as_mat44f_mul_point4f(
-      orthographic_projection, as_point4f_from_point2f(world_position)));
+      orthographic_projection, as_point4f_from_point2f(world_position))));
   const as_point2f ndc_position_zero_to_one =
     as_point2f_from_vec2f(as_vec2f_add_vec2f(
       as_vec2f_mul_float(
@@ -129,12 +132,9 @@ int main(int argc, char** argv) {
   mc_gol_set_board_cell(board, 34, 25, true);
   mc_gol_set_board_cell(board, 35, 25, true);
 
-  const float aspect_ratio =
-    (float)screen_dimensions.x / (float)(screen_dimensions.y);
   const as_mat44f orthographic_projection =
     as_mat44f_orthographic_projection_depth_zero_to_one_lh(
-      -100.0f * aspect_ratio, 100.0f * aspect_ratio, -100.0f, 100.0f, 0.0f,
-      1.0f);
+      -100.0f, 100.0f, -100.0f, 100.0f, 0.0f, 1.0f);
 
   // for (;;) {
   //   const double delay = 0.1; // wait for 1/10th of a second
