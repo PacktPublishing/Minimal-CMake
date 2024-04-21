@@ -28,7 +28,7 @@ set(AS_MATH_ENABLE_COVERAGE
     CACHE INTERNAL "")
 FetchContent_MakeAvailable(timer_lib minimal-cmake-gol as-c-math)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol SDL2::SDL2 as-c-math)
+target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol SDL2::SDL2 SDL2::SDL2main as-c-math)
 
 set_target_properties(
   ${PROJECT_NAME}
@@ -37,12 +37,21 @@ set_target_properties(
     $<IF:$<PLATFORM_ID:Linux>,$ORIGIN,$<IF:$<PLATFORM_ID:Darwin>,@loader_path,>>
 )
 
-if(WIN32 AND MC_GOL_SHARED)
-  # copy mc-gol.dll to the same folder as the executable
+if(WIN32)
+  # copy SDL2.dll to the same folder as the executable
   add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:mc-gol>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL2::SDL2>
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
     VERBATIM)
+  if (MC_GOL_SHARED)
+    # copy mc-gol.dll to the same folder as the executable
+    add_custom_command(
+      TARGET ${PROJECT_NAME}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:mc-gol>
+              $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      VERBATIM)
+  endif()
 endif()
