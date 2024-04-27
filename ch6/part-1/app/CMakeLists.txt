@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(minimal-cmake_game-of-life_console LANGUAGES C)
+project(minimal-cmake_game-of-life_window LANGUAGES C)
 
 find_package(
   SDL2
