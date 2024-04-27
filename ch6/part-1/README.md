@@ -1,3 +1,3 @@
-# ch5/part-5
+# ch6/part-1
 
-Adding Windows (Visual Studio) and macOS (Xcode) configure presets to `CMakePresets.json` for use with CMake GUI.
+Manually installing SDL2 and using it from our updated windowed application.
