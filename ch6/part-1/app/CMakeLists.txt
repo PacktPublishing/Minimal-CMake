@@ -1,7 +1,15 @@
 cmake_minimum_required(VERSION 3.28)
 project(minimal-cmake_game-of-life_console LANGUAGES C)
 
-find_package(SDL2 CONFIG REQUIRED)
+find_package(
+  SDL2
+  CONFIG
+  REQUIRED
+  NO_CMAKE_ENVIRONMENT_PATH
+  NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
+  NO_SYSTEM_ENVIRONMENT_PATH
+  NO_CMAKE_PACKAGE_REGISTRY
+  NO_CMAKE_SYSTEM_PATH)
 
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME} PRIVATE main.c)
