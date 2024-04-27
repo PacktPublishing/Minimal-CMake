@@ -172,6 +172,7 @@ int main(int argc, char** argv) {
 
   mc_gol_destroy_board(board);
 
+  SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
 
