@@ -6,7 +6,7 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_PREFIX_PATH": "${sourceDir}/../third-party/install"
+        "CMAKE_PREFIX_PATH": "${sourceDir}/../third-party/build/SDL2-prefix"
       }
     },
     {
