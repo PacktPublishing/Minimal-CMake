@@ -1,5 +1,6 @@
 // third-party dependencies
 #include <as-ops.h>
+#include <bgfx/c99/bgfx.h>
 #include <minimal-cmake-gol/gol.h>
 #include <timer.h>
 
@@ -47,13 +48,34 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  SDL_Renderer* renderer = SDL_CreateRenderer(
-    window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  if (renderer == NULL) {
+  SDL_SysWMinfo wmi;
+  SDL_VERSION(&wmi.version);
+  if (!SDL_GetWindowWMInfo(window, &wmi)) {
     fprintf(
-      stderr, "Renderer could not be created. SDL_Error: %s\n", SDL_GetError());
+      stderr, "SDL_SysWMinfo could not be retrieved. SDL_Error: %s\n",
+      SDL_GetError());
     return 1;
   }
+  bgfx_render_frame(-1); // single threaded mode
+
+  bgfx_platform_data_t pd = {};
+#if BX_PLATFORM_WINDOWS
+  pd.nwh = wmi.info.win.window;
+#elif BX_PLATFORM_OSX
+  pd.nwh = wmi.info.cocoa.window;
+#elif BX_PLATFORM_LINUX
+  pd.ndt = wmi.info.x11.display;
+  pd.nwh = (void*)(uintptr_t)wmi.info.x11.window;
+#endif
+
+  bgfx_init_t bgfx;
+  bgfx_init_ctor(&bgfx);
+  bgfx.type = BGFX_RENDERER_TYPE_COUNT; // auto choose renderer
+  bgfx.resolution.width = screen_dimensions.x;
+  bgfx.resolution.height = screen_dimensions.y;
+  bgfx.resolution.reset = BGFX_RESET_VSYNC;
+  bgfx.platformData = pd;
+  bgfx_init(&bgfx);
 
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
 
@@ -133,8 +155,9 @@ int main(int argc, char** argv) {
     timer += delta_time;
 
     // clear screen
-    SDL_SetRenderDrawColor(renderer, 242, 242, 242, 255);
-    SDL_RenderClear(renderer);
+    bgfx_set_view_clear(
+      0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x6495EDFF, 1.0f, 0);
+    bgfx_set_view_rect(0, 0, 0, screen_dimensions.x, screen_dimensions.y);
 
     const float cell_size = 15;
     const as_point2i board_top_left_corner = (as_point2i){
@@ -151,14 +174,14 @@ int main(int argc, char** argv) {
           mc_gol_board_cell(board, x, y)
             ? (color_t){.r = 255, .g = 255, .b = 255, .a = 255}
             : (color_t){.a = 255};
-        SDL_SetRenderDrawColor(
-          renderer, cell_color.r, cell_color.g, cell_color.b, cell_color.a);
+        // SDL_SetRenderDrawColor(
+        //   renderer, cell_color.r, cell_color.g, cell_color.b, cell_color.a);
         const SDL_Rect cell = (SDL_Rect){
           .x = cell_position.x,
           .y = cell_position.y,
           .w = cell_size,
           .h = cell_size};
-        SDL_RenderFillRect(renderer, &cell);
+        // SDL_RenderFillRect(renderer, &cell);
       }
     }
 
@@ -167,12 +190,14 @@ int main(int argc, char** argv) {
       timer = 0.0;
     }
 
-    SDL_RenderPresent(renderer);
+    // SDL_RenderPresent(renderer);
+    bgfx_touch(0);
+    bgfx_frame(false);
   }
 
   mc_gol_destroy_board(board);
 
-  SDL_DestroyRenderer(renderer);
+  bgfx_shutdown();
   SDL_DestroyWindow(window);
   SDL_Quit();
 

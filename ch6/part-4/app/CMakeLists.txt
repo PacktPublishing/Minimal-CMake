@@ -10,6 +10,7 @@ find_package(
   NO_SYSTEM_ENVIRONMENT_PATH
   NO_CMAKE_PACKAGE_REGISTRY
   NO_CMAKE_SYSTEM_PATH)
+find_package(bgfx CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME} PRIVATE main.c)
@@ -37,8 +38,9 @@ set(AS_MATH_ENABLE_COVERAGE
     CACHE INTERNAL "")
 FetchContent_MakeAvailable(timer_lib minimal-cmake-gol as-c-math)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib mc-gol SDL2::SDL2
-                                              SDL2::SDL2main as-c-math)
+target_link_libraries(
+  ${PROJECT_NAME} PRIVATE timer_lib mc-gol SDL2::SDL2 SDL2::SDL2main as-c-math
+                          bgfx::bgfx)
 
 set_target_properties(
   ${PROJECT_NAME}
