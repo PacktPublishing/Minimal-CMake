@@ -24,6 +24,7 @@ ExternalProject_Add(
   GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
   GIT_TAG release-2.30.2
   GIT_SHALLOW TRUE
-  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/SDL2-prefix/src/SDL2-build/${build_type_dir}
+  BINARY_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/SDL2-prefix/src/SDL2-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>)
