@@ -2,6 +2,7 @@
 #include <as-ops.h>
 #include <bgfx/c99/bgfx.h>
 #include <minimal-cmake-gol/gol.h>
+#include <minimal-cmake/array.h>
 #include <timer.h>
 
 // system includes
@@ -20,6 +21,45 @@ typedef struct color_t {
   uint8_t b;
   uint8_t a;
 } color_t;
+
+typedef struct pos_color_vertex_t {
+  float x;
+  float y;
+  float z;
+  uint32_t abgr;
+} pos_color_vertex_t;
+
+static pos_color_vertex_t quad_vertices[] = {
+  {-1.0f, -1.0f, 0.0f, 0xffffffff},
+  {1.0f, -1.0f, 0.0f, 0xffffffff},
+  {-1.0f, 1.0f, 0.0f, 0xffffffff},
+  {1.0f, 1.0f, 0.0f, 0xffffffff}};
+
+static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
+
+static char* read_file(const char* filepath) {
+  FILE* file = fopen(filepath, "rb");
+  fseek(file, 0, SEEK_END);
+  int64_t file_size = ftell(file);
+  fseek(file, 0, SEEK_SET);
+
+  char* buffer = NULL;
+  mc_array_resize(buffer, file_size);
+
+  size_t bytes_read = fread(buffer, sizeof(char), file_size, file);
+
+  int s = mc_array_size(buffer);
+
+  return buffer;
+}
+
+static bgfx_shader_handle_t create_shader(
+  const char* shader, const int size, const char* name) {
+  const bgfx_memory_t* mem = bgfx_copy(shader, size);
+  const bgfx_shader_handle_t handle = bgfx_create_shader(mem);
+  bgfx_set_shader_name(handle, name, strlen(name));
+  return handle;
+}
 
 double seconds_elapsed(
   const uint64_t previous_counter, const uint64_t current_counter) {
@@ -136,6 +176,35 @@ int main(int argc, char** argv) {
   mc_gol_set_board_cell(board, 34, 25, true);
   mc_gol_set_board_cell(board, 35, 25, true);
 
+  bgfx_vertex_layout_t pos_col_vert_layout;
+  bgfx_vertex_layout_begin(&pos_col_vert_layout, BGFX_RENDERER_TYPE_COUNT);
+  bgfx_vertex_layout_add(
+    &pos_col_vert_layout, BGFX_ATTRIB_POSITION, 3, BGFX_ATTRIB_TYPE_FLOAT,
+    false, false);
+  bgfx_vertex_layout_add(
+    &pos_col_vert_layout, BGFX_ATTRIB_COLOR0, 4, BGFX_ATTRIB_TYPE_UINT8, true,
+    false);
+  bgfx_vertex_layout_end(&pos_col_vert_layout);
+
+  bgfx_vertex_buffer_handle_t vbh = bgfx_create_vertex_buffer(
+    bgfx_make_ref(quad_vertices, sizeof(quad_vertices)), &pos_col_vert_layout,
+    0);
+  bgfx_index_buffer_handle_t ibh = bgfx_create_index_buffer(
+    bgfx_make_ref(quad_indices, sizeof(quad_indices)), 0);
+
+  // shader stuff
+  char* vs_shader = read_file("shader/build/vs_vertcol.bin");
+  char* fs_shader = read_file("shader/build/fs_vertcol.bin");
+
+  bgfx_shader_handle_t vsh =
+    create_shader(vs_shader, mc_array_size(vs_shader), "vs_shader");
+  bgfx_shader_handle_t fsh =
+    create_shader(fs_shader, mc_array_size(fs_shader), "fs_shader");
+  bgfx_program_handle_t program = bgfx_create_program(vsh, fsh, true);
+
+  mc_array_free(vs_shader);
+  mc_array_free(fs_shader);
+
   double timer = 0.0;
   const double delay = 0.1f;
   double previous_frame_time = SDL_GetPerformanceFrequency();
@@ -158,6 +227,23 @@ int main(int argc, char** argv) {
     bgfx_set_view_clear(
       0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x6495EDFF, 1.0f, 0);
     bgfx_set_view_rect(0, 0, 0, screen_dimensions.x, screen_dimensions.y);
+
+    as_mat44f identity = as_mat44f_identity();
+
+    const float aspect_ratio =
+      (float)screen_dimensions.x / (float)screen_dimensions.y;
+    as_mat44f projection =
+      as_mat44f_orthographic_projection_depth_zero_to_one_lh(
+        -50.0 * aspect_ratio, 50.0 * aspect_ratio, -50.0, 50.0, 0.0, 1.0);
+
+    bgfx_set_view_transform(0, identity.elem, projection.elem);
+
+    bgfx_set_transform(identity.elem, 1);
+
+    bgfx_set_vertex_buffer(0, vbh, 0, 4);
+    bgfx_set_index_buffer(ibh, 0, 6);
+
+    bgfx_submit(0, program, 0, BGFX_DISCARD_ALL);
 
     const float cell_size = 15;
     const as_point2i board_top_left_corner = (as_point2i){

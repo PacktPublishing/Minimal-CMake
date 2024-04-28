@@ -36,11 +36,23 @@ set(AS_MATH_ENABLE_TEST
 set(AS_MATH_ENABLE_COVERAGE
     OFF
     CACHE INTERNAL "")
-FetchContent_MakeAvailable(timer_lib minimal-cmake-gol as-c-math)
+FetchContent_Declare(
+  minimal-cmake-array
+  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  GIT_TAG d4b3fef8d2be74c1b6f8eebdf68b3c7bdc9a6668
+  SOURCE_SUBDIR ch4/part-6/lib/array) # only look in array folder
+FetchContent_MakeAvailable(timer_lib minimal-cmake-gol minimal-cmake-array
+                           as-c-math)
 
 target_link_libraries(
-  ${PROJECT_NAME} PRIVATE timer_lib mc-gol SDL2::SDL2 SDL2::SDL2main as-c-math
-                          bgfx::bgfx)
+  ${PROJECT_NAME}
+  PRIVATE timer_lib
+          mc-gol
+          mc-array
+          as-c-math
+          SDL2::SDL2
+          SDL2::SDL2main
+          bgfx::bgfx)
 
 set_target_properties(
   ${PROJECT_NAME}
