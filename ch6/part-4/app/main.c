@@ -34,22 +34,20 @@ static pos_color_vertex_t quad_vertices[] = {
   {0.5f, -0.5f, 0.0f, 0xffffffff},
   {-0.5f, 0.5f, 0.0f, 0xffffffff},
   {0.5f, 0.5f, 0.0f, 0xffffffff}};
-
 static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
 
 static char* read_file(const char* filepath) {
+  // find length of file
   FILE* file = fopen(filepath, "rb");
   fseek(file, 0, SEEK_END);
-  int64_t file_size = ftell(file);
+  const int64_t file_size = ftell(file);
   fseek(file, 0, SEEK_SET);
-
+  // allocate buffer to hold contents of file
   char* buffer = NULL;
   mc_array_resize(buffer, file_size);
-
-  size_t bytes_read = fread(buffer, sizeof(char), file_size, file);
-
-  int s = mc_array_size(buffer);
-
+  // read file
+  fread(buffer, sizeof(char), file_size, file);
+  // return array buffer (remember to deallocate after)
   return buffer;
 }
 
@@ -192,7 +190,6 @@ int main(int argc, char** argv) {
   const bgfx_index_buffer_handle_t index_buffer = bgfx_create_index_buffer(
     bgfx_make_ref(quad_indices, sizeof(quad_indices)), 0);
 
-  // shader stuff
   char* vs_shader = read_file("shader/build/vs_vertcol.bin");
   char* fs_shader = read_file("shader/build/fs_vertcol.bin");
 
