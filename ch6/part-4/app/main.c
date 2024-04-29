@@ -15,11 +15,11 @@
 #include <SDL.h>
 #include <SDL_syswm.h>
 
-typedef struct color_t {
-  uint8_t r;
-  uint8_t g;
-  uint8_t b;
-  uint8_t a;
+typedef struct color4f_t {
+  float r;
+  float g;
+  float b;
+  float a;
 } color_t;
 
 typedef struct pos_color_vertex_t {
@@ -30,10 +30,10 @@ typedef struct pos_color_vertex_t {
 } pos_color_vertex_t;
 
 static pos_color_vertex_t quad_vertices[] = {
-  {-1.0f, -1.0f, 0.0f, 0xffffffff},
-  {1.0f, -1.0f, 0.0f, 0xffffffff},
-  {-1.0f, 1.0f, 0.0f, 0xffffffff},
-  {1.0f, 1.0f, 0.0f, 0xffffffff}};
+  {-0.5f, -0.5f, 0.0f, 0xffffffff},
+  {0.5f, -0.5f, 0.0f, 0xffffffff},
+  {-0.5f, 0.5f, 0.0f, 0xffffffff},
+  {0.5f, 0.5f, 0.0f, 0xffffffff}};
 
 static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
 
@@ -186,24 +186,28 @@ int main(int argc, char** argv) {
     false);
   bgfx_vertex_layout_end(&pos_col_vert_layout);
 
-  bgfx_vertex_buffer_handle_t vbh = bgfx_create_vertex_buffer(
+  const bgfx_vertex_buffer_handle_t vertex_buffer = bgfx_create_vertex_buffer(
     bgfx_make_ref(quad_vertices, sizeof(quad_vertices)), &pos_col_vert_layout,
     0);
-  bgfx_index_buffer_handle_t ibh = bgfx_create_index_buffer(
+  const bgfx_index_buffer_handle_t index_buffer = bgfx_create_index_buffer(
     bgfx_make_ref(quad_indices, sizeof(quad_indices)), 0);
 
   // shader stuff
   char* vs_shader = read_file("shader/build/vs_vertcol.bin");
   char* fs_shader = read_file("shader/build/fs_vertcol.bin");
 
-  bgfx_shader_handle_t vsh =
+  const bgfx_shader_handle_t vertex_shader =
     create_shader(vs_shader, mc_array_size(vs_shader), "vs_shader");
-  bgfx_shader_handle_t fsh =
+  const bgfx_shader_handle_t fragment_shader =
     create_shader(fs_shader, mc_array_size(fs_shader), "fs_shader");
-  bgfx_program_handle_t program = bgfx_create_program(vsh, fsh, true);
+  const bgfx_program_handle_t program =
+    bgfx_create_program(vertex_shader, fragment_shader, true);
 
   mc_array_free(vs_shader);
   mc_array_free(fs_shader);
+
+  const bgfx_uniform_handle_t u_color =
+    bgfx_create_uniform("u_color", BGFX_UNIFORM_TYPE_VEC4, 1);
 
   double timer = 0.0;
   const double delay = 0.1f;
@@ -225,49 +229,38 @@ int main(int argc, char** argv) {
 
     // clear screen
     bgfx_set_view_clear(
-      0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x6495EDFF, 1.0f, 0);
+      0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0xf2f2f2ff, 1.0f, 0);
     bgfx_set_view_rect(0, 0, 0, screen_dimensions.x, screen_dimensions.y);
 
-    as_mat44f identity = as_mat44f_identity();
+    const float zoom = 20.0f;
+    const as_mat44f identity = as_mat44f_identity();
 
     const float aspect_ratio =
       (float)screen_dimensions.x / (float)screen_dimensions.y;
-    as_mat44f projection =
+    const as_mat44f orthographic_projection =
       as_mat44f_orthographic_projection_depth_zero_to_one_lh(
-        -50.0 * aspect_ratio, 50.0 * aspect_ratio, -50.0, 50.0, 0.0, 1.0);
+        -zoom * aspect_ratio, zoom * aspect_ratio, -zoom, zoom, 0.0f, 1.0f);
+    bgfx_set_view_transform(0, identity.elem, orthographic_projection.elem);
 
-    bgfx_set_view_transform(0, identity.elem, projection.elem);
-
-    bgfx_set_transform(identity.elem, 1);
-
-    bgfx_set_vertex_buffer(0, vbh, 0, 4);
-    bgfx_set_index_buffer(ibh, 0, 6);
-
-    bgfx_submit(0, program, 0, BGFX_DISCARD_ALL);
-
-    const float cell_size = 15;
-    const as_point2i board_top_left_corner = (as_point2i){
-      .x = (screen_dimensions.x / 2)
-         - (mc_gol_board_width(board) * cell_size) * 0.5f,
-      .y = (screen_dimensions.y / 2)
-         - (mc_gol_board_height(board) * cell_size) * 0.5f};
+    const as_vec3f board_top_left_corner = (as_vec3f){
+      .x = (-mc_gol_board_width(board) * 0.5f) + 0.5f,
+      .y = (mc_gol_board_height(board) * 0.5f) - 0.5f};
     for (int32_t y = 0, height = mc_gol_board_height(board); y < height; y++) {
       for (int32_t x = 0, width = mc_gol_board_width(board); x < width; x++) {
-        const as_point2i cell_position = as_point2i_add_vec2i(
-          board_top_left_corner,
-          (as_vec2i){.x = x * cell_size, .y = y * cell_size});
         const color_t cell_color =
           mc_gol_board_cell(board, x, y)
-            ? (color_t){.r = 255, .g = 255, .b = 255, .a = 255}
-            : (color_t){.a = 255};
-        // SDL_SetRenderDrawColor(
-        //   renderer, cell_color.r, cell_color.g, cell_color.b, cell_color.a);
-        const SDL_Rect cell = (SDL_Rect){
-          .x = cell_position.x,
-          .y = cell_position.y,
-          .w = cell_size,
-          .h = cell_size};
-        // SDL_RenderFillRect(renderer, &cell);
+            ? (color_t){.r = 1.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f}
+            : (color_t){.a = 1.0f};
+        const as_mat44f transform = as_mat44f_transpose_v(
+          as_mat44f_translation_from_vec3f(as_vec3f_add_vec3f(
+            board_top_left_corner, (as_vec3f){.x = x, .y = -y})));
+        bgfx_set_transform(transform.elem, 1);
+        bgfx_set_vertex_buffer(0, vertex_buffer, 0, 4);
+        bgfx_set_index_buffer(index_buffer, 0, 6);
+        const float color[4] = {
+          cell_color.r, cell_color.g, cell_color.b, cell_color.a};
+        bgfx_set_uniform(u_color, color, 1);
+        bgfx_submit(0, program, 0, BGFX_DISCARD_ALL);
       }
     }
 
@@ -276,10 +269,14 @@ int main(int argc, char** argv) {
       timer = 0.0;
     }
 
-    // SDL_RenderPresent(renderer);
     bgfx_touch(0);
     bgfx_frame(false);
   }
+
+  bgfx_destroy_uniform(u_color);
+  bgfx_destroy_program(program);
+  bgfx_destroy_index_buffer(index_buffer);
+  bgfx_destroy_vertex_buffer(vertex_buffer);
 
   mc_gol_destroy_board(board);
 
