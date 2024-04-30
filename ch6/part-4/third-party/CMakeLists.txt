@@ -29,16 +29,15 @@ ExternalProject_Add(
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>)
 
-# compile bgfx and tools (bgfxt -> bgfx tools)
-# bgfx must be compiled statically for use when building the
-# tools (shaderc, geometryv etc...)
+# compile bgfx and tools (bgfxt -> bgfx tools) bgfx must be compiled statically
+# for use when building the tools (shaderc, geometryv etc...)
 ExternalProject_Add(
   bgfxt
   GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
   GIT_TAG v1.127.8710-464
   GIT_SHALLOW TRUE
-  BINARY_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/bgfxt-build/${build_type_dir}
+  # reduce path length of binary_dir to avoid max path length on windows
+  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bgfxt-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
@@ -49,9 +48,9 @@ ExternalProject_Add(
   GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
   GIT_TAG v1.127.8710-464
   GIT_SHALLOW TRUE
-  DEPENDS bgfxt
-  BINARY_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/bgfx-build/${build_type_dir}
+  DEPENDS bgfxt # ensure bgfx builds and installs after bgfxt
+  # reduce path length of binary_dir to avoid max path length on windows
+  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bgfx-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DBGFX_LIBRARY_TYPE=SHARED -DBGFX_BUILD_TOOLS=OFF
