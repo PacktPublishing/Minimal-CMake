@@ -29,14 +29,31 @@ ExternalProject_Add(
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>)
 
+# compile bgfx and tools (bgfxt -> bgfx tools)
+# bgfx must be compiled statically for use when building the
+# tools (shaderc, geometryv etc...)
+ExternalProject_Add(
+  bgfxt
+  GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
+  GIT_TAG v1.127.8710-464
+  GIT_SHALLOW TRUE
+  BINARY_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/bgfxt-build/${build_type_dir}
+  INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
+  CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
+
+# compile bgfx dynamically for use by our application
 ExternalProject_Add(
   bgfx
   GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
   GIT_TAG v1.127.8710-464
   GIT_SHALLOW TRUE
+  DEPENDS bgfxt
   BINARY_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/bgfx-prefix/src/bgfx-build/${build_type_dir}
+    ${CMAKE_CURRENT_BINARY_DIR}/bgfx-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-             -DBGFX_BUILD_EXAMPLES=OFF -DBGFX_LIBRARY_TYPE=SHARED
+             -DBGFX_LIBRARY_TYPE=SHARED -DBGFX_BUILD_TOOLS=OFF
+             -DBGFX_BUILD_EXAMPLES=OFF
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
