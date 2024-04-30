@@ -112,19 +112,23 @@ int main(int argc, char** argv) {
   }
   bgfx_render_frame(-1); // single threaded mode
 
+  bgfx_renderer_type_t renderer_type = BGFX_RENDERER_TYPE_COUNT;
   bgfx_platform_data_t pd = {};
 #if BX_PLATFORM_WINDOWS
   pd.nwh = wmi.info.win.window;
+  renderer_type = BGFX_RENDERER_TYPE_DIRECT3D11;
 #elif BX_PLATFORM_OSX
   pd.nwh = wmi.info.cocoa.window;
+  renderer_type = BGFX_RENDERER_TYPE_METAL;
 #elif BX_PLATFORM_LINUX
   pd.ndt = wmi.info.x11.display;
   pd.nwh = (void*)(uintptr_t)wmi.info.x11.window;
+  renderer_type = BGFX_RENDERER_TYPE_OPENGL;
 #endif
 
   bgfx_init_t bgfx;
   bgfx_init_ctor(&bgfx);
-  bgfx.type = BGFX_RENDERER_TYPE_COUNT; // auto choose renderer
+  bgfx.type = renderer_type;
   bgfx.resolution.width = screen_dimensions.x;
   bgfx.resolution.height = screen_dimensions.y;
   bgfx.resolution.reset = BGFX_RESET_VSYNC;
@@ -191,7 +195,7 @@ int main(int argc, char** argv) {
   mc_gol_set_board_cell(board, 35, 25, true);
 
   bgfx_vertex_layout_t pos_col_vert_layout;
-  bgfx_vertex_layout_begin(&pos_col_vert_layout, BGFX_RENDERER_TYPE_COUNT);
+  bgfx_vertex_layout_begin(&pos_col_vert_layout, renderer_type);
   bgfx_vertex_layout_add(
     &pos_col_vert_layout, BGFX_ATTRIB_POSITION, 3, BGFX_ATTRIB_TYPE_FLOAT,
     false, false);
