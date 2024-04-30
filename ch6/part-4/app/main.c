@@ -37,16 +37,32 @@ static pos_color_vertex_t quad_vertices[] = {
 static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
 
 static char* read_file(const char* filepath) {
-  // find length of file
   FILE* file = fopen(filepath, "rb");
-  fseek(file, 0, SEEK_END);
+  if (file == NULL) {
+    return NULL;
+  }
+  // seek to end of file
+  if (fseek(file, 0, SEEK_END) != 0) {
+    return NULL;
+  }
+  // find length of file
   const int64_t file_size = ftell(file);
-  fseek(file, 0, SEEK_SET);
+  if (file_size == -1) {
+    return NULL;
+  }
+  // return to beginning of file
+  if (fseek(file, 0, SEEK_SET) != 0) {
+    return NULL;
+  }
   // allocate buffer to hold contents of file
   char* buffer = NULL;
   mc_array_resize(buffer, file_size);
   // read file
-  fread(buffer, sizeof(char), file_size, file);
+  const size_t bytes_read = fread(buffer, sizeof(char), file_size, file);
+  if (bytes_read == 0) {
+    mc_array_free(buffer);
+    return NULL;
+  }
   // return array buffer (remember to deallocate after)
   return buffer;
 }
