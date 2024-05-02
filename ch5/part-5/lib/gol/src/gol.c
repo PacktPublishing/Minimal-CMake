@@ -78,6 +78,7 @@ mc_gol_board_t* mc_gol_create_board(const int32_t width, const int32_t height) {
   const uint32_t size = (uint32_t)(width * height);
   bool* cells = malloc(size);
   if (!cells) {
+    free(board);
     return NULL;
   }
   memset(cells, 0, size);
