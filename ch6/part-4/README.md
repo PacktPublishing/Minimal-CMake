@@ -1,3 +1,3 @@
 # ch6/part-4
 
-Add another dependency using ExternalProject_Add.
+Add another dependency (bgfx) using ExternalProject_Add.
