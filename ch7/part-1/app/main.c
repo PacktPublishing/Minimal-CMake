@@ -31,6 +31,41 @@ static pos_color_vertex_t quad_vertices[] = {
   {0.5f, 0.5f, 0.0f, 0xffffffff}};
 static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
 
+as_point2f screen_from_world(
+  const as_point2f world_position, const as_mat44f* orthographic_projection,
+  const as_vec2i screen_dimensions) {
+  const as_point2f ndc_position_minus_one_to_one =
+    as_point2f_from_point4f(as_mat44f_mul_point4f(
+      orthographic_projection, as_point4f_from_point2f(world_position)));
+  const as_point2f ndc_position_zero_to_one =
+    as_point2f_from_vec2f(as_vec2f_add_vec2f(
+      as_vec2f_mul_float(
+        as_vec2f_from_point2f(ndc_position_minus_one_to_one), 0.5f),
+      (as_vec2f){.x = 0.5f, .y = 0.5f}));
+  return (as_point2f){
+    .x = ndc_position_zero_to_one.x * screen_dimensions.x,
+    .y = ndc_position_zero_to_one.y * screen_dimensions.y};
+}
+
+as_point3f world_from_screen(
+  const as_point2i screen_position, const as_mat44f* orthographic_projection,
+  const as_vec2i screen_dimensions) {
+  const as_point2f ndc_position_zero_to_one = (as_point2f){
+    .x = (float)screen_position.x / (float)screen_dimensions.x,
+    .y = (float)screen_position.y / screen_dimensions.y};
+  const as_point2f ndc_position_minus_one_to_one =
+    as_point2f_from_vec2f(as_vec2f_mul_float(
+      as_vec2f_sub_vec2f(
+        as_vec2f_from_point2f(ndc_position_zero_to_one),
+        (as_vec2f){0.5f, 0.5f}),
+      2.0f));
+  const as_point4f world_position = as_mat44f_mul_point4f_v(
+    as_mat44f_inverse(orthographic_projection),
+    as_point4f_from_point2f(ndc_position_minus_one_to_one));
+  return (as_point3f){
+    .x = world_position.x, .y = world_position.y, .z = world_position.z};
+}
+
 static char* read_file(const char* filepath) {
   FILE* file = fopen(filepath, "rb");
   if (file == NULL) {
@@ -218,6 +253,22 @@ int main(int argc, char** argv) {
   pos_color_lines_set_render_context(
     pos_color_lines, 0, program, &pos_col_vert_layout, u_color);
 
+  bool simulating = true;
+  as_point2i mouse_now = {};
+  const float zoom = 20.0f;
+  const as_mat44f identity = as_mat44f_identity();
+  const float aspect_ratio =
+    (float)screen_dimensions.x / (float)screen_dimensions.y;
+  const as_mat44f orthographic_projection = as_mat44f_transpose_v(
+    as_mat44f_orthographic_projection_depth_zero_to_one_lh(
+      -zoom * aspect_ratio, zoom * aspect_ratio, -zoom, zoom, 0.0f, 1.0f));
+  bgfx_set_view_transform(0, identity.elem, orthographic_projection.elem);
+
+  const float board_width = (float)mc_gol_board_width(board);
+  const float board_height = (float)mc_gol_board_height(board);
+  const as_vec3f board_top_left_cell_center = (as_vec3f){
+    .x = (-board_width * 0.5f) + 0.5f, .y = (board_height * 0.5f) - 0.5f};
+
   double timer = 0.0;
   const double delay = 0.1f;
   double previous_frame_time = SDL_GetPerformanceFrequency();
@@ -226,6 +277,46 @@ int main(int argc, char** argv) {
       if (current_event.type == SDL_QUIT) {
         running = false;
         break;
+      }
+      if (current_event.type == SDL_MOUSEMOTION) {
+        SDL_MouseMotionEvent* mouse_motion =
+          (SDL_MouseMotionEvent*)&current_event;
+        mouse_now =
+          (as_point2i){mouse_motion->x, screen_dimensions.y - mouse_motion->y};
+      }
+      if (current_event.type == SDL_MOUSEBUTTONDOWN) {
+        SDL_MouseButtonEvent* mouse_button =
+          (SDL_MouseButtonEvent*)&current_event;
+        if (mouse_button->button == SDL_BUTTON_LEFT) {
+          as_point3f position = world_from_screen(
+            mouse_now, &orthographic_projection, screen_dimensions);
+
+          bool pressed_cell = false;
+          for (int32_t y = 0; y < board_height; y++) {
+            for (int32_t x = 0; x < board_width; x++) {
+              const as_vec3f cell_top_left_corner = as_vec3f_sub_vec3f(
+                as_vec3f_add_vec3f(
+                  board_top_left_cell_center,
+                  (as_vec3f){.x = x, .y = -y, .z = 0.5f}),
+                (as_vec3f){.x = 0.5f, .y = -0.5f});
+              if (
+                position.x > cell_top_left_corner.x
+                && position.x < cell_top_left_corner.x + 1.0f
+                && position.y < cell_top_left_corner.y
+                && position.y > cell_top_left_corner.y - 1.0f) {
+                pressed_cell = true;
+                mc_gol_set_board_cell(
+                  board, x, y, !mc_gol_board_cell(board, x, y));
+              }
+            }
+          }
+
+          // stop/start simulation
+          if (!pressed_cell) {
+            timer = 0.0f;
+            simulating = !simulating;
+          }
+        }
       }
     }
 
@@ -240,21 +331,6 @@ int main(int argc, char** argv) {
     bgfx_set_view_clear(
       0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0xf2f2f2ff, 1.0f, 0);
     bgfx_set_view_rect(0, 0, 0, screen_dimensions.x, screen_dimensions.y);
-
-    const float zoom = 20.0f;
-    const as_mat44f identity = as_mat44f_identity();
-
-    const float aspect_ratio =
-      (float)screen_dimensions.x / (float)screen_dimensions.y;
-    const as_mat44f orthographic_projection =
-      as_mat44f_orthographic_projection_depth_zero_to_one_lh(
-        -zoom * aspect_ratio, zoom * aspect_ratio, -zoom, zoom, 0.0f, 1.0f);
-    bgfx_set_view_transform(0, identity.elem, orthographic_projection.elem);
-
-    const float board_width = (float)mc_gol_board_width(board);
-    const float board_height = (float)mc_gol_board_height(board);
-    const as_vec3f board_top_left_cell_center = (as_vec3f){
-      .x = (-board_width * 0.5f) + 0.5f, .y = (board_height * 0.5f) - 0.5f};
 
     const uint32_t line_color = 0xff713d27;
     // horizontal lines
@@ -322,7 +398,7 @@ int main(int argc, char** argv) {
       }
     }
 
-    if (timer > delay) {
+    if (simulating && timer > delay) {
       mc_gol_update_board(board);
       timer = 0.0;
     }
