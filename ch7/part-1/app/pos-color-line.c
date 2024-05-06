@@ -39,7 +39,8 @@ void pos_color_lines_set_render_context(
   pos_color_lines->program_handle = program_handle;
 }
 
-void pos_color_lines_add_line(pos_color_lines_t* pos_color_lines, const pos_color_line_t line) {
+void pos_color_lines_add_line(
+  pos_color_lines_t* pos_color_lines, const pos_color_line_t line) {
   mc_array_push(pos_color_lines->lines, line);
 }
 
