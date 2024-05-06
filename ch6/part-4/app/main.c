@@ -20,7 +20,7 @@ typedef struct color4f_t {
   float g;
   float b;
   float a;
-} color_t;
+} color4f_t;
 
 typedef struct pos_color_vertex_t {
   float x;
@@ -264,10 +264,10 @@ int main(int argc, char** argv) {
       .y = (mc_gol_board_height(board) * 0.5f) - 0.5f};
     for (int32_t y = 0, height = mc_gol_board_height(board); y < height; y++) {
       for (int32_t x = 0, width = mc_gol_board_width(board); x < width; x++) {
-        const color_t cell_color =
+        const color4f_t cell_color =
           mc_gol_board_cell(board, x, y)
-            ? (color_t){.r = 1.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f}
-            : (color_t){.a = 1.0f};
+            ? (color4f_t){.r = 1.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f}
+            : (color4f_t){.a = 1.0f};
         const as_mat44f transform = as_mat44f_transpose_v(
           as_mat44f_translation_from_vec3f(as_vec3f_add_vec3f(
             board_top_left_corner, (as_vec3f){.x = x, .y = -y})));
