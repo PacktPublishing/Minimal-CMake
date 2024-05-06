@@ -18,10 +18,6 @@ target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
 
 include(FetchContent)
 FetchContent_Declare(
-  timer_lib
-  GIT_REPOSITORY https://github.com/pr0g/timer_lib.git
-  GIT_TAG v1.0)
-FetchContent_Declare(
   minimal-cmake-gol
   GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
   GIT_TAG d4b3fef8d2be74c1b6f8eebdf68b3c7bdc9a6668
@@ -41,18 +37,11 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
   GIT_TAG d4b3fef8d2be74c1b6f8eebdf68b3c7bdc9a6668
   SOURCE_SUBDIR ch4/part-6/lib/array) # only look in array folder
-FetchContent_MakeAvailable(timer_lib minimal-cmake-gol minimal-cmake-array
-                           as-c-math)
+FetchContent_MakeAvailable(minimal-cmake-gol minimal-cmake-array as-c-math)
 
 target_link_libraries(
-  ${PROJECT_NAME}
-  PRIVATE timer_lib
-          mc-gol
-          mc-array
-          as-c-math
-          SDL2::SDL2
-          SDL2::SDL2main
-          bgfx::bgfx)
+  ${PROJECT_NAME} PRIVATE mc-gol mc-array as-c-math SDL2::SDL2 SDL2::SDL2main
+                          bgfx::bgfx)
 
 set_target_properties(
   ${PROJECT_NAME}

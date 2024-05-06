@@ -1,7 +1,8 @@
 // third-party dependencies
+#include <SDL.h>
+#include <SDL_syswm.h>
 #include <as-ops.h>
 #include <minimal-cmake-gol/gol.h>
-#include <timer.h>
 
 // system includes
 #include <memory.h>
@@ -9,9 +10,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <SDL.h>
-#include <SDL_syswm.h>
 
 typedef struct color_t {
   uint8_t r;

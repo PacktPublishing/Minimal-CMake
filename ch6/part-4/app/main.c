@@ -1,9 +1,10 @@
 // third-party dependencies
+#include <SDL.h>
+#include <SDL_syswm.h>
 #include <as-ops.h>
 #include <bgfx/c99/bgfx.h>
 #include <minimal-cmake-gol/gol.h>
 #include <minimal-cmake/array.h>
-#include <timer.h>
 
 // system includes
 #include <memory.h>
@@ -11,9 +12,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <SDL.h>
-#include <SDL_syswm.h>
 
 typedef struct color4f_t {
   float r;
