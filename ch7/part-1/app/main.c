@@ -5,7 +5,6 @@
 #include <bgfx/c99/bgfx.h>
 #include <minimal-cmake-gol/gol.h>
 #include <minimal-cmake/array.h>
-#include <timer.h>
 
 #include "pos-color-line.h"
 #include "pos-color-vertex.h"
