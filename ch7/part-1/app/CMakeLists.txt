@@ -11,6 +11,7 @@ find_package(
   NO_CMAKE_PACKAGE_REGISTRY
   NO_CMAKE_SYSTEM_PATH)
 find_package(bgfx CONFIG REQUIRED)
+find_package(mc-array CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME} PRIVATE main.c)
@@ -32,16 +33,11 @@ set(AS_MATH_ENABLE_TEST
 set(AS_MATH_ENABLE_COVERAGE
     OFF
     CACHE INTERNAL "")
-FetchContent_Declare(
-  minimal-cmake-array
-  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG d4b3fef8d2be74c1b6f8eebdf68b3c7bdc9a6668
-  SOURCE_SUBDIR ch4/part-6/lib/array) # only look in array folder
-FetchContent_MakeAvailable(minimal-cmake-gol minimal-cmake-array as-c-math)
+FetchContent_MakeAvailable(minimal-cmake-gol as-c-math)
 
 target_link_libraries(
-  ${PROJECT_NAME} PRIVATE mc-gol mc-array as-c-math SDL2::SDL2 SDL2::SDL2main
-                          bgfx::bgfx)
+  ${PROJECT_NAME} PRIVATE mc-gol minimal-cmake::mc-array as-c-math SDL2::SDL2
+                          SDL2::SDL2main bgfx::bgfx)
 
 set_target_properties(
   ${PROJECT_NAME}
