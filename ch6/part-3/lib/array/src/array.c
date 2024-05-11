@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ARRAY_RAW_DATA(array) ((int*)(array)-2)
+#define ARRAY_RAW_DATA(array) ((int*)(array) - 2)
 #define ARRAY_CAPACITY(array) (ARRAY_RAW_DATA(array)[0])
 #define ARRAY_SIZE(array) (ARRAY_RAW_DATA(array)[1])
 
@@ -27,7 +27,8 @@ void* internal_mc_array_reserve(
   }
 }
 
-void* internal_mc_array_resize(void* array, const int count, const int elem_size) {
+void* internal_mc_array_resize(
+  void* array, const int count, const int elem_size) {
   array = internal_mc_array_reserve(array, count, elem_size);
   ARRAY_SIZE(array) = count;
   return array;
@@ -40,7 +41,8 @@ static int max_int(const int lhs, const int rhs) {
 void* internal_mc_array_grow(void* array, int elem_size) {
   const int capacity = mc_array_capacity(array);
   if (mc_array_size(array) == capacity) {
-    array = internal_mc_array_reserve(array, max_int(capacity * 2, 1), elem_size);
+    array =
+      internal_mc_array_reserve(array, max_int(capacity * 2, 1), elem_size);
   }
   ARRAY_SIZE(array) += 1;
   return array;
