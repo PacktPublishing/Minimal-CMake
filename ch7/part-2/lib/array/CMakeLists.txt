@@ -22,8 +22,8 @@ install(
 
 install(
   EXPORT ${PROJECT_NAME}-config
-  NAMESPACE minimal-cmake::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  NAMESPACE minimal-cmake::)
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/minimal-cmake/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/minimal-cmake)
