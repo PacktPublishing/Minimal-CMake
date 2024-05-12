@@ -1,4 +1,4 @@
-#include "pos-color-vertex.h"
+#include "minimal-cmake/draw/pos-color-vertex.h"
 
 #include <bgfx/c99/bgfx.h>
 
