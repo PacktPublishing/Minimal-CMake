@@ -8,15 +8,15 @@ if(MC_GOL_SHARED)
   set(MC_GOL_LIB_TYPE SHARED)
 endif()
 
-add_library(${PROJECT_NAME} ${MC_GOL_LIB_TYPE})
+add_library(game-of-life ${MC_GOL_LIB_TYPE})
 
-target_sources(${PROJECT_NAME} PRIVATE src/gol.c)
+target_sources(game-of-life PRIVATE src/gol.c)
 target_include_directories(
-  ${PROJECT_NAME}
+  game-of-life
   PUBLIC
     "$<BUILD_LOCAL_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/;${CMAKE_CURRENT_BINARY_DIR}/>"
 )
-target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
+target_compile_features(game-of-life PRIVATE c_std_17)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -42,14 +42,27 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(as-c-math minimal-cmake-array minimal-cmake-utils)
 
 include(GenerateExportHeader)
-generate_export_header(${PROJECT_NAME} BASE_NAME mc_gol)
+generate_export_header(game-of-life BASE_NAME mc_gol)
 set_target_properties(
-  ${PROJECT_NAME}
+  game-of-life
   PROPERTIES C_VISIBILITY_PRESET hidden
              VISIBILITY_INLINES_HIDDEN ON
              C_STANDARD_REQUIRED ON
-             C_EXTENSIONS OFF)
-target_link_libraries(${PROJECT_NAME} PRIVATE as-c-math mc-array mc-utils)
+             C_EXTENSIONS OFF
+             DEBUG_POSTFIX "d")
+target_link_libraries(game-of-life PRIVATE as-c-math mc-array mc-utils)
 target_compile_definitions(
-  ${PROJECT_NAME}
-  PUBLIC $<$<NOT:$<BOOL:${MC_GOL_SHARED}>>:MC_GOL_STATIC_DEFINE>)
+  game-of-life PUBLIC $<$<NOT:$<BOOL:${MC_GOL_SHARED}>>:MC_GOL_STATIC_DEFINE>)
+
+install(
+  TARGETS game-of-life
+  EXPORT ${PROJECT_NAME}-config
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+install(
+  EXPORT ${PROJECT_NAME}-config
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  NAMESPACE minimal-cmake::)
+
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/minimal-cmake/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/minimal-cmake)
