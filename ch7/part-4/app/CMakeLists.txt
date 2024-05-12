@@ -23,7 +23,7 @@ target_link_libraries(
   ${PROJECT_NAME}
   PRIVATE minimal-cmake::game-of-life
           minimal-cmake::dynamic-array
-          minimal-cmake::mc-draw
+          minimal-cmake::draw
           SDL2::SDL2
           SDL2::SDL2main
           bgfx::bgfx
