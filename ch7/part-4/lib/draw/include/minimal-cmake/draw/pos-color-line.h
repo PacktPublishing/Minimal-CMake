@@ -25,10 +25,10 @@ MC_DRAW_EXPORT void pos_color_lines_set_render_context(
   pos_color_lines_t* pos_color_lines, bgfx_view_id_t view_id,
   bgfx_program_handle_t program_handle,
   const bgfx_vertex_layout_t* vertex_layout,
-  const bgfx_uniform_handle_t color_uniform);
+  bgfx_uniform_handle_t color_uniform);
 
 MC_DRAW_EXPORT void pos_color_lines_add_line(
-  pos_color_lines_t* pos_color_lines, const pos_color_line_t line);
+  pos_color_lines_t* pos_color_lines, pos_color_line_t line);
 MC_DRAW_EXPORT void pos_color_lines_submit(pos_color_lines_t* pos_color_lines);
 
 #ifdef __cplusplus
