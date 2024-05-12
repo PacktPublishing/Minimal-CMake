@@ -1,3 +1,3 @@
-# ch7/part-1
+# ch7/part-4
 
-(todo).
+Show how to deal with public nested dependencies when installing.
