@@ -6,29 +6,17 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_PREFIX_PATH": 
-          "${sourceDir}/../third-party/install;${sourceDir}/../lib/array/install"
+        "CMAKE_PREFIX_PATH": "${sourceDir}/../third-party/install;${sourceDir}/../lib/array/install;${sourceDir}/../lib/gol/install"
       }
     },
     {
-      "name": "shared",
+      "name": "multi-ninja",
       "inherits": "base",
-      "hidden": true,
-      "cacheVariables": {
-        "MC_GOL_SHARED": "ON"
-      }
+      "generator": "Ninja Multi-Config"
     },
     {
-      "name": "static",
+      "name": "vs",
       "inherits": "base",
-      "hidden": true,
-      "cacheVariables": {
-        "MC_GOL_SHARED": "OFF"
-      }
-    },
-    {
-      "name": "windows",
-      "hidden": true,
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -37,76 +25,33 @@
       "generator": "Visual Studio 17 2022"
     },
     {
-      "name": "macos",
-      "hidden": true,
+      "name": "xcode",
+      "inherits": "base",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Darwin"
       },
       "generator": "Xcode"
-    },
-    {
-      "name": "shared-ninja",
-      "inherits": "shared",
-      "generator": "Ninja Multi-Config"
-    },
-    {
-      "name": "static-ninja",
-      "inherits": "static",
-      "generator": "Ninja Multi-Config"
-    },
-    {
-      "name": "shared-visual-studio",
-      "inherits": ["shared", "windows"]
-    },
-    {
-      "name": "static-visual-studio",
-      "inherits": ["shared", "windows"]
-    },
-    {
-      "name": "static-xcode",
-      "inherits": ["static", "macos"]
-    },
-    {
-      "name": "shared-xcode",
-      "inherits": ["shared", "macos"]
     }
   ],
   "buildPresets": [
     {
-      "name": "shared",
-      "configurePreset": "shared-ninja"
-    },
-    {
-      "name": "static",
-      "configurePreset": "static-ninja"
+      "name": "default",
+      "configurePreset": "multi-ninja"
     }
   ],
   "workflowPresets": [
     {
-      "name": "static",
+      "name": "default",
       "steps": [
         {
           "type": "configure",
-          "name": "static-ninja"
+          "name": "multi-ninja"
         },
         {
           "type": "build",
-          "name": "static"
-        }
-      ]
-    },
-    {
-      "name": "shared",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "shared-ninja"
-        },
-        {
-          "type": "build",
-          "name": "shared"
+          "name": "default"
         }
       ]
     }

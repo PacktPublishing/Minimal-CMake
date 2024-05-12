@@ -2,21 +2,49 @@
   "version": 8,
   "configurePresets": [
     {
-      "name": "default",
-      "binaryDir": "${sourceDir}/build",
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
       "installDir": "${sourceDir}/install",
-      "generator": "Ninja Multi-Config"
+      "generator": "Ninja Multi-Config",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "${sourceDir}/../array/install"
+      }
+    },
+    {
+      "name": "shared-ninja",
+      "inherits": "base",
+      "cacheVariables": {
+        "MC_GOL_SHARED": "ON"
+      }
+    },
+    {
+      "name": "static-ninja",
+      "inherits": "base",
+      "cacheVariables": {
+        "MC_GOL_SHARED": "OFF"
+      }
     }
   ],
   "buildPresets": [
     {
-      "name": "debug",
-      "configurePreset": "default",
+      "name": "shared-debug",
+      "configurePreset": "shared-ninja",
       "configuration": "Debug"
     },
     {
-      "name": "release",
-      "configurePreset": "default",
+      "name": "static-debug",
+      "configurePreset": "static-ninja",
+      "configuration": "Debug"
+    },
+    {
+      "name": "shared-release",
+      "configurePreset": "shared-ninja",
+      "configuration": "Release"
+    },
+    {
+      "name": "static-release",
+      "configurePreset": "static-ninja",
       "configuration": "Release"
     }
   ]
