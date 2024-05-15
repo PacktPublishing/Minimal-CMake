@@ -6,6 +6,7 @@
 #include <minimal-cmake-gol/gol.h>
 #include <minimal-cmake/array.h>
 #include <minimal-cmake/draw/pos-color-line.h>
+#include <minimal-cmake/draw/pos-color-quad.h>
 #include <minimal-cmake/draw/pos-color-vertex.h>
 
 // system includes
@@ -14,20 +15,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct color4f_t {
-  float r;
-  float g;
-  float b;
-  float a;
-} color4f_t;
-
-static pos_color_vertex_t quad_vertices[] = {
-  {-0.5f, -0.5f, 0.0f, 0xffffffff},
-  {0.5f, -0.5f, 0.0f, 0xffffffff},
-  {-0.5f, 0.5f, 0.0f, 0xffffffff},
-  {0.5f, 0.5f, 0.0f, 0xffffffff}};
-static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
 
 as_point2f screen_from_world(
   const as_point2f world_position, const as_mat44f* orthographic_projection,
@@ -225,12 +212,6 @@ int main(int argc, char** argv) {
   const bgfx_vertex_layout_t pos_col_vert_layout =
     create_pos_col_vert_layout(renderer_type);
 
-  const bgfx_vertex_buffer_handle_t vertex_buffer = bgfx_create_vertex_buffer(
-    bgfx_make_ref(quad_vertices, sizeof(quad_vertices)), &pos_col_vert_layout,
-    0);
-  const bgfx_index_buffer_handle_t index_buffer = bgfx_create_index_buffer(
-    bgfx_make_ref(quad_indices, sizeof(quad_indices)), 0);
-
   char* vs_shader = read_file("shader/build/vs_vertcol.bin");
   char* fs_shader = read_file("shader/build/fs_vertcol.bin");
 
@@ -250,6 +231,10 @@ int main(int argc, char** argv) {
   pos_color_lines_t* pos_color_lines = create_pos_color_lines();
   pos_color_lines_set_render_context(
     pos_color_lines, 0, program, &pos_col_vert_layout, u_color);
+
+  pos_color_quads_t* pos_color_quads =
+    create_pos_color_quads(&pos_col_vert_layout);
+  pos_color_quads_set_render_context(pos_color_quads, 0, program, u_color);
 
   bool simulating = true;
   as_point2i mouse_now = {};
@@ -382,17 +367,11 @@ int main(int argc, char** argv) {
           mc_gol_board_cell(board, x, y)
             ? (color4f_t){.r = 0.95f, .g = 0.71f, .b = 0.41f, .a = 1.0f}
             : (color4f_t){.r = 0.33f, .g = 0.48f, .b = 0.67f, .a = 1.0f};
-        const as_mat44f transform = as_mat44f_transpose_v(
-          as_mat44f_translation_from_vec3f(as_vec3f_add_vec3f(
-            board_top_left_cell_center,
-            (as_vec3f){.x = x, .y = -y, .z = 0.5f})));
-        bgfx_set_transform(transform.elem, 1);
-        bgfx_set_vertex_buffer(0, vertex_buffer, 0, 4);
-        bgfx_set_index_buffer(index_buffer, 0, 6);
-        const float color[4] = {
-          cell_color.r, cell_color.g, cell_color.b, cell_color.a};
-        bgfx_set_uniform(u_color, color, 1);
-        bgfx_submit(0, program, 0, BGFX_DISCARD_ALL);
+        const as_vec3f position = as_vec3f_add_vec3f(
+          board_top_left_cell_center, (as_vec3f){.x = x, .y = -y, .z = 0.5f});
+        pos_color_quads_add_quad(
+          pos_color_quads,
+          (pos_color_quad_t){.position = position, .color = cell_color});
       }
     }
 
@@ -402,17 +381,17 @@ int main(int argc, char** argv) {
     }
 
     pos_color_lines_submit(pos_color_lines);
+    pos_color_quads_submit(pos_color_quads);
 
     bgfx_touch(0);
     bgfx_frame(false);
   }
 
   destroy_pos_color_lines(pos_color_lines);
+  destroy_pos_color_quads(pos_color_quads);
 
   bgfx_destroy_uniform(u_color);
   bgfx_destroy_program(program);
-  bgfx_destroy_index_buffer(index_buffer);
-  bgfx_destroy_vertex_buffer(vertex_buffer);
 
   mc_gol_destroy_board(board);
 

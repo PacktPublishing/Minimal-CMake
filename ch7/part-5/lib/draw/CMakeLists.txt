@@ -16,7 +16,8 @@ endif()
 
 add_library(draw ${MC_DRAW_LIB_TYPE})
 
-target_sources(draw PRIVATE src/pos-color-vertex.c src/pos-color-line.c)
+target_sources(draw PRIVATE src/pos-color-vertex.c src/pos-color-line.c
+                            src/pos-color-quad.c)
 target_include_directories(
   draw
   PUBLIC
