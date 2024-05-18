@@ -26,8 +26,7 @@ target_link_libraries(
           minimal-cmake::draw
           SDL2::SDL2
           SDL2::SDL2main
-          bgfx::bgfx
-          as-c-math)
+          bgfx::bgfx)
 
 set_target_properties(
   ${PROJECT_NAME}
