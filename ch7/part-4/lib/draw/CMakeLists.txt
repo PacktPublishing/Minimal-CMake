@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.28)
 
 project(mc-draw LANGUAGES C)
 
+include(FetchContent)
 include(GNUInstallDirs)
+include(GenerateExportHeader)
+include(CMakePackageConfigHelpers)
 
 find_package(bgfx CONFIG REQUIRED)
 find_package(mc-array CONFIG REQUIRED)
@@ -24,7 +27,6 @@ target_include_directories(
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_compile_features(draw PRIVATE c_std_17)
 
-include(FetchContent)
 FetchContent_Declare(
   as-c-math
   GIT_REPOSITORY https://github.com/pr0g/as-c-math.git
@@ -37,7 +39,6 @@ set(AS_MATH_ENABLE_COVERAGE
     CACHE INTERNAL "")
 FetchContent_MakeAvailable(as-c-math)
 
-include(GenerateExportHeader)
 generate_export_header(draw BASE_NAME mc_draw)
 set_target_properties(
   draw
@@ -71,7 +72,8 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/minimal-cmake/
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mc_draw_export.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-configure_file(${PROJECT_NAME}-config.cmake.in ${PROJECT_NAME}-config.cmake
-               @ONLY)
+configure_package_config_file(
+  ${PROJECT_NAME}-config.cmake.in ${PROJECT_NAME}-config.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
