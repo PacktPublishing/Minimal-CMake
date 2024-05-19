@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.28)
 project(
   mc-draw
   LANGUAGES C
-  VERSION 1.2.3)
+  VERSION 3.5.4)
 
 include(FetchContent)
 include(GNUInstallDirs)
