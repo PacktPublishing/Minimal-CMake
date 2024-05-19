@@ -52,7 +52,7 @@ if(WIN32)
       $<TARGET_FILE:minimal-cmake::game-of-life>
       $<TARGET_FILE_DIR:${PROJECT_NAME}>
     COMMAND
-      ${CMAKE_COMMAND} -E copy_if_different
-      $<TARGET_FILE:minimal-cmake::draw> $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:minimal-cmake::draw>
+      $<TARGET_FILE_DIR:${PROJECT_NAME}>
     VERBATIM)
 endif()
