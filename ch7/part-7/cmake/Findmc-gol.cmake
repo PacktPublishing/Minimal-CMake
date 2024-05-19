@@ -6,7 +6,7 @@ find_path(mc-gol_INCLUDE_DIR minimal-cmake-gol PATHS ${mc-gol_PATH}/include)
 # second parameter must match library (target) name
 find_library(
   mc-gol_LIBRARY
-  NAMES game-of-life
+  NAMES game-of-life game-of-lifed
   PATHS ${mc-gol_PATH}/lib)
 
 include(FindPackageHandleStandardArgs)
