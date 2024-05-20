@@ -15,9 +15,9 @@ typedef struct pos_color_lines_t {
   bgfx_uniform_handle_t color_uniform;
 } pos_color_lines_t;
 
-pos_color_lines_t* create_pos_color_lines() {
+pos_color_lines_t* create_pos_color_lines(void) {
   pos_color_lines_t* pos_color_lines = malloc(sizeof(*pos_color_lines));
-  *pos_color_lines = (pos_color_lines_t){};
+  *pos_color_lines = (pos_color_lines_t){0};
   pos_color_lines->state = BGFX_STATE_DEFAULT | BGFX_STATE_BLEND_ALPHA
                          | BGFX_STATE_PT_LINES | BGFX_STATE_LINEAA;
   return pos_color_lines;

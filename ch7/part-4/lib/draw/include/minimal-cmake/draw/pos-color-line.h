@@ -18,7 +18,7 @@ typedef struct pos_color_line_t {
 
 typedef struct pos_color_lines_t pos_color_lines_t;
 
-MC_DRAW_EXPORT pos_color_lines_t* create_pos_color_lines();
+MC_DRAW_EXPORT pos_color_lines_t* create_pos_color_lines(void);
 MC_DRAW_EXPORT void destroy_pos_color_lines(pos_color_lines_t* pos_color_lines);
 
 MC_DRAW_EXPORT void pos_color_lines_set_render_context(

@@ -41,7 +41,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}-${PROJECT_VERSION}>"
 )
 target_compile_features(vertex PRIVATE c_std_17)
-generate_export_header(vertex BASE_NAME mc_draw)
+generate_export_header(vertex BASE_NAME mc_vertex)
 set_target_properties(
   vertex
   PROPERTIES C_VISIBILITY_PRESET hidden
@@ -65,7 +65,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}-${PROJECT_VERSION}>"
 )
 target_compile_features(line PRIVATE c_std_17)
-generate_export_header(line BASE_NAME mc_draw)
+generate_export_header(line BASE_NAME mc_line)
 set_target_properties(
   line
   PROPERTIES C_VISIBILITY_PRESET hidden
@@ -87,7 +87,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}-${PROJECT_VERSION}>"
 )
 target_compile_features(quad PRIVATE c_std_17)
-generate_export_header(quad BASE_NAME mc_draw)
+generate_export_header(quad BASE_NAME mc_quad)
 set_target_properties(
   quad
   PROPERTIES C_VISIBILITY_PRESET hidden
@@ -151,7 +151,9 @@ install(
     ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}-${PROJECT_VERSION}/minimal-cmake
 )
 install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/mc_draw_export.h
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/mc_line_export.h
+  ${CMAKE_CURRENT_BINARY_DIR}/mc_vertex_export.h
+  ${CMAKE_CURRENT_BINARY_DIR}/mc_quad_export.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}-${PROJECT_VERSION})
 
 configure_package_config_file(

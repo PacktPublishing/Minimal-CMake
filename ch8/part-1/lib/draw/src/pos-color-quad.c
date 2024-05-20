@@ -3,7 +3,6 @@
 #include "minimal-cmake/draw/pos-color-vertex.h"
 
 #include <as-ops.h>
-#include <bgfx/c99/bgfx.h>
 #include <minimal-cmake/array.h>
 
 #include <string.h>
@@ -29,7 +28,7 @@ static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
 pos_color_quads_t* create_pos_color_quads(
   const bgfx_vertex_layout_t* vertex_layout) {
   pos_color_quads_t* pos_color_quads = malloc(sizeof(*pos_color_quads));
-  *pos_color_quads = (pos_color_quads_t){};
+  *pos_color_quads = (pos_color_quads_t){0};
   pos_color_quads->vertex_buffer = bgfx_create_vertex_buffer(
     bgfx_make_ref(quad_vertices, sizeof(quad_vertices)), vertex_layout, 0);
   pos_color_quads->index_buffer = bgfx_create_index_buffer(
