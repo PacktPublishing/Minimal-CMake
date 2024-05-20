@@ -137,10 +137,11 @@ install(
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/minimal-cmake/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/minimal-cmake)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mc_line_export.h
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/mc_line_export.h
         ${CMAKE_CURRENT_BINARY_DIR}/mc_vertex_export.h
         ${CMAKE_CURRENT_BINARY_DIR}/mc_quad_export.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 configure_package_config_file(
   ${PROJECT_NAME}-config.cmake.in ${PROJECT_NAME}-config.cmake
