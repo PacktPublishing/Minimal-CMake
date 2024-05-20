@@ -21,12 +21,8 @@ target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
 
 target_link_libraries(
   ${PROJECT_NAME}
-  PRIVATE minimal-cmake::game-of-life
-          minimal-cmake::dynamic-array
-          minimal-cmake::draw
-          SDL2::SDL2
-          SDL2::SDL2main
-          bgfx::bgfx)
+  PRIVATE minimal-cmake::game-of-life minimal-cmake::dynamic-array
+          minimal-cmake::draw SDL2::SDL2 SDL2::SDL2main bgfx::bgfx)
 
 set_target_properties(
   ${PROJECT_NAME}
@@ -41,11 +37,8 @@ if(WIN32)
     TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND
-      ${CMAKE_COMMAND} -E copy_if_different 
-        $<TARGET_FILE:SDL2::SDL2>
-        $<TARGET_FILE:bgfx::bgfx>
-        $<TARGET_FILE:minimal-cmake::game-of-life>
-        $<TARGET_FILE:minimal-cmake::draw> 
-      $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL2::SDL2>
+      $<TARGET_FILE:bgfx::bgfx> $<TARGET_FILE:minimal-cmake::game-of-life>
+      $<TARGET_FILE:minimal-cmake::draw> $<TARGET_FILE_DIR:${PROJECT_NAME}>
     VERBATIM)
 endif()

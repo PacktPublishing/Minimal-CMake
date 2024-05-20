@@ -43,13 +43,9 @@ if(WIN32)
     TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND
-      ${CMAKE_COMMAND} -E copy_if_different 
-        $<TARGET_FILE:SDL2::SDL2>
-        $<TARGET_FILE:bgfx::bgfx>
-        $<TARGET_FILE:minimal-cmake::game-of-life>
-        $<TARGET_FILE:minimal-cmake::vertex> 
-        $<TARGET_FILE:minimal-cmake::quad> 
-        $<TARGET_FILE:minimal-cmake::line>
-      $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL2::SDL2>
+      $<TARGET_FILE:bgfx::bgfx> $<TARGET_FILE:minimal-cmake::game-of-life>
+      $<TARGET_FILE:minimal-cmake::vertex> $<TARGET_FILE:minimal-cmake::quad>
+      $<TARGET_FILE:minimal-cmake::line> $<TARGET_FILE_DIR:${PROJECT_NAME}>
     VERBATIM)
 endif()
