@@ -38,21 +38,18 @@ set_target_properties(
 )
 
 if(WIN32)
-  # copy SDL2.dll, bgfx.dll, and game-of-life.dll to the same folder as the
-  # executable
+  # copy dlls to the same folder as the executable
   add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL2::SDL2>
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:bgfx::bgfx>
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
     COMMAND
-      ${CMAKE_COMMAND} -E copy_if_different
-      $<TARGET_FILE:minimal-cmake::game-of-life>
-      $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    COMMAND
-      ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:minimal-cmake::draw>
+      ${CMAKE_COMMAND} -E copy_if_different 
+        $<TARGET_FILE:SDL2::SDL2>
+        $<TARGET_FILE:bgfx::bgfx>
+        $<TARGET_FILE:minimal-cmake::game-of-life>
+        $<TARGET_FILE:minimal-cmake::vertex> 
+        $<TARGET_FILE:minimal-cmake::quad> 
+        $<TARGET_FILE:minimal-cmake::line>
       $<TARGET_FILE_DIR:${PROJECT_NAME}>
     VERBATIM)
 endif()
