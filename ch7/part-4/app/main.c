@@ -23,10 +23,10 @@ typedef struct color4f_t {
 } color4f_t;
 
 static pos_color_vertex_t quad_vertices[] = {
-  {(as_vec3f){-0.5f, -0.5f, 0.0f}, 0xffffffff},
-  {(as_vec3f){0.5f, -0.5f, 0.0f}, 0xffffffff},
-  {(as_vec3f){-0.5f, 0.5f, 0.0f}, 0xffffffff},
-  {(as_vec3f){0.5f, 0.5f, 0.0f}, 0xffffffff}};
+  {.pos = {-0.5f, -0.5f, 0.0f}, .abgr = 0xffffffff},
+  {.pos = {0.5f, -0.5f, 0.0f}, .abgr = 0xffffffff},
+  {.pos = {-0.5f, 0.5f, 0.0f}, .abgr = 0xffffffff},
+  {.pos = {0.5f, 0.5f, 0.0f}, .abgr = 0xffffffff}};
 static const uint16_t quad_indices[] = {0, 1, 2, 1, 3, 2};
 
 as_point2f screen_from_world(
