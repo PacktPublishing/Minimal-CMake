@@ -5,7 +5,7 @@ target_sources(${PROJECT_NAME} PRIVATE main.c array/array.c)
 target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
 
 # demonstrate how to add the current path to the module path
-# LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+# list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 include(CMakeHelpers.cmake)
 
