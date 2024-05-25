@@ -12,7 +12,7 @@ FetchContent_Declare(
 FetchContent_Declare(
   as-c-math
   GIT_REPOSITORY https://github.com/pr0g/as-c-math.git
-  GIT_TAG 108b653154b7e55832d4dc1386feb91b3db88880)
+  GIT_TAG d3cf98cf259e85bad0975b8c014598923a37e93e)
 FetchContent_MakeAvailable(timer_lib as-c-math)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE timer_lib as-c-math)
