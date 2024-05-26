@@ -6,16 +6,18 @@ target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
 
 # no FetchContent
 
-# pick sensible defaults for library architecture
+# pick sensible defaults for library architecture for main platforms
 if(APPLE)
-  set(MC_ARCH
-      "arm64"
-      CACHE STRING "Architecutre being compiled for")
+  set(MC_DEFAULT_ARCH arm64)
+elseif(LINUX OR WIN32)
+  set(MC_DEFAULT_ARCH x86_64)
 else()
-  set(MC_ARCH
-      "x86_64"
-      CACHE STRING "Architecutre being compiled for")
+  message(FATAL_ERROR "Unsupported platform")
 endif()
+# pass through the default, and allow the user to modify the cache variable
+set(MC_ARCH
+    ${MC_DEFAULT_ARCH}
+    CACHE STRING "Architecutre being compiled for")
 # set supported values to be displayed in cmake-gui
 set_property(CACHE MC_ARCH PROPERTY STRINGS x86_64 arm64)
 
