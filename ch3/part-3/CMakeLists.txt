@@ -6,7 +6,17 @@ target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
 
 # no FetchContent
 
-set(MC_ARCH "x86_64" CACHE STRING "Architecutre being compiled for")
+# pick sensible defaults for library architecture
+if(APPLE)
+  set(MC_ARCH
+      "arm64"
+      CACHE STRING "Architecutre being compiled for")
+else()
+  set(MC_ARCH
+      "x86_64"
+      CACHE STRING "Architecutre being compiled for")
+endif()
+# set supported values to be displayed in cmake-gui
 set_property(CACHE MC_ARCH PROPERTY STRINGS x86_64 arm64)
 
 target_include_directories(
@@ -15,7 +25,7 @@ target_include_directories(
 target_link_directories(
   ${PROJECT_NAME}
   PRIVATE
-  $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/lib/macos>
+  $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/lib/macos/${MC_ARCH}>
   $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/lib/win/${MC_ARCH}>
   $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/third-party/timer-lib/lib/linux/${MC_ARCH}>
 )
