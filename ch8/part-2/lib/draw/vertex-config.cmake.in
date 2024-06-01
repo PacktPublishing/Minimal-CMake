@@ -1,0 +1,3 @@
+include(CMakeFindDependencyMacro)
+find_dependency(as-c-math)
+include(${CMAKE_CURRENT_LIST_DIR}/vertex-targets.cmake) 
