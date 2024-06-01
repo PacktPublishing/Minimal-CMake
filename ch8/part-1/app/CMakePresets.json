@@ -6,7 +6,7 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_PREFIX_PATH": "${sourceDir}/../third-party/install;${sourceDir}/../lib/array/install;${sourceDir}/../lib/gol/install;${sourceDir}/../lib/draw/install"
+        "CMAKE_PREFIX_PATH": "${sourceDir}/../third-party/install"
       }
     },
     {

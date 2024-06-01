@@ -56,3 +56,35 @@ ExternalProject_Add(
              -DBGFX_LIBRARY_TYPE=SHARED -DBGFX_BUILD_TOOLS=OFF
              -DBGFX_BUILD_EXAMPLES=OFF
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
+
+ExternalProject_Add(
+  mc-array
+  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  GIT_TAG 18535c9d140e828895c57dbb39b97a3307f846ab
+  SOURCE_SUBDIR ch8/part-1/lib/array
+  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/mc-array-build/${build_type_dir}
+  INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
+  CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
+
+ExternalProject_Add(
+  mc-draw
+  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  GIT_TAG 18535c9d140e828895c57dbb39b97a3307f846ab
+  DEPENDS mc-array bgfx
+  SOURCE_SUBDIR ch8/part-1/lib/draw
+  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/mc-draw-build/${build_type_dir}
+  INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
+  CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
+
+ExternalProject_Add(
+  mc-gol
+  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
+  GIT_TAG 18535c9d140e828895c57dbb39b97a3307f846ab
+  DEPENDS mc-array
+  SOURCE_SUBDIR ch8/part-1/lib/gol
+  BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/mc-gol-build/${build_type_dir}
+  INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
+  CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+  CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
