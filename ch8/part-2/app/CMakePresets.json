@@ -10,16 +10,30 @@
       }
     },
     {
-      "name": "multi-ninja",
-      "inherits": "base"
-    },
-    {
-      "name": "multi-ninja-super",
-      "inherits": "multi-ninja",
-      "generator": "Ninja Multi-Config",
+      "name": "super",
+      "hidden": true,
       "cacheVariables": {
         "SUPERBUILD": "ON"
       }
+    },
+    {
+      "name": "ninja",
+      "generator": "Ninja",
+      "inherits": "base"
+    },
+    {
+      "name": "multi-ninja",
+      "generator": "Ninja Multi-Config",
+      "inherits": "base"
+    },
+    {
+      "name": "ninja-super",
+      "inherits": ["ninja", "super"]
+    },
+    {
+      "name": "multi-ninja-super",
+      "inherits": ["multi-ninja", "super"]
+
     },
     {
       "name": "vs",
