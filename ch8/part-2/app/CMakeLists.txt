@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.28)
 project(minimal-cmake_game-of-life_window LANGUAGES C)
 
+option(SUPERBUILD "Perform a superbuild (or not)" OFF)
+
+if(SUPERBUILD)
+  add_subdirectory(third-party)
+  include(cmake/superbuild.cmake)
+  return()
+endif()
+
 find_package(
   SDL2
   CONFIG

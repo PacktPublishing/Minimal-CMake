@@ -6,13 +6,20 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_PREFIX_PATH": "${sourceDir}/../third-party/install"
+        "CMAKE_PREFIX_PATH": "${sourceDir}/third-party/install"
       }
     },
     {
       "name": "multi-ninja",
-      "inherits": "base",
-      "generator": "Ninja Multi-Config"
+      "inherits": "base"
+    },
+    {
+      "name": "multi-ninja-super",
+      "inherits": "multi-ninja",
+      "generator": "Ninja Multi-Config",
+      "cacheVariables": {
+        "SUPERBUILD": "ON"
+      }
     },
     {
       "name": "vs",
