@@ -1,0 +1,80 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "${sourceDir}/third-party/install"
+      }
+    },
+    {
+      "name": "super",
+      "hidden": true,
+      "cacheVariables": {
+        "SUPERBUILD": "ON"
+      }
+    },
+    {
+      "name": "ninja",
+      "generator": "Ninja",
+      "inherits": "base"
+    },
+    {
+      "name": "multi-ninja",
+      "generator": "Ninja Multi-Config",
+      "inherits": "base"
+    },
+    {
+      "name": "ninja-super",
+      "inherits": ["ninja", "super"]
+    },
+    {
+      "name": "multi-ninja-super",
+      "inherits": ["multi-ninja", "super"]
+
+    },
+    {
+      "name": "vs",
+      "inherits": "base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 17 2022"
+    },
+    {
+      "name": "xcode",
+      "inherits": "base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "generator": "Xcode"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "multi-ninja"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "default",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja"
+        },
+        {
+          "type": "build",
+          "name": "default"
+        }
+      ]
+    }
+  ]
+}
