@@ -46,6 +46,24 @@ set_target_properties(
 )
 
 if(WIN32)
+  set(COMPILE_SHADER_SCRIPT
+      ${CMAKE_SOURCE_DIR}/cmake/compile-shader-windows.cmake)
+elseif(LINUX)
+  set(COMPILE_SHADER_SCRIPT
+      ${CMAKE_SOURCE_DIR}/cmake/compile-shader-linux.cmake)
+elseif(APPLE)
+  set(COMPILE_SHADER_SCRIPT
+      ${CMAKE_SOURCE_DIR}/cmake/compile-shader-macos.cmake)
+endif()
+
+add_custom_command(
+  TARGET ${PROJECT_NAME}
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -P ${COMPILE_SHADER_SCRIPT}
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  VERBATIM)
+
+if(WIN32)
   # copy dlls to the same folder as the executable
   add_custom_command(
     TARGET ${PROJECT_NAME}
