@@ -1,3 +1,3 @@
-# ch8/part-3
+# ch8/part-4
 
-Show an example of building shaders using `add_custom_command`.
+Show an example of installing the application.
