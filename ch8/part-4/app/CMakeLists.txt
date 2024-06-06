@@ -41,9 +41,9 @@ target_link_libraries(
 set_target_properties(
   ${PROJECT_NAME}
   PROPERTIES
-    BUILD_RPATH
+    INSTALL_RPATH
     $<IF:$<PLATFORM_ID:Linux>,$ORIGIN,$<IF:$<PLATFORM_ID:Darwin>,@loader_path,>>
-)
+    BUILD_WITH_INSTALL_RPATH TRUE)
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT
@@ -63,15 +63,24 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   VERBATIM)
 
-if(WIN32)
-  # copy dlls to the same folder as the executable
-  add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMAND
-      ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL2::SDL2>
-      $<TARGET_FILE:bgfx::bgfx> $<TARGET_FILE:minimal-cmake::game-of-life>
-      $<TARGET_FILE:minimal-cmake::vertex> $<TARGET_FILE:minimal-cmake::quad>
-      $<TARGET_FILE:minimal-cmake::line> $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    VERBATIM)
-endif()
+# copy dynamic libraries to the same folder as the executable
+add_custom_command(
+  TARGET ${PROJECT_NAME}
+  POST_BUILD
+  COMMAND
+    ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:SDL2::SDL2>
+    $<TARGET_FILE:bgfx::bgfx> $<TARGET_FILE:minimal-cmake::game-of-life>
+    $<TARGET_FILE:minimal-cmake::vertex> $<TARGET_FILE:minimal-cmake::quad>
+    $<TARGET_FILE:minimal-cmake::line> $<TARGET_FILE_DIR:${PROJECT_NAME}>
+  VERBATIM)
+
+install(TARGETS ${PROJECT_NAME})
+install(
+  FILES $<TARGET_FILE:SDL2::SDL2>
+        $<TARGET_FILE:bgfx::bgfx>
+        $<TARGET_FILE:minimal-cmake::game-of-life>
+        $<TARGET_FILE:minimal-cmake::vertex>
+        $<TARGET_FILE:minimal-cmake::quad>
+        $<TARGET_FILE:minimal-cmake::line>
+  DESTINATION bin)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build DESTINATION bin/shader)

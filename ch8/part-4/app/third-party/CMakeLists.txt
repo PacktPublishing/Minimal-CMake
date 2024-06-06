@@ -87,6 +87,7 @@ ExternalProject_Add(
   BINARY_DIR ${PREFIX_DIR}/mc-draw/build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DMC_DRAW_SHARED=ON
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
 ExternalProject_Add(
@@ -99,4 +100,5 @@ ExternalProject_Add(
   BINARY_DIR ${PREFIX_DIR}/mc-gol/build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DMC_GOL_SHARED=ON
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
