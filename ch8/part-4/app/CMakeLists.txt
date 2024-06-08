@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.28)
 project(minimal-cmake_game-of-life_window LANGUAGES C)
 
+include(GNUInstallDirs)
+
 option(SUPERBUILD "Perform a superbuild (or not)" OFF)
 
 if(SUPERBUILD)
@@ -74,7 +76,7 @@ add_custom_command(
     $<TARGET_FILE:minimal-cmake::line> $<TARGET_FILE_DIR:${PROJECT_NAME}>
   VERBATIM)
 
-install(TARGETS ${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(
   FILES $<TARGET_FILE:SDL2::SDL2>
         $<TARGET_FILE:bgfx::bgfx>
@@ -82,5 +84,6 @@ install(
         $<TARGET_FILE:minimal-cmake::vertex>
         $<TARGET_FILE:minimal-cmake::quad>
         $<TARGET_FILE:minimal-cmake::line>
-  DESTINATION bin)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build DESTINATION bin/shader)
+  DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
+        DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
