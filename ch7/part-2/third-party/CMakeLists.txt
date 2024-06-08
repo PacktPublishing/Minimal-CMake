@@ -40,6 +40,7 @@ ExternalProject_Add(
   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bgfxt-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DBGFX_BUILD_EXAMPLES=OFF
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
 # compile bgfx dynamically for use by our application
