@@ -36,20 +36,18 @@ ExternalProject_Add(
   GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
   GIT_TAG v1.127.8710-464
   GIT_SHALLOW TRUE
-  # reduce path length of binary_dir to avoid max path length on windows
   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bgfxt-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DBGFX_BUILD_EXAMPLES=OFF
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
+ExternalProject_Get_Property(bgfxt SOURCE_DIR)
 # compile bgfx dynamically for use by our application
 ExternalProject_Add(
   bgfx
-  GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
-  GIT_TAG v1.127.8710-464
-  GIT_SHALLOW TRUE
-  DEPENDS bgfxt # ensure bgfx builds and installs after bgfxt
-  # reduce path length of binary_dir to avoid max path length on windows
+  URL "file://${SOURCE_DIR}"
+  DEPENDS bgfxt
   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bgfx-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -59,9 +57,7 @@ ExternalProject_Add(
 
 ExternalProject_Add(
   mc-array
-  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG 18535c9d140e828895c57dbb39b97a3307f846ab
-  SOURCE_SUBDIR ch8/part-1/lib/array
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../lib/array
   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/mc-array-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -69,10 +65,8 @@ ExternalProject_Add(
 
 ExternalProject_Add(
   mc-draw
-  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG 18535c9d140e828895c57dbb39b97a3307f846ab
   DEPENDS mc-array bgfx
-  SOURCE_SUBDIR ch8/part-1/lib/draw
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../lib/draw
   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/mc-draw-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -80,10 +74,8 @@ ExternalProject_Add(
 
 ExternalProject_Add(
   mc-gol
-  GIT_REPOSITORY https://github.com/PacktPublishing/Minimal-CMake.git
-  GIT_TAG 18535c9d140e828895c57dbb39b97a3307f846ab
   DEPENDS mc-array
-  SOURCE_SUBDIR ch8/part-1/lib/gol
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../lib/gol
   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/mc-gol-build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
