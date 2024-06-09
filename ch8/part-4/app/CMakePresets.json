@@ -60,6 +60,11 @@
     {
       "name": "default",
       "configurePreset": "multi-ninja"
+    },
+    {
+      "name": "multi-ninja-super",
+      "configurePreset": "multi-ninja-super",
+      "configuration": "Release"
     }
   ],
   "workflowPresets": [
@@ -73,6 +78,19 @@
         {
           "type": "build",
           "name": "default"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
         }
       ]
     }
