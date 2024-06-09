@@ -33,7 +33,6 @@
     {
       "name": "multi-ninja-super",
       "inherits": ["multi-ninja", "super"]
-
     },
     {
       "name": "vs",
