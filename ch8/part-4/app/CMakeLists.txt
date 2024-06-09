@@ -7,7 +7,6 @@ option(SUPERBUILD "Perform a superbuild (or not)" OFF)
 
 if(SUPERBUILD)
   add_subdirectory(third-party)
-  include(cmake/superbuild.cmake)
   return()
 endif()
 

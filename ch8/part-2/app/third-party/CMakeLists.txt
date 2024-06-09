@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-if(NOT SUPERBUILD)
-  project(third-party)
-endif()
+project(third-party)
 
 include(ExternalProject)
 
@@ -21,7 +19,7 @@ if(NOT isMultiConfig)
   set(build_type_arg -DCMAKE_BUILD_TYPE=$<CONFIG>)
 endif()
 
-if(SUPERBUILD)
+if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
   set(PREFIX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
 else()
   set(PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR})
@@ -93,3 +91,14 @@ ExternalProject_Add(
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
+
+if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
+  ExternalProject_Add(
+    ${CMAKE_PROJECT_NAME}_superbuild
+    DEPENDS SDL2 bgfx mc-gol mc-draw
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}
+    BINARY_DIR ${CMAKE_BINARY_DIR}
+    CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DSUPERBUILD=OFF
+               ${build_type_arg}
+    INSTALL_COMMAND "")
+endif()
