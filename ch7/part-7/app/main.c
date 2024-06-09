@@ -214,6 +214,12 @@ int main(int argc, char** argv) {
 
   char* vs_shader = read_file("shader/build/vs_vertcol.bin");
   char* fs_shader = read_file("shader/build/fs_vertcol.bin");
+  if (!vs_shader || !fs_shader) {
+    fprintf(
+      stderr, "Shaders not found. Have you built them using "
+              "compile-shader-<platform>.sh/bat script?\n");
+    return 1;
+  }
 
   const bgfx_shader_handle_t vertex_shader =
     create_shader(vs_shader, mc_array_size(vs_shader), "vs_shader");
