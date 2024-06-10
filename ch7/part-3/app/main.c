@@ -41,15 +41,18 @@ static char* read_file(const char* filepath) {
   }
   // seek to end of file
   if (fseek(file, 0, SEEK_END) != 0) {
+    fclose(file);
     return NULL;
   }
   // find length of file
   const int64_t file_size = ftell(file);
   if (file_size == -1) {
+    fclose(file);
     return NULL;
   }
   // return to beginning of file
   if (fseek(file, 0, SEEK_SET) != 0) {
+    fclose(file);
     return NULL;
   }
   // allocate buffer to hold contents of file
@@ -58,9 +61,11 @@ static char* read_file(const char* filepath) {
   // read file
   const size_t bytes_read = fread(buffer, sizeof(char), file_size, file);
   if (bytes_read == 0) {
+    fclose(file);
     mc_array_free(buffer);
     return NULL;
   }
+  fclose(file);
   // return array buffer (remember to deallocate after)
   return buffer;
 }
