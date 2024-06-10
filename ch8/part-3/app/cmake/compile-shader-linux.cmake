@@ -6,7 +6,7 @@ else()
 endif()
 
 # cmake-format: off
-file(MAKE_DIRECTORY shader/build)
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build)
 execute_process(
   COMMAND
     third-party/install/bin/shaderc
