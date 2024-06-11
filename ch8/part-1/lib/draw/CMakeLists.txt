@@ -114,7 +114,10 @@ install(
   NAMESPACE minimal-cmake::
   FILE vertex-targets.cmake)
 
-configure_file(vertex-config.cmake.in vertex-config.cmake @ONLY)
+configure_package_config_file(
+  vertex-config.cmake.in vertex-config.cmake
+  INSTALL_DESTINATION
+    ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
 install(
   FILES "${CMAKE_CURRENT_BINARY_DIR}/vertex-config.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
