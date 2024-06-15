@@ -1,3 +1,6 @@
+get_filename_component(COMPILE_SHADER_DIR ${CMAKE_SCRIPT_MODE_FILE} DIRECTORY)
+cmake_path(GET COMPILE_SHADER_DIR PARENT_PATH COMPILE_SHADER_WORKING_DIR)
+
 option(USE_VERBOSE_SHADER_OUTPUT "" OFF)
 if(USE_VERBOSE_SHADER_OUTPUT)
   set(VERBOSE_SHADER_OUTPUT --verbose)
@@ -6,7 +9,7 @@ else()
 endif()
 
 # cmake-format: off
-file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build)
+file(MAKE_DIRECTORY ${COMPILE_SHADER_WORKING_DIR}/shader/build)
 execute_process(
   COMMAND
     third-party/install/bin/shaderc
@@ -18,7 +21,7 @@ execute_process(
     -p metal
     ${VERBOSE_SHADER_OUTPUT}
   ${QUIET_SHADER_OUTPUT}
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  WORKING_DIRECTORY ${COMPILE_SHADER_WORKING_DIR})
 execute_process(
   COMMAND
     third-party/install/bin/shaderc
@@ -30,5 +33,5 @@ execute_process(
     -p metal
     ${VERBOSE_SHADER_OUTPUT}
   ${QUIET_SHADER_OUTPUT}
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  WORKING_DIRECTORY ${COMPILE_SHADER_WORKING_DIR})
 # cmake-format: on
