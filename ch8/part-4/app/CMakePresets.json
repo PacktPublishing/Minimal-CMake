@@ -6,7 +6,9 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_PREFIX_PATH": "${sourceDir}/third-party/install"
+        "CMAKE_PREFIX_PATH": "${sourceDir}/third-party/install",
+        "MC_GOL_SHARED": "ON",
+        "MC_DRAW_SHARED": "ON"
       }
     },
     {
