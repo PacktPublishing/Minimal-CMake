@@ -92,3 +92,4 @@ install(
   DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
         DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
+install(SCRIPT cmake/launch.cmake)
