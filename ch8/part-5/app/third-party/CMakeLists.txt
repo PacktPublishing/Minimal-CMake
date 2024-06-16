@@ -4,6 +4,10 @@ project(third-party)
 
 include(ExternalProject)
 
+# options to pass through to third-party libraries
+option(MC_GOL_SHARED "Enable shared library for Game of Life" OFF)
+option(MC_DRAW_SHARED "Enable shared library for Draw" OFF)
+
 get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT isMultiConfig)
   if(NOT CMAKE_BUILD_TYPE)
@@ -80,6 +84,7 @@ ExternalProject_Add(
   BINARY_DIR ${PREFIX_DIR}/mc-draw/build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DMC_DRAW_SHARED=${MC_DRAW_SHARED}
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
 ExternalProject_Add(
@@ -90,6 +95,7 @@ ExternalProject_Add(
   BINARY_DIR ${PREFIX_DIR}/mc-gol/build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+             -DMC_GOL_SHARED=${MC_GOL_SHARED}
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
 if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)

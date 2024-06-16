@@ -105,5 +105,6 @@ if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
     SOURCE_DIR ${CMAKE_SOURCE_DIR}
     BINARY_DIR ${CMAKE_BINARY_DIR}
     CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DSUPERBUILD=OFF
-               ${build_type_arg})
+               ${build_type_arg}
+    INSTALL_COMMAND "")
 endif()

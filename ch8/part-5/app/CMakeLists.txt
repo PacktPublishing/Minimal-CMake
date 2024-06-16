@@ -4,6 +4,7 @@ project(minimal-cmake_game-of-life_window LANGUAGES C)
 include(GNUInstallDirs)
 
 option(SUPERBUILD "Perform a superbuild (or not)" OFF)
+option(USE_VERBOSE_SHADER_OUTPUT "Show output from shader compilation" OFF)
 
 if(SUPERBUILD)
   add_subdirectory(third-party)
@@ -60,7 +61,9 @@ endif()
 add_custom_command(
   TARGET ${PROJECT_NAME}
   POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -P ${COMPILE_SHADER_SCRIPT}
+  COMMAND
+    ${CMAKE_COMMAND} -D USE_VERBOSE_SHADER_OUTPUT=${USE_VERBOSE_SHADER_OUTPUT}
+    -P ${COMPILE_SHADER_SCRIPT}
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   VERBATIM)
 
