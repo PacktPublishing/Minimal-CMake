@@ -81,13 +81,14 @@ add_custom_command(
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(
-  FILES $<TARGET_FILE:SDL2::SDL2>
-        $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
-        $<TARGET_FILE:bgfx::bgfx>
-        $<TARGET_FILE:minimal-cmake::game-of-life>
-        $<TARGET_FILE:minimal-cmake::vertex>
-        $<TARGET_FILE:minimal-cmake::quad>
-        $<TARGET_FILE:minimal-cmake::line>
+  FILES
+    $<TARGET_FILE:SDL2::SDL2>
+    $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
+    $<TARGET_FILE:bgfx::bgfx>
+    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::game-of-life,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::game-of-life>>
+    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
+    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
+    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
   DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
         DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
