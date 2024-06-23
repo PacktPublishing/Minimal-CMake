@@ -28,7 +28,8 @@ install(
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/minimal-cmake/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/minimal-cmake)
 
-if(MC_ARRAY_ENABLE_TEST)
+if(MC_ARRAY_BUILD_TESTING)
+  include(CTest)
   include(FetchContent)
   FetchContent_Declare(
     unity
@@ -39,4 +40,5 @@ if(MC_ARRAY_ENABLE_TEST)
   target_sources(dynamic-array-test PRIVATE src/array.test.c)
   target_link_libraries(dynamic-array-test PRIVATE dynamic-array unity)
   target_compile_features(dynamic-array-test PRIVATE c_std_17)
+  add_test(NAME dynamic-array-test COMMAND dynamic-array-test)
 endif()

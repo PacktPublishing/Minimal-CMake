@@ -11,7 +11,7 @@
       "name": "test",
       "inherits": "default",
       "cacheVariables": {
-        "MC_ARRAY_ENABLE_TEST": "ON"
+        "MC_ARRAY_BUILD_TESTING": "ON"
       }
     }
   ],
