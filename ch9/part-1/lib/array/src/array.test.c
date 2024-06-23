@@ -60,7 +60,7 @@ void test_array_reserve_n_element_from_uninitialized(void) {
   mc_array_free(elems);
 }
 
-void test_mc_array_push_grows_by_one_initially(void) {
+void test_array_push_grows_by_one_initially(void) {
   elem_t* elems = NULL;
   mc_array_push(elems, (elem_t){.val_ = 1});
   const int size = mc_array_size(elems);
@@ -70,7 +70,7 @@ void test_mc_array_push_grows_by_one_initially(void) {
   mc_array_free(elems);
 }
 
-void test_mc_array_push_grows_exponentially(void) {
+void test_array_push_grows_exponentially(void) {
   const int growth_rate[] = {1, 2, 4, 4, 8, 8, 8, 8, 16, 16};
   elem_t* elems = NULL;
   for (int i = 0; i < 10; ++i) {
@@ -171,7 +171,7 @@ void test_array_single_element_pop(void) {
   mc_array_free(elems);
 }
 
-void test_mc_array_size_can_be_decreased_with_pop(void) {
+void test_array_size_can_be_decreased_with_pop(void) {
   elem_t* elems = NULL;
   mc_array_resize(elems, 50);
   mc_array_pop(elems);
@@ -205,8 +205,8 @@ int main(void) {
   RUN_TEST(test_zero_reserved_array_is_empty);
   RUN_TEST(test_array_reserve_one_element_from_uninitialized);
   RUN_TEST(test_array_reserve_n_element_from_uninitialized);
-  RUN_TEST(test_mc_array_push_grows_by_one_initially);
-  RUN_TEST(test_mc_array_push_grows_exponentially);
+  RUN_TEST(test_array_push_grows_by_one_initially);
+  RUN_TEST(test_array_push_grows_exponentially);
   RUN_TEST(test_array_reserved_and_not_resized);
   RUN_TEST(test_array_reserved_and_not_resized_after_initial_reserve);
   RUN_TEST(test_array_does_not_grow_after_push_with_reservation);
@@ -215,7 +215,7 @@ int main(void) {
   RUN_TEST(test_array_can_be_resized_to_increase_after_initial_resize);
   RUN_TEST(test_array_can_be_resized_to_decrease_after_initial_resize);
   RUN_TEST(test_array_single_element_pop);
-  RUN_TEST(test_mc_array_size_can_be_decreased_with_pop);
+  RUN_TEST(test_array_size_can_be_decreased_with_pop);
   RUN_TEST(test_array_pop_on_empty_has_no_effect);
   RUN_TEST(test_array_pop_on_uninitialized_has_no_effect);
   return UNITY_END();
