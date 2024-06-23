@@ -6,6 +6,7 @@ include(GNUInstallDirs)
 find_package(mc-array CONFIG REQUIRED)
 
 option(MC_GOL_SHARED "Enable shared library (dynamic linking)" OFF)
+option(MC_GOL_BUILD_TESTING "Enable testing" OFF)
 
 set(MC_GOL_LIB_TYPE STATIC)
 if(MC_GOL_SHARED)
@@ -71,3 +72,18 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/minimal-cmake-gol/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/minimal-cmake-gol)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mc_gol_export.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+if(MC_GOL_BUILD_TESTING)
+  include(CTest)
+  include(FetchContent)
+  FetchContent_Declare(
+    unity
+    GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
+    GIT_TAG 5a36b197fb34c0a77ac891c355596cb5c25aaf5b)
+  FetchContent_MakeAvailable(unity)
+  add_executable(game-of-life-test)
+  target_sources(game-of-life-test PRIVATE src/gol.test.c)
+  target_link_libraries(game-of-life-test PRIVATE game-of-life unity)
+  target_compile_features(game-of-life-test PRIVATE c_std_17)
+  add_test(NAME game-of-life-test COMMAND game-of-life-test)
+endif()

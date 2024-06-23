@@ -24,6 +24,13 @@
       "cacheVariables": {
         "MC_GOL_SHARED": "OFF"
       }
+    },
+    {
+      "name": "test",
+      "inherits": "shared-ninja",
+      "cacheVariables": {
+        "MC_GOL_BUILD_TESTING": "ON"
+      }
     }
   ],
   "buildPresets": [
@@ -46,6 +53,14 @@
       "name": "static-release",
       "configurePreset": "static-ninja",
       "configuration": "Release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test",
+      "displayName": "Test Game of Life",
+      "configurePreset": "test",
+      "configuration": "Debug"
     }
   ]
 }

@@ -41,6 +41,11 @@ static int32_t alive_neighbors(
   return living;
 }
 
+int32_t mc_gol_alive_neighbors(
+  const mc_gol_board_t* board, const int32_t x, const int32_t y) {
+  return alive_neighbors((as_point2i){.x = x, .y = y}, board);
+}
+
 // any live cell with fewer than two live neighbors dies, as if by
 // underpopulation.
 static bool rule_1(const as_point2i position, const mc_gol_board_t* board) {

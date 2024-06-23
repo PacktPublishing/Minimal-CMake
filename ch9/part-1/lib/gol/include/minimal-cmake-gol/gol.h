@@ -25,6 +25,8 @@ MC_GOL_EXPORT int32_t mc_gol_board_width(const mc_gol_board_t* board);
 MC_GOL_EXPORT int32_t mc_gol_board_height(const mc_gol_board_t* board);
 MC_GOL_EXPORT bool mc_gol_board_cell(
   const mc_gol_board_t* board, int32_t x, int32_t y);
+MC_GOL_EXPORT int32_t mc_gol_alive_neighbors(
+  const mc_gol_board_t* board, int32_t x, int32_t y);
 
 // mutations
 MC_GOL_EXPORT void mc_gol_set_board_cell(
