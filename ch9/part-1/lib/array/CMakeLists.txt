@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.28)
 
 project(mc-array LANGUAGES C)
 
+option(MC_ARRAY_BUILD_TESTING "Enable testing" OFF)
+
 add_library(dynamic-array STATIC)
 target_sources(dynamic-array PRIVATE src/array.c)
 
