@@ -27,3 +27,16 @@ install(
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/minimal-cmake/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/minimal-cmake)
+
+if(MC_ARRAY_ENABLE_TEST)
+  include(FetchContent)
+  FetchContent_Declare(
+    unity
+    GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
+    GIT_TAG 5a36b197fb34c0a77ac891c355596cb5c25aaf5b)
+  FetchContent_MakeAvailable(unity)
+  add_executable(dynamic-array-test)
+  target_sources(dynamic-array-test PRIVATE src/array.test.c)
+  target_link_libraries(dynamic-array-test PRIVATE dynamic-array unity)
+  target_compile_features(dynamic-array-test PRIVATE c_std_17)
+endif()

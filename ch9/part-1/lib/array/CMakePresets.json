@@ -6,6 +6,13 @@
       "binaryDir": "${sourceDir}/build",
       "installDir": "${sourceDir}/install",
       "generator": "Ninja Multi-Config"
+    },
+    {
+      "name": "test",
+      "inherits": "default",
+      "cacheVariables": {
+        "MC_ARRAY_ENABLE_TEST": "ON"
+      }
     }
   ],
   "buildPresets": [
