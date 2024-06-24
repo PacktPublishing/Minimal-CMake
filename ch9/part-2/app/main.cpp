@@ -4,7 +4,6 @@
 #include <as-ops.h>
 #include <bgfx/c99/bgfx.h>
 #include <minimal-cmake-gol/gol.h>
-#include <minimal-cmake/array.h>
 #include <minimal-cmake/draw/pos-color-line.h>
 #include <minimal-cmake/draw/pos-color-quad.h>
 #include <minimal-cmake/draw/pos-color-vertex.h>
@@ -15,6 +14,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <vector>
 
 as_point2f screen_from_world(
   const as_point2f world_position, const as_mat44f* orthographic_projection,
@@ -51,39 +52,37 @@ as_point3f world_from_screen(
     .x = world_position.x, .y = world_position.y, .z = world_position.z};
 }
 
-static char* read_file(const char* filepath) {
+static std::vector<char> read_file(const char* filepath) {
   FILE* file = fopen(filepath, "rb");
-  if (file == NULL) {
-    return NULL;
+  if (file == nullptr) {
+    return std::vector<char>{};
   }
   // seek to end of file
   if (fseek(file, 0, SEEK_END) != 0) {
     fclose(file);
-    return NULL;
+    return std::vector<char>{};
   }
   // find length of file
   const int64_t file_size = ftell(file);
   if (file_size == -1) {
     fclose(file);
-    return NULL;
+    return std::vector<char>{};
   }
   // return to beginning of file
   if (fseek(file, 0, SEEK_SET) != 0) {
     fclose(file);
-    return NULL;
+    return std::vector<char>{};
   }
   // allocate buffer to hold contents of file
-  char* buffer = NULL;
-  mc_array_resize(buffer, file_size);
+  std::vector<char> buffer(file_size);
   // read file
-  const size_t bytes_read = fread(buffer, sizeof(char), file_size, file);
+  const size_t bytes_read = fread(buffer.data(), sizeof(char), file_size, file);
   if (bytes_read == 0) {
     fclose(file);
-    mc_array_free(buffer);
-    return NULL;
+    return std::vector<char>{};
   }
   fclose(file);
-  // return array buffer (remember to deallocate after)
+  // return buffer
   return buffer;
 }
 
@@ -116,7 +115,7 @@ int main(int argc, char** argv) {
     argv[0], SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     screen_dimensions.x, screen_dimensions.y, SDL_WINDOW_SHOWN);
 
-  if (window == NULL) {
+  if (window == nullptr) {
     fprintf(
       stderr, "Window could not be created. SDL_Error: %s\n", SDL_GetError());
     return 1;
@@ -217,9 +216,9 @@ int main(int argc, char** argv) {
   const bgfx_vertex_layout_t pos_col_vert_layout =
     create_pos_col_vert_layout(renderer_type);
 
-  char* vs_shader = read_file("shader/build/vs_vertcol.bin");
-  char* fs_shader = read_file("shader/build/fs_vertcol.bin");
-  if (!vs_shader || !fs_shader) {
+  std::vector<char> vs_shader = read_file("shader/build/vs_vertcol.bin");
+  std::vector<char> fs_shader = read_file("shader/build/fs_vertcol.bin");
+  if (vs_shader.empty() || fs_shader.empty()) {
     fprintf(
       stderr, "Shaders not found. Have you built them using "
               "compile-shader-<platform>.sh/bat script?\n");
@@ -227,14 +226,15 @@ int main(int argc, char** argv) {
   }
 
   const bgfx_shader_handle_t vertex_shader =
-    create_shader(vs_shader, mc_array_size(vs_shader), "vs_shader");
+    create_shader(vs_shader.data(), vs_shader.size(), "vs_shader");
   const bgfx_shader_handle_t fragment_shader =
-    create_shader(fs_shader, mc_array_size(fs_shader), "fs_shader");
+    create_shader(fs_shader.data(), fs_shader.size(), "fs_shader");
   const bgfx_program_handle_t program =
     bgfx_create_program(vertex_shader, fragment_shader, true);
 
-  mc_array_free(vs_shader);
-  mc_array_free(fs_shader);
+  // deallocate buffers
+  std::vector<char>().swap(vs_shader);
+  std::vector<char>().swap(fs_shader);
 
   const bgfx_uniform_handle_t u_color =
     bgfx_create_uniform("u_color", BGFX_UNIFORM_TYPE_VEC4, 1);
@@ -291,7 +291,7 @@ int main(int argc, char** argv) {
               const as_vec3f cell_top_left_corner = as_vec3f_sub_vec3f(
                 as_vec3f_add_vec3f(
                   board_top_left_cell_center,
-                  (as_vec3f){.x = x, .y = -y, .z = 0.5f}),
+                  (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f}),
                 (as_vec3f){.x = 0.5f, .y = -0.5f});
               if (
                 position.x > cell_top_left_corner.x
@@ -379,7 +379,8 @@ int main(int argc, char** argv) {
             ? (color4f_t){.r = 0.95f, .g = 0.71f, .b = 0.41f, .a = 1.0f}
             : (color4f_t){.r = 0.33f, .g = 0.48f, .b = 0.67f, .a = 1.0f};
         const as_vec3f position = as_vec3f_add_vec3f(
-          board_top_left_cell_center, (as_vec3f){.x = x, .y = -y, .z = 0.5f});
+          board_top_left_cell_center,
+          (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f});
         pos_color_quads_add_quad(
           pos_color_quads,
           (pos_color_quad_t){.position = position, .color = cell_color});

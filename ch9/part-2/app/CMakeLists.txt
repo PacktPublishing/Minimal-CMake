@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(minimal-cmake_game-of-life_window LANGUAGES C)
+project(minimal-cmake_game-of-life_window LANGUAGES CXX)
 
 include(GNUInstallDirs)
 
@@ -21,18 +21,16 @@ find_package(
   NO_CMAKE_PACKAGE_REGISTRY
   NO_CMAKE_SYSTEM_PATH)
 find_package(bgfx CONFIG REQUIRED)
-find_package(mc-array CONFIG REQUIRED)
 find_package(mc-gol CONFIG REQUIRED)
 find_package(mc-draw 3.0 CONFIG REQUIRED COMPONENTS line quad vertex)
 
 add_executable(${PROJECT_NAME})
-target_sources(${PROJECT_NAME} PRIVATE main.c)
-target_compile_features(${PROJECT_NAME} PRIVATE c_std_17)
+target_sources(${PROJECT_NAME} PRIVATE main.cpp)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 target_link_libraries(
   ${PROJECT_NAME}
   PRIVATE minimal-cmake::game-of-life
-          minimal-cmake::dynamic-array
           minimal-cmake::vertex
           minimal-cmake::line
           minimal-cmake::quad
