@@ -1,3 +1,6 @@
+#include "imgui/bgfx/imgui_impl_bgfx.h"
+#include "imgui/sdl2/imgui_impl_sdl2.h"
+
 // third-party dependencies
 #include <SDL.h>
 #include <SDL_syswm.h>
@@ -154,6 +157,18 @@ int main(int argc, char** argv) {
   bgfx.platformData = pd;
   bgfx_init(&bgfx);
 
+  ImGui::CreateContext();
+  ImGui_Implbgfx_Init(255);
+#if BX_PLATFORM_WINDOWS
+  ImGui_ImplSDL2_InitForD3D(window);
+#elif BX_PLATFORM_OSX
+  ImGui_ImplSDL2_InitForMetal(window);
+#elif BX_PLATFORM_LINUX
+  ImGui_ImplSDL2_InitForOpenGL(window, nullptr);
+#endif // BX_PLATFORM_WINDOWS ? BX_PLATFORM_OSX ? BX_PLATFORM_LINUX
+
+  ImGuiIO& io = ImGui::GetIO();
+
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
 
   // gosper glider gun
@@ -268,6 +283,7 @@ int main(int argc, char** argv) {
   double previous_frame_time = SDL_GetPerformanceFrequency();
   for (bool running = true; running;) {
     for (SDL_Event current_event; SDL_PollEvent(&current_event) != 0;) {
+      ImGui_ImplSDL2_ProcessEvent(&current_event);
       if (current_event.type == SDL_QUIT) {
         running = false;
         break;
@@ -313,6 +329,12 @@ int main(int argc, char** argv) {
         }
       }
     }
+
+    ImGui_Implbgfx_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::ShowDemoWindow();
 
     const int64_t current_counter = SDL_GetPerformanceCounter();
     const double delta_time =
@@ -394,6 +416,9 @@ int main(int argc, char** argv) {
 
     pos_color_lines_submit(pos_color_lines);
     pos_color_quads_submit(pos_color_quads);
+
+    ImGui::Render();
+    ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
 
     bgfx_touch(0);
     bgfx_frame(false);

@@ -22,10 +22,12 @@ find_package(
   NO_CMAKE_SYSTEM_PATH)
 find_package(bgfx CONFIG REQUIRED)
 find_package(mc-gol CONFIG REQUIRED)
+find_package(imgui.cmake REQUIRED CONFIG)
 find_package(mc-draw 3.0 CONFIG REQUIRED COMPONENTS line quad vertex)
 
 add_executable(${PROJECT_NAME})
-target_sources(${PROJECT_NAME} PRIVATE main.cpp)
+target_sources(${PROJECT_NAME} PRIVATE main.cpp imgui/sdl2/imgui_impl_sdl2.cpp
+                                       imgui/bgfx/imgui_impl_bgfx.cpp)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 target_link_libraries(
@@ -36,7 +38,8 @@ target_link_libraries(
           minimal-cmake::quad
           SDL2::SDL2
           SDL2::SDL2main
-          bgfx::bgfx)
+          bgfx::bgfx
+          imgui.cmake::imgui.cmake)
 
 set_target_properties(
   ${PROJECT_NAME}
