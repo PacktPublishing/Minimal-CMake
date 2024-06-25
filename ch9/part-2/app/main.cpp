@@ -11,6 +11,13 @@
 #include <minimal-cmake/draw/pos-color-quad.h>
 #include <minimal-cmake/draw/pos-color-vertex.h>
 
+#include <imgui_te_engine.h>
+#include <imgui_te_ui.h>
+#include <imgui_te_utils.h>
+
+// required for tests
+#include <imgui_te_context.h>
+
 // system includes
 #include <memory.h>
 #include <stdbool.h>
@@ -19,6 +26,8 @@
 #include <stdlib.h>
 
 #include <vector>
+
+extern void RegisterAppMinimalTests(ImGuiTestEngine* engine);
 
 as_point2f screen_from_world(
   const as_point2f world_position, const as_mat44f* orthographic_projection,
@@ -236,7 +245,20 @@ int main(int argc, char** argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, nullptr);
 #endif // BX_PLATFORM_WINDOWS ? BX_PLATFORM_OSX ? BX_PLATFORM_LINUX
 
+  ImGuiTestEngine* engine = ImGuiTestEngine_CreateContext();
+  ImGuiTestEngineIO& test_io = ImGuiTestEngine_GetIO(engine);
+  test_io.ConfigVerboseLevel = ImGuiTestVerboseLevel_Info;
+  test_io.ConfigVerboseLevelOnError = ImGuiTestVerboseLevel_Debug;
+  test_io.ConfigRunSpeed = ImGuiTestRunSpeed_Cinematic;
+
   ImGuiIO& io = ImGui::GetIO();
+
+  // start test engine
+  ImGuiTestEngine_Start(engine, ImGui::GetCurrentContext());
+  ImGuiTestEngine_InstallDefaultCrashHandler();
+
+  // register tests
+  RegisterAppMinimalTests(engine);
 
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
   reset_board(board);
@@ -439,6 +461,8 @@ int main(int argc, char** argv) {
 
     bgfx_touch(0);
     bgfx_frame(false);
+
+    ImGuiTestEngine_PostSwap(engine);
   }
 
   destroy_pos_color_lines(pos_color_lines);
@@ -449,12 +473,23 @@ int main(int argc, char** argv) {
 
   mc_gol_destroy_board(board);
 
+  ImGuiTestEngine_Stop(engine);
   ImGui_ImplSDL2_Shutdown();
   ImGui_Implbgfx_Shutdown();
   ImGui::DestroyContext();
+  ImGuiTestEngine_DestroyContext(engine);
   bgfx_shutdown();
   SDL_DestroyWindow(window);
   SDL_Quit();
 
   return 0;
+}
+
+void RegisterAppMinimalTests(ImGuiTestEngine* e) {
+  ImGuiTest* t = NULL;
+  t = IM_REGISTER_TEST(e, "demo_tests", "test1");
+  t->TestFunc = [](ImGuiTestContext* ctx) {
+    ctx->SetRef("Dear ImGui Demo");
+    ctx->MenuCheck("Tools/Metrics\\/Debugger");
+  };
 }
