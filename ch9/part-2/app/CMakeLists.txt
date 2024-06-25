@@ -22,7 +22,7 @@ find_package(
   NO_CMAKE_SYSTEM_PATH)
 find_package(bgfx CONFIG REQUIRED)
 find_package(mc-gol CONFIG REQUIRED)
-find_package(imgui.cmake REQUIRED CONFIG)
+find_package(imgui-test-engine.cmake REQUIRED CONFIG)
 find_package(mc-draw 3.0 CONFIG REQUIRED COMPONENTS line quad vertex)
 
 add_executable(${PROJECT_NAME})
@@ -39,7 +39,7 @@ target_link_libraries(
           SDL2::SDL2
           SDL2::SDL2main
           bgfx::bgfx
-          imgui.cmake::imgui.cmake)
+          imgui-test-engine.cmake::imgui-test-engine.cmake)
 
 set_target_properties(
   ${PROJECT_NAME}
