@@ -432,6 +432,9 @@ int main(int argc, char** argv) {
 
   mc_gol_destroy_board(board);
 
+  ImGui_ImplSDL2_Shutdown();
+  ImGui_Implbgfx_Shutdown();
+  ImGui::DestroyContext();
   bgfx_shutdown();
   SDL_DestroyWindow(window);
   SDL_Quit();
