@@ -103,6 +103,75 @@ double seconds_elapsed(
        / (double)SDL_GetPerformanceFrequency();
 }
 
+void clear_board(mc_gol_board_t* board) {
+  for (int32_t y = 0, board_height = mc_gol_board_height(board);
+       y < board_height; y++) {
+    for (int32_t x = 0, board_width = mc_gol_board_width(board);
+         x < board_width; x++) {
+      mc_gol_set_board_cell(board, x, y, false);
+    }
+  }
+}
+
+void reset_board(mc_gol_board_t* board) {
+  // gosper glider gun
+  mc_gol_set_board_cell(board, 2, 5, true);
+  mc_gol_set_board_cell(board, 2, 6, true);
+  mc_gol_set_board_cell(board, 3, 5, true);
+  mc_gol_set_board_cell(board, 3, 6, true);
+
+  mc_gol_set_board_cell(board, 12, 5, true);
+  mc_gol_set_board_cell(board, 12, 6, true);
+  mc_gol_set_board_cell(board, 12, 7, true);
+  mc_gol_set_board_cell(board, 13, 4, true);
+  mc_gol_set_board_cell(board, 13, 8, true);
+  mc_gol_set_board_cell(board, 14, 3, true);
+  mc_gol_set_board_cell(board, 14, 9, true);
+  mc_gol_set_board_cell(board, 15, 3, true);
+  mc_gol_set_board_cell(board, 15, 9, true);
+  mc_gol_set_board_cell(board, 16, 6, true);
+  mc_gol_set_board_cell(board, 17, 4, true);
+  mc_gol_set_board_cell(board, 17, 8, true);
+  mc_gol_set_board_cell(board, 18, 5, true);
+  mc_gol_set_board_cell(board, 18, 6, true);
+  mc_gol_set_board_cell(board, 18, 7, true);
+  mc_gol_set_board_cell(board, 19, 6, true);
+
+  mc_gol_set_board_cell(board, 22, 3, true);
+  mc_gol_set_board_cell(board, 22, 4, true);
+  mc_gol_set_board_cell(board, 22, 5, true);
+  mc_gol_set_board_cell(board, 23, 3, true);
+  mc_gol_set_board_cell(board, 23, 4, true);
+  mc_gol_set_board_cell(board, 23, 5, true);
+  mc_gol_set_board_cell(board, 24, 2, true);
+  mc_gol_set_board_cell(board, 24, 6, true);
+  mc_gol_set_board_cell(board, 26, 1, true);
+  mc_gol_set_board_cell(board, 26, 2, true);
+  mc_gol_set_board_cell(board, 26, 6, true);
+  mc_gol_set_board_cell(board, 26, 7, true);
+
+  mc_gol_set_board_cell(board, 36, 3, true);
+  mc_gol_set_board_cell(board, 36, 4, true);
+  mc_gol_set_board_cell(board, 37, 3, true);
+  mc_gol_set_board_cell(board, 37, 4, true);
+
+  // eater
+  mc_gol_set_board_cell(board, 27, 20, true);
+  mc_gol_set_board_cell(board, 27, 21, true);
+  mc_gol_set_board_cell(board, 28, 20, true);
+  mc_gol_set_board_cell(board, 28, 21, true);
+
+  mc_gol_set_board_cell(board, 32, 21, true);
+  mc_gol_set_board_cell(board, 31, 22, true);
+  mc_gol_set_board_cell(board, 33, 22, true);
+  mc_gol_set_board_cell(board, 32, 23, true);
+
+  mc_gol_set_board_cell(board, 34, 23, true);
+  mc_gol_set_board_cell(board, 34, 24, true);
+  mc_gol_set_board_cell(board, 34, 25, true);
+  mc_gol_set_board_cell(board, 35, 25, true);
+}
+
 int main(int argc, char** argv) {
   (void)argc;
   (void)argv;
@@ -170,63 +239,7 @@ int main(int argc, char** argv) {
   ImGuiIO& io = ImGui::GetIO();
 
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
-
-  // gosper glider gun
-  mc_gol_set_board_cell(board, 2, 5, true);
-  mc_gol_set_board_cell(board, 2, 6, true);
-  mc_gol_set_board_cell(board, 3, 5, true);
-  mc_gol_set_board_cell(board, 3, 6, true);
-
-  mc_gol_set_board_cell(board, 12, 5, true);
-  mc_gol_set_board_cell(board, 12, 6, true);
-  mc_gol_set_board_cell(board, 12, 7, true);
-  mc_gol_set_board_cell(board, 13, 4, true);
-  mc_gol_set_board_cell(board, 13, 8, true);
-  mc_gol_set_board_cell(board, 14, 3, true);
-  mc_gol_set_board_cell(board, 14, 9, true);
-  mc_gol_set_board_cell(board, 15, 3, true);
-  mc_gol_set_board_cell(board, 15, 9, true);
-  mc_gol_set_board_cell(board, 16, 6, true);
-  mc_gol_set_board_cell(board, 17, 4, true);
-  mc_gol_set_board_cell(board, 17, 8, true);
-  mc_gol_set_board_cell(board, 18, 5, true);
-  mc_gol_set_board_cell(board, 18, 6, true);
-  mc_gol_set_board_cell(board, 18, 7, true);
-  mc_gol_set_board_cell(board, 19, 6, true);
-
-  mc_gol_set_board_cell(board, 22, 3, true);
-  mc_gol_set_board_cell(board, 22, 4, true);
-  mc_gol_set_board_cell(board, 22, 5, true);
-  mc_gol_set_board_cell(board, 23, 3, true);
-  mc_gol_set_board_cell(board, 23, 4, true);
-  mc_gol_set_board_cell(board, 23, 5, true);
-  mc_gol_set_board_cell(board, 24, 2, true);
-  mc_gol_set_board_cell(board, 24, 6, true);
-  mc_gol_set_board_cell(board, 26, 1, true);
-  mc_gol_set_board_cell(board, 26, 2, true);
-  mc_gol_set_board_cell(board, 26, 6, true);
-  mc_gol_set_board_cell(board, 26, 7, true);
-
-  mc_gol_set_board_cell(board, 36, 3, true);
-  mc_gol_set_board_cell(board, 36, 4, true);
-  mc_gol_set_board_cell(board, 37, 3, true);
-  mc_gol_set_board_cell(board, 37, 4, true);
-
-  // eater
-  mc_gol_set_board_cell(board, 27, 20, true);
-  mc_gol_set_board_cell(board, 27, 21, true);
-  mc_gol_set_board_cell(board, 28, 20, true);
-  mc_gol_set_board_cell(board, 28, 21, true);
-
-  mc_gol_set_board_cell(board, 32, 21, true);
-  mc_gol_set_board_cell(board, 31, 22, true);
-  mc_gol_set_board_cell(board, 33, 22, true);
-  mc_gol_set_board_cell(board, 32, 23, true);
-
-  mc_gol_set_board_cell(board, 34, 23, true);
-  mc_gol_set_board_cell(board, 34, 24, true);
-  mc_gol_set_board_cell(board, 34, 25, true);
-  mc_gol_set_board_cell(board, 35, 25, true);
+  reset_board(board);
 
   const bgfx_vertex_layout_t pos_col_vert_layout =
     create_pos_col_vert_layout(renderer_type);
@@ -301,7 +314,6 @@ int main(int argc, char** argv) {
           as_point3f position = world_from_screen(
             mouse_now, &orthographic_projection, screen_dimensions);
 
-          bool pressed_cell = false;
           for (int32_t y = 0; y < board_height; y++) {
             for (int32_t x = 0; x < board_width; x++) {
               const as_vec3f cell_top_left_corner = as_vec3f_sub_vec3f(
@@ -314,17 +326,10 @@ int main(int argc, char** argv) {
                 && position.x < cell_top_left_corner.x + 1.0f
                 && position.y < cell_top_left_corner.y
                 && position.y > cell_top_left_corner.y - 1.0f) {
-                pressed_cell = true;
                 mc_gol_set_board_cell(
                   board, x, y, !mc_gol_board_cell(board, x, y));
               }
             }
-          }
-
-          // stop/start simulation
-          if (!pressed_cell) {
-            timer = 0.0f;
-            simulating = !simulating;
           }
         }
       }
@@ -334,7 +339,19 @@ int main(int argc, char** argv) {
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::ShowDemoWindow();
+    ImGui::Begin("Game of Life");
+    if (ImGui::Button(simulating ? "Pause" : "Play")) {
+      timer = 0.0f;
+      simulating = !simulating;
+    }
+    if (ImGui::Button("Clear")) {
+      clear_board(board);
+    }
+    if (ImGui::Button("Reset")) {
+      clear_board(board);
+      reset_board(board);
+    }
+    ImGui::End();
 
     const int64_t current_counter = SDL_GetPerformanceCounter();
     const double delta_time =
