@@ -109,6 +109,7 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
         DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
 
 if(MC_GOL_APP_BUILD_TESTING)
+  include(CTest)
   add_executable(${PROJECT_NAME}-test)
   add_common_sources(${PROJECT_NAME}-test)
   add_common_libraries(${PROJECT_NAME}-test)
@@ -117,5 +118,8 @@ if(MC_GOL_APP_BUILD_TESTING)
   target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
   target_compile_definitions(${PROJECT_NAME}-test
                              PRIVATE MC_GOL_APP_BUILD_TESTING)
-
+  add_test(
+    NAME ${PROJECT_NAME}-test
+    COMMAND ${PROJECT_NAME}-test
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
