@@ -16,9 +16,6 @@
 #include <imgui_te_ui.h>
 #include <imgui_te_utils.h>
 
-// required for tests
-#include <imgui_te_context.h>
-
 // system includes
 #include <memory.h>
 #include <stdbool.h>
@@ -28,7 +25,7 @@
 
 #include <vector>
 
-extern void RegisterAppMinimalTests(ImGuiTestEngine* engine);
+extern void RegisterGolTests(ImGuiTestEngine* engine);
 
 as_point2f screen_from_world(
   const as_point2f world_position, const as_mat44f* orthographic_projection,
@@ -258,11 +255,13 @@ int main(int argc, char** argv) {
   ImGuiTestEngine_Start(engine, ImGui::GetCurrentContext());
   ImGuiTestEngine_InstallDefaultCrashHandler();
 
+#ifdef MC_GOL_APP_BUILD_TESTING
   // register tests
-  RegisterAppMinimalTests(engine);
-
+  RegisterGolTests(engine);
+  // queue tests
   ImGuiTestEngine_QueueTests(
     engine, ImGuiTestGroup_Tests, "tests", ImGuiTestRunFlags_RunFromGui);
+#endif
 
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
   reset_board(board);
@@ -379,6 +378,9 @@ int main(int argc, char** argv) {
     }
     ImGui::End();
 
+#ifdef MC_GOL_APP_BUILD_TESTING
+    // enable to display interactive test window (disable queue tests)
+    // ImGuiTestEngine_ShowTestEngineWindows(engine, NULL);
     if (ImGuiTestEngine_IsTestQueueEmpty(engine)) {
       int count_tested = 0;
       int count_success = 0;
@@ -390,6 +392,7 @@ int main(int argc, char** argv) {
         return 0;
       }
     }
+#endif
 
     const int64_t current_counter = SDL_GetPerformanceCounter();
     const double delta_time =
@@ -499,13 +502,4 @@ int main(int argc, char** argv) {
   SDL_Quit();
 
   return 0;
-}
-
-void RegisterAppMinimalTests(ImGuiTestEngine* e) {
-  ImGuiTest* t = NULL;
-  t = IM_REGISTER_TEST(e, "demo_tests", "test1");
-  t->TestFunc = [](ImGuiTestContext* ctx) {
-    ctx->SetRef("Dear ImGui Demo");
-    ctx->MenuCheck("Tools/Metrics\\/Debugger");
-  };
 }
