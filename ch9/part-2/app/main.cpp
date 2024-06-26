@@ -260,7 +260,7 @@ int main(int argc, char** argv) {
   RegisterGolTests(engine);
   // queue tests
   ImGuiTestEngine_QueueTests(
-    engine, ImGuiTestGroup_Tests, "tests", ImGuiTestRunFlags_RunFromGui);
+    engine, ImGuiTestGroup_Tests, "gol-tests", ImGuiTestRunFlags_RunFromGui);
 #endif
 
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
