@@ -12,6 +12,7 @@
 #include <minimal-cmake/draw/pos-color-vertex.h>
 
 #include <imgui_te_engine.h>
+#include <imgui_te_exporters.h>
 #include <imgui_te_ui.h>
 #include <imgui_te_utils.h>
 
@@ -260,6 +261,9 @@ int main(int argc, char** argv) {
   // register tests
   RegisterAppMinimalTests(engine);
 
+  ImGuiTestEngine_QueueTests(
+    engine, ImGuiTestGroup_Tests, "tests", ImGuiTestRunFlags_RunFromGui);
+
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
   reset_board(board);
 
@@ -374,6 +378,18 @@ int main(int argc, char** argv) {
       reset_board(board);
     }
     ImGui::End();
+
+    if (ImGuiTestEngine_IsTestQueueEmpty(engine)) {
+      int count_tested = 0;
+      int count_success = 0;
+      ImGuiTestEngine_GetResult(engine, count_tested, count_success);
+      ImGuiTestEngine_PrintResultSummary(engine);
+      if (count_tested != count_success) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
 
     const int64_t current_counter = SDL_GetPerformanceCounter();
     const double delta_time =
