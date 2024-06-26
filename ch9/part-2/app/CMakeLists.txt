@@ -5,7 +5,6 @@ include(GNUInstallDirs)
 
 option(SUPERBUILD "Perform a superbuild (or not)" OFF)
 option(USE_VERBOSE_SHADER_OUTPUT "Show output from shader compilation" OFF)
-option(MC_GOL_APP_BUILD_TESTING "Enable testing" OFF)
 
 if(SUPERBUILD)
   add_subdirectory(third-party)
@@ -23,41 +22,31 @@ find_package(
   NO_CMAKE_SYSTEM_PATH)
 find_package(bgfx CONFIG REQUIRED)
 find_package(mc-gol CONFIG REQUIRED)
-find_package(imgui-test-engine.cmake REQUIRED CONFIG)
+find_package(imgui.cmake REQUIRED CONFIG)
 find_package(mc-draw 3.0 CONFIG REQUIRED COMPONENTS line quad vertex)
 
-function(add_common_sources TARGET_NAME)
-  target_sources(${TARGET_NAME} PRIVATE main.cpp imgui/sdl2/imgui_impl_sdl2.cpp
-                                        imgui/bgfx/imgui_impl_bgfx.cpp)
-endfunction()
-
-function(add_common_libraries TARGET_NAME)
-  target_link_libraries(
-    ${TARGET_NAME}
-    PRIVATE minimal-cmake::game-of-life
-            minimal-cmake::vertex
-            minimal-cmake::line
-            minimal-cmake::quad
-            SDL2::SDL2
-            SDL2::SDL2main
-            bgfx::bgfx
-            imgui-test-engine.cmake::imgui-test-engine.cmake)
-endfunction()
-
-function(set_common_properties TARGET_NAME)
-  set_target_properties(
-    ${TARGET_NAME}
-    PROPERTIES
-      INSTALL_RPATH
-      $<IF:$<PLATFORM_ID:Linux>,$ORIGIN,$<IF:$<PLATFORM_ID:Darwin>,@loader_path,>>
-      BUILD_WITH_INSTALL_RPATH TRUE)
-endfunction()
-
 add_executable(${PROJECT_NAME})
-add_common_sources(${PROJECT_NAME})
-add_common_libraries(${PROJECT_NAME})
-set_common_properties(${PROJECT_NAME})
+target_sources(${PROJECT_NAME} PRIVATE main.cpp imgui/sdl2/imgui_impl_sdl2.cpp
+                                       imgui/bgfx/imgui_impl_bgfx.cpp)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+
+target_link_libraries(
+  ${PROJECT_NAME}
+  PRIVATE minimal-cmake::game-of-life
+          minimal-cmake::vertex
+          minimal-cmake::line
+          minimal-cmake::quad
+          SDL2::SDL2
+          SDL2::SDL2main
+          bgfx::bgfx
+          imgui.cmake::imgui.cmake)
+
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES
+    INSTALL_RPATH
+    $<IF:$<PLATFORM_ID:Linux>,$ORIGIN,$<IF:$<PLATFORM_ID:Darwin>,@loader_path,>>
+    BUILD_WITH_INSTALL_RPATH TRUE)
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT
@@ -107,19 +96,3 @@ install(
   DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
         DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
-
-if(MC_GOL_APP_BUILD_TESTING)
-  include(CTest)
-  add_executable(${PROJECT_NAME}-test)
-  add_common_sources(${PROJECT_NAME}-test)
-  add_common_libraries(${PROJECT_NAME}-test)
-  set_common_properties(${PROJECT_NAME}-test)
-  target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
-  target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
-  target_compile_definitions(${PROJECT_NAME}-test
-                             PRIVATE MC_GOL_APP_BUILD_TESTING)
-  add_test(
-    NAME ${PROJECT_NAME}-test
-    COMMAND ${PROJECT_NAME}-test
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-endif()

@@ -68,15 +68,14 @@ ExternalProject_Add(
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
 ExternalProject_Add(
-  imgui-test-engine.cmake
-  GIT_REPOSITORY https://github.com/pr0g/imgui-test-engine.cmake.git
-  GIT_TAG 1e7990c2047a54f3f8b79effb5623fda4deef44b
-  PREFIX ${PREFIX_DIR}/imgui-test-engine
-  BINARY_DIR ${PREFIX_DIR}/imgui-test-engine.cmake/build/${build_type_dir}
+  imgui.cmake
+  GIT_REPOSITORY https://github.com/pr0g/imgui.cmake.git
+  GIT_TAG abf77e443a0d23b6d874dbbb42bbd02009562a9a
+  PREFIX ${PREFIX_DIR}/imgui
+  BINARY_DIR ${PREFIX_DIR}/imgui.cmake/build/${build_type_dir}
   INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
   CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
              -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS=ON
-             -DIMGUI_TEST_ENGINE_ENABLE_COROUTINE_STDTHREAD_IMPL=ON
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
 ExternalProject_Add(
@@ -113,7 +112,7 @@ ExternalProject_Add(
 if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
   ExternalProject_Add(
     ${CMAKE_PROJECT_NAME}_superbuild
-    DEPENDS SDL2 bgfx imgui-test-engine.cmake mc-gol mc-draw
+    DEPENDS SDL2 bgfx imgui.cmake mc-gol mc-draw
     SOURCE_DIR ${CMAKE_SOURCE_DIR}
     BINARY_DIR ${CMAKE_BINARY_DIR}
     CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DSUPERBUILD=OFF

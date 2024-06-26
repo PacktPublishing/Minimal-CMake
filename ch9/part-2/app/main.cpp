@@ -11,11 +11,6 @@
 #include <minimal-cmake/draw/pos-color-quad.h>
 #include <minimal-cmake/draw/pos-color-vertex.h>
 
-#include <imgui_te_engine.h>
-#include <imgui_te_exporters.h>
-#include <imgui_te_ui.h>
-#include <imgui_te_utils.h>
-
 // system includes
 #include <memory.h>
 #include <stdbool.h>
@@ -24,8 +19,6 @@
 #include <stdlib.h>
 
 #include <vector>
-
-extern void RegisterGolTests(ImGuiTestEngine* engine);
 
 as_point2f screen_from_world(
   const as_point2f world_position, const as_mat44f* orthographic_projection,
@@ -243,25 +236,7 @@ int main(int argc, char** argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, nullptr);
 #endif // BX_PLATFORM_WINDOWS ? BX_PLATFORM_OSX ? BX_PLATFORM_LINUX
 
-  ImGuiTestEngine* engine = ImGuiTestEngine_CreateContext();
-  ImGuiTestEngineIO& test_io = ImGuiTestEngine_GetIO(engine);
-  test_io.ConfigVerboseLevel = ImGuiTestVerboseLevel_Info;
-  test_io.ConfigVerboseLevelOnError = ImGuiTestVerboseLevel_Debug;
-  test_io.ConfigRunSpeed = ImGuiTestRunSpeed_Cinematic;
-
   ImGuiIO& io = ImGui::GetIO();
-
-  // start test engine
-  ImGuiTestEngine_Start(engine, ImGui::GetCurrentContext());
-  ImGuiTestEngine_InstallDefaultCrashHandler();
-
-#ifdef MC_GOL_APP_BUILD_TESTING
-  // register tests
-  RegisterGolTests(engine);
-  // queue tests
-  ImGuiTestEngine_QueueTests(
-    engine, ImGuiTestGroup_Tests, "gol-tests", ImGuiTestRunFlags_RunFromGui);
-#endif
 
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
   reset_board(board);
@@ -378,22 +353,6 @@ int main(int argc, char** argv) {
     }
     ImGui::End();
 
-#ifdef MC_GOL_APP_BUILD_TESTING
-    // enable to display interactive test window (disable queue tests)
-    // ImGuiTestEngine_ShowTestEngineWindows(engine, NULL);
-    if (ImGuiTestEngine_IsTestQueueEmpty(engine)) {
-      int count_tested = 0;
-      int count_success = 0;
-      ImGuiTestEngine_GetResult(engine, count_tested, count_success);
-      ImGuiTestEngine_PrintResultSummary(engine);
-      if (count_tested != count_success) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }
-#endif
-
     const int64_t current_counter = SDL_GetPerformanceCounter();
     const double delta_time =
       seconds_elapsed(previous_frame_time, current_counter);
@@ -480,8 +439,6 @@ int main(int argc, char** argv) {
 
     bgfx_touch(0);
     bgfx_frame(false);
-
-    ImGuiTestEngine_PostSwap(engine);
   }
 
   destroy_pos_color_lines(pos_color_lines);
@@ -492,11 +449,9 @@ int main(int argc, char** argv) {
 
   mc_gol_destroy_board(board);
 
-  ImGuiTestEngine_Stop(engine);
   ImGui_ImplSDL2_Shutdown();
   ImGui_Implbgfx_Shutdown();
   ImGui::DestroyContext();
-  ImGuiTestEngine_DestroyContext(engine);
   bgfx_shutdown();
   SDL_DestroyWindow(window);
   SDL_Quit();
