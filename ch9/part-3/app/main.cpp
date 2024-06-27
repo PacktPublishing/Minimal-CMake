@@ -13,8 +13,6 @@
 
 #include <imgui_te_engine.h>
 #include <imgui_te_exporters.h>
-#include <imgui_te_ui.h>
-#include <imgui_te_utils.h>
 
 // system includes
 #include <memory.h>
