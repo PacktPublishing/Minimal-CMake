@@ -301,7 +301,6 @@ int main(int argc, char** argv) {
   pos_color_quads_set_render_context(pos_color_quads, 0, program, u_color);
 
   bool simulating = true;
-  as_point2i mouse_now = {};
   const float zoom = 20.0f;
   const as_mat44f identity = as_mat44f_identity();
   const float aspect_ratio =
@@ -326,35 +325,27 @@ int main(int argc, char** argv) {
         running = false;
         break;
       }
-      if (current_event.type == SDL_MOUSEMOTION) {
-        SDL_MouseMotionEvent* mouse_motion =
-          (SDL_MouseMotionEvent*)&current_event;
-        mouse_now =
-          (as_point2i){mouse_motion->x, screen_dimensions.y - mouse_motion->y};
-      }
-      if (current_event.type == SDL_MOUSEBUTTONDOWN) {
-        SDL_MouseButtonEvent* mouse_button =
-          (SDL_MouseButtonEvent*)&current_event;
-        if (mouse_button->button == SDL_BUTTON_LEFT) {
-          as_point3f position = world_from_screen(
-            mouse_now, &orthographic_projection, screen_dimensions);
-
-          for (int32_t y = 0; y < board_height; y++) {
-            for (int32_t x = 0; x < board_width; x++) {
-              const as_vec3f cell_top_left_corner = as_vec3f_sub_vec3f(
-                as_vec3f_add_vec3f(
-                  board_top_left_cell_center,
-                  (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f}),
-                (as_vec3f){.x = 0.5f, .y = -0.5f});
-              if (
-                position.x > cell_top_left_corner.x
-                && position.x < cell_top_left_corner.x + 1.0f
-                && position.y < cell_top_left_corner.y
-                && position.y > cell_top_left_corner.y - 1.0f) {
-                mc_gol_set_board_cell(
-                  board, x, y, !mc_gol_board_cell(board, x, y));
-              }
-            }
+    }
+    
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
+      const ImVec2 mouse_now = ImGui::GetMousePos();
+      const as_point3f position = world_from_screen(
+        as_point2i_from_point2f(
+          {mouse_now.x, screen_dimensions.y - mouse_now.y}),
+        &orthographic_projection, screen_dimensions);
+      for (int32_t y = 0; y < board_height; y++) {
+        for (int32_t x = 0; x < board_width; x++) {
+          const as_vec3f cell_top_left_corner = as_vec3f_sub_vec3f(
+            as_vec3f_add_vec3f(
+              board_top_left_cell_center,
+              (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f}),
+            (as_vec3f){.x = 0.5f, .y = -0.5f});
+          if (
+            position.x > cell_top_left_corner.x
+            && position.x < cell_top_left_corner.x + 1.0f
+            && position.y < cell_top_left_corner.y
+            && position.y > cell_top_left_corner.y - 1.0f) {
+            mc_gol_set_board_cell(board, x, y, !mc_gol_board_cell(board, x, y));
           }
         }
       }

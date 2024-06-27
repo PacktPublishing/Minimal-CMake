@@ -24,4 +24,10 @@ void RegisterGolTests(ImGuiTestEngine* e) {
     ctx->SetRef("Game of Life");
     ctx->ItemClick("Clear");
   };
+  t = IM_REGISTER_TEST(e, "gol-tests", "Click board");
+  t->TestFunc = [](ImGuiTestContext* ctx) {
+    ctx->SetRef("Game of Life");
+    ctx->MouseMoveToPos(ImVec2(200, 200));
+    ctx->MouseClick(ImGuiMouseButton_Left);
+  };
 }
