@@ -38,6 +38,13 @@
       "inherits": ["multi-ninja", "super"]
     },
     {
+      "name": "multi-ninja-test",
+      "inherits": "multi-ninja",
+      "cacheVariables": {
+        "MC_GOL_APP_BUILD_TESTING": "ON"
+      }
+    },
+    {
       "name": "vs",
       "inherits": "base",
       "condition": {
