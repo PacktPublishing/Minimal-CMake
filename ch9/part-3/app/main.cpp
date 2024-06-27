@@ -25,7 +25,7 @@
 
 #include <vector>
 
-extern void RegisterGolTests(ImGuiTestEngine* engine);
+extern void RegisterGolTests(ImGuiTestEngine* engine, mc_gol_board_t* board);
 
 as_point2f screen_from_world(
   const as_point2f world_position, const as_mat44f* orthographic_projection,
@@ -255,16 +255,16 @@ int main(int argc, char** argv) {
   ImGuiTestEngine_Start(engine, ImGui::GetCurrentContext());
   ImGuiTestEngine_InstallDefaultCrashHandler();
 
+  mc_gol_board_t* board = mc_gol_create_board(40, 27);
+  reset_board(board);
+
 #ifdef MC_GOL_APP_BUILD_TESTING
   // register tests
-  RegisterGolTests(engine);
+  RegisterGolTests(engine, board);
   // queue tests
   ImGuiTestEngine_QueueTests(
     engine, ImGuiTestGroup_Tests, "gol-tests", ImGuiTestRunFlags_RunFromGui);
 #endif
-
-  mc_gol_board_t* board = mc_gol_create_board(40, 27);
-  reset_board(board);
 
   const bgfx_vertex_layout_t pos_col_vert_layout =
     create_pos_col_vert_layout(renderer_type);
@@ -326,7 +326,7 @@ int main(int argc, char** argv) {
         break;
       }
     }
-    
+
     if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
       const ImVec2 mouse_now = ImGui::GetMousePos();
       const as_point3f position = world_from_screen(
@@ -342,9 +342,9 @@ int main(int argc, char** argv) {
             (as_vec3f){.x = 0.5f, .y = -0.5f});
           if (
             position.x > cell_top_left_corner.x
-            && position.x < cell_top_left_corner.x + 1.0f
+            && position.x <= cell_top_left_corner.x + 1.0f
             && position.y < cell_top_left_corner.y
-            && position.y > cell_top_left_corner.y - 1.0f) {
+            && position.y >= cell_top_left_corner.y - 1.0f) {
             mc_gol_set_board_cell(board, x, y, !mc_gol_board_cell(board, x, y));
           }
         }
@@ -363,7 +363,7 @@ int main(int argc, char** argv) {
     if (ImGui::Button("Clear")) {
       clear_board(board);
     }
-    if (ImGui::Button("Reset")) {
+    if (ImGui::Button("Restart")) {
       clear_board(board);
       reset_board(board);
     }
