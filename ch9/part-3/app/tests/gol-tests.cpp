@@ -29,5 +29,7 @@ void RegisterGolTests(ImGuiTestEngine* e) {
     ctx->SetRef("Game of Life");
     ctx->MouseMoveToPos(ImVec2(200, 200));
     ctx->MouseClick(ImGuiMouseButton_Left);
+    ctx->MouseMoveToPos(ImVec2(420, 200));
+    ctx->MouseClick(ImGuiMouseButton_Left);
   };
 }
