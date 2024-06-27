@@ -27,8 +27,10 @@ find_package(imgui-test-engine.cmake REQUIRED CONFIG)
 find_package(mc-draw 3.0 CONFIG REQUIRED COMPONENTS line quad vertex)
 
 function(add_common_sources TARGET_NAME)
-  target_sources(${TARGET_NAME} PRIVATE main.cpp imgui/sdl2/imgui_impl_sdl2.cpp
-                                        imgui/bgfx/imgui_impl_bgfx.cpp)
+  target_sources(
+    ${TARGET_NAME}
+    PRIVATE src/main.cpp src/imgui/sdl2/imgui_impl_sdl2.cpp
+            src/imgui/bgfx/imgui_impl_bgfx.cpp src/viewport/screen.cpp)
 endfunction()
 
 function(add_common_libraries TARGET_NAME)
