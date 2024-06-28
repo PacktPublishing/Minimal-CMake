@@ -137,4 +137,9 @@ if(MC_GOL_APP_BUILD_TESTING)
   target_link_libraries(${PROJECT_NAME}-unit-test doctest as-c-math)
 
   add_test(NAME ${PROJECT_NAME}-unit-test COMMAND ${PROJECT_NAME}-unit-test)
+
+  add_test(
+    NAME shaders-compiled
+    COMMAND ${CMAKE_COMMAND} -P tests/shaders-compiled.cmake
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
