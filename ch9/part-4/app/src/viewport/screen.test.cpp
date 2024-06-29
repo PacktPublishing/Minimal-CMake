@@ -1,7 +1,5 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest/doctest.h"
-
 #include <as-ops.h>
+#include <catch2/catch_test_macros.hpp>
 
 #include "screen.h"
 

@@ -127,14 +127,14 @@ if(MC_GOL_APP_BUILD_TESTING)
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
   FetchContent_Declare(
-    doctest
-    GIT_REPOSITORY https://github.com/onqtam/doctest.git
-    GIT_TAG ae7a13539fb71f270b87eb2e874fbac80bc8dda2)
-  FetchContent_MakeAvailable(doctest)
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.6.0)
+  FetchContent_MakeAvailable(Catch2)
   add_executable(${PROJECT_NAME}-unit-test)
   target_sources(${PROJECT_NAME}-unit-test PRIVATE src/viewport/screen.cpp
                                                    src/viewport/screen.test.cpp)
-  target_link_libraries(${PROJECT_NAME}-unit-test doctest as-c-math)
+  target_link_libraries(${PROJECT_NAME}-unit-test Catch2::Catch2WithMain as-c-math)
 
   add_test(NAME ${PROJECT_NAME}-unit-test COMMAND ${PROJECT_NAME}-unit-test)
 
