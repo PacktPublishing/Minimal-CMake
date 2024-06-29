@@ -7,6 +7,7 @@ include(ExternalProject)
 # options to pass through to third-party libraries
 option(MC_GOL_SHARED "Enable shared library for Game of Life" OFF)
 option(MC_DRAW_SHARED "Enable shared library for Draw" OFF)
+option(MC_GOL_APP_BUILD_TESTING "Enable testing" OFF)
 
 get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT isMultiConfig)
@@ -117,5 +118,6 @@ if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
     SOURCE_DIR ${CMAKE_SOURCE_DIR}
     BINARY_DIR ${CMAKE_BINARY_DIR}
     CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DSUPERBUILD=OFF
+               -DMC_GOL_APP_BUILD_TESTING=${MC_GOL_APP_BUILD_TESTING}
                ${build_type_arg})
 endif()

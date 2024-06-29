@@ -45,6 +45,10 @@
       }
     },
     {
+      "name": "multi-ninja-super-test",
+      "inherits": ["multi-ninja-test", "super"]
+    },
+    {
       "name": "vs",
       "inherits": "base",
       "condition": {
