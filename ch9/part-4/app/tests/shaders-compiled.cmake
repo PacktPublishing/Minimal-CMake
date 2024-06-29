@@ -1,4 +1,4 @@
-cmake_policy(SET CMP0140 NEW)
+# verify shaders have been compiled
 
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/shader/build/vs_vertcol.bin)
   message(FATAL_ERROR "vs_vertcol.bin missing")
