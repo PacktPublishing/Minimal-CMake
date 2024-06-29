@@ -347,7 +347,7 @@ int main(int argc, char** argv) {
     if (ImGui::Button("Clear")) {
       clear_board(board);
     }
-    if (ImGui::Button("Reset")) {
+    if (ImGui::Button("Restart")) {
       clear_board(board);
       reset_board(board);
     }
