@@ -291,8 +291,8 @@ int main(int argc, char** argv) {
   const as_vec3f board_top_left_cell_center = (as_vec3f){
     .x = (-board_width * 0.5f) + 0.5f, .y = (board_height * 0.5f) - 0.5f};
 
+  float delay = 0.1f;
   double timer = 0.0;
-  const double delay = 0.1f;
   double previous_frame_time = SDL_GetPerformanceFrequency();
   for (bool running = true; running;) {
     for (SDL_Event current_event; SDL_PollEvent(&current_event) != 0;) {
@@ -335,17 +335,38 @@ int main(int argc, char** argv) {
       }
     }
 
+    const auto step_board = [board, &timer] {
+      mc_gol_update_board(board);
+      timer = 0.0;
+    };
+
     ImGui_Implbgfx_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
     ImGui::Begin("Game of Life");
+    ImGui::PushItemWidth(100.0f);
+    ImGui::SliderFloat(
+      "Simulation time", &delay, 0.01f, 1.0f, "%.2f",
+      ImGuiSliderFlags_AlwaysClamp);
+    ImGui::PopItemWidth();
     if (ImGui::Button(simulating ? "Pause" : "Play")) {
-      timer = 0.0f;
+      timer = 0.0;
       simulating = !simulating;
+    }
+    if (simulating) {
+      ImGui::BeginDisabled();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Step")) {
+      step_board();
+    }
+    if (simulating) {
+      ImGui::EndDisabled();
     }
     if (ImGui::Button("Clear")) {
       clear_board(board);
+      simulating = false;
     }
     if (ImGui::Button("Restart")) {
       clear_board(board);
@@ -427,8 +448,7 @@ int main(int argc, char** argv) {
     }
 
     if (simulating && timer > delay) {
-      mc_gol_update_board(board);
-      timer = 0.0;
+      step_board();
     }
 
     pos_color_lines_submit(pos_color_lines);
