@@ -123,7 +123,7 @@ if(MC_GOL_APP_BUILD_TESTING)
       $<$<BOOL:${MC_GOL_APP_INTERACTIVE_TESTING}>:MC_GOL_APP_INTERACTIVE_TESTING>
   )
   add_test(
-    NAME ${PROJECT_NAME}-test
+    NAME "game of life end-to-end tests"
     COMMAND ${PROJECT_NAME}-test
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
