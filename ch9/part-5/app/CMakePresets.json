@@ -78,6 +78,18 @@
       "name": "multi-ninja-super",
       "configurePreset": "multi-ninja-super",
       "configuration": "Release"
+    },
+    {
+      "name": "multi-ninja-super-test",
+      "configurePreset": "multi-ninja-super-test",
+      "configuration": "Debug"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "multi-ninja-super-test",
+      "configurePreset": "multi-ninja-super-test",
+      "configuration": "Debug"
     }
   ],
   "workflowPresets": [
@@ -104,6 +116,23 @@
         {
           "type": "build",
           "name": "multi-ninja-super"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super-test",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super-test"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super-test"
+        },
+        {
+          "type": "test",
+          "name": "multi-ninja-super-test"
         }
       ]
     }
