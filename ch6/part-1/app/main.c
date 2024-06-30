@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
   mc_gol_set_board_cell(board, 35, 25, true);
 
   double timer = 0.0;
-  const double delay = 0.1f;
+  const double delay = 0.1;
   double previous_frame_time = SDL_GetPerformanceFrequency();
   for (bool running = true; running;) {
     for (SDL_Event current_event; SDL_PollEvent(&current_event) != 0;) {

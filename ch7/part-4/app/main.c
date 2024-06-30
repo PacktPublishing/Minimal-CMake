@@ -279,7 +279,7 @@ int main(int argc, char** argv) {
     .x = (-board_width * 0.5f) + 0.5f, .y = (board_height * 0.5f) - 0.5f};
 
   double timer = 0.0;
-  const double delay = 0.1f;
+  const double delay = 0.1;
   double previous_frame_time = SDL_GetPerformanceFrequency();
   for (bool running = true; running;) {
     for (SDL_Event current_event; SDL_PollEvent(&current_event) != 0;) {
@@ -322,7 +322,7 @@ int main(int argc, char** argv) {
 
           // stop/start simulation
           if (!pressed_cell) {
-            timer = 0.0f;
+            timer = 0.0;
             simulating = !simulating;
           }
         }

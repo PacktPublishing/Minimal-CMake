@@ -236,7 +236,7 @@ int main(int argc, char** argv) {
     bgfx_create_uniform("u_color", BGFX_UNIFORM_TYPE_VEC4, 1);
 
   double timer = 0.0;
-  const double delay = 0.1f;
+  const double delay = 0.1;
   double previous_frame_time = SDL_GetPerformanceFrequency();
   for (bool running = true; running;) {
     for (SDL_Event current_event; SDL_PollEvent(&current_event) != 0;) {
