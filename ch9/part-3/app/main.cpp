@@ -245,7 +245,7 @@ int main(int argc, char** argv) {
   ImGuiTestEngineIO& test_io = ImGuiTestEngine_GetIO(engine);
   test_io.ConfigVerboseLevel = ImGuiTestVerboseLevel_Info;
   test_io.ConfigVerboseLevelOnError = ImGuiTestVerboseLevel_Debug;
-  test_io.ConfigRunSpeed = ImGuiTestRunSpeed_Cinematic;
+  test_io.ConfigRunSpeed = ImGuiTestRunSpeed_Normal;
 
   ImGuiIO& io = ImGui::GetIO();
 
