@@ -126,7 +126,7 @@ if(MC_GOL_APP_BUILD_TESTING)
       $<$<BOOL:${MC_GOL_APP_INTERACTIVE_TESTING}>:MC_GOL_APP_INTERACTIVE_TESTING>
   )
   add_test(
-    NAME ${PROJECT_NAME}-test
+    NAME "game of life end-to-end tests"
     COMMAND ${PROJECT_NAME}-test
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
@@ -138,12 +138,13 @@ if(MC_GOL_APP_BUILD_TESTING)
   add_executable(${PROJECT_NAME}-unit-test)
   target_sources(${PROJECT_NAME}-unit-test PRIVATE src/viewport/screen.cpp
                                                    src/viewport/screen.test.cpp)
-  target_link_libraries(${PROJECT_NAME}-unit-test Catch2::Catch2WithMain as-c-math)
+  target_link_libraries(${PROJECT_NAME}-unit-test Catch2::Catch2WithMain
+                        as-c-math)
 
-  add_test(NAME ${PROJECT_NAME}-unit-test COMMAND ${PROJECT_NAME}-unit-test)
+  add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
 
   add_test(
-    NAME shaders-compiled
+    NAME "shaders compiled"
     COMMAND ${CMAKE_COMMAND} -P tests/shaders-compiled.cmake
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
