@@ -236,8 +236,6 @@ int main(int argc, char** argv) {
   ImGui_ImplSDL2_InitForOpenGL(window, nullptr);
 #endif // BX_PLATFORM_WINDOWS ? BX_PLATFORM_OSX ? BX_PLATFORM_LINUX
 
-  ImGuiIO& io = ImGui::GetIO();
-
   mc_gol_board_t* board = mc_gol_create_board(40, 27);
   reset_board(board);
 

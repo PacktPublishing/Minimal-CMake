@@ -213,8 +213,6 @@ int main(int argc, char** argv) {
   test_io.ConfigVerboseLevelOnError = ImGuiTestVerboseLevel_Debug;
   test_io.ConfigRunSpeed = ImGuiTestRunSpeed_Normal;
 
-  ImGuiIO& io = ImGui::GetIO();
-
   // start test engine
   ImGuiTestEngine_Start(engine, ImGui::GetCurrentContext());
   ImGuiTestEngine_InstallDefaultCrashHandler();
