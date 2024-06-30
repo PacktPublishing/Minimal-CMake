@@ -14,6 +14,7 @@
 
 #include <imgui_te_engine.h>
 #include <imgui_te_exporters.h>
+#include <imgui_te_ui.h>
 
 // system includes
 #include <memory.h>
@@ -223,10 +224,12 @@ int main(int argc, char** argv) {
 #ifdef MC_GOL_APP_BUILD_TESTING
   // register tests
   RegisterGolTests(engine, board);
+#ifndef MC_GOL_APP_INTERACTIVE_TESTING
   // queue tests
   ImGuiTestEngine_QueueTests(
     engine, ImGuiTestGroup_Tests, "gol-tests", ImGuiTestRunFlags_RunFromGui);
-#endif
+#endif // MC_GOL_APP_INTERACTIVE_TESTING
+#endif // MC_GOL_APP_BUILD_TESTING
 
   const bgfx_vertex_layout_t pos_col_vert_layout =
     create_pos_col_vert_layout(renderer_type);
@@ -353,8 +356,9 @@ int main(int argc, char** argv) {
     ImGui::End();
 
 #ifdef MC_GOL_APP_BUILD_TESTING
-    // enable to display interactive test window (disable queue tests)
-    // ImGuiTestEngine_ShowTestEngineWindows(engine, NULL);
+#ifdef MC_GOL_APP_INTERACTIVE_TESTING
+    ImGuiTestEngine_ShowTestEngineWindows(engine, NULL);
+#else
     if (ImGuiTestEngine_IsTestQueueEmpty(engine)) {
       int count_tested = 0;
       int count_success = 0;
@@ -366,7 +370,8 @@ int main(int argc, char** argv) {
         return 0;
       }
     }
-#endif
+#endif // MC_GOL_APP_INTERACTIVE_TESTING
+#endif // MC_GOL_APP_BUILD_TESTING
 
     const int64_t current_counter = SDL_GetPerformanceCounter();
     const double delta_time =

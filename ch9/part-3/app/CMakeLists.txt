@@ -116,8 +116,12 @@ if(MC_GOL_APP_BUILD_TESTING)
   set_common_properties(${PROJECT_NAME}-test)
   target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
   target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
-  target_compile_definitions(${PROJECT_NAME}-test
-                             PRIVATE MC_GOL_APP_BUILD_TESTING)
+  target_compile_definitions(
+    ${PROJECT_NAME}-test
+    PRIVATE
+      MC_GOL_APP_BUILD_TESTING
+      $<$<BOOL:${MC_GOL_APP_INTERACTIVE_TESTING}>:MC_GOL_APP_INTERACTIVE_TESTING>
+  )
   add_test(
     NAME ${PROJECT_NAME}-test
     COMMAND ${PROJECT_NAME}-test
