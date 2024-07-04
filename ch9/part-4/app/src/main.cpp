@@ -154,7 +154,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  const as_vec2i screen_dimensions = (as_vec2i){.x = 800, .y = 600};
+  const as_vec2i screen_dimensions = as_vec2i{.x = 800, .y = 600};
   SDL_Window* window = SDL_CreateWindow(
     argv[0], SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     screen_dimensions.x, screen_dimensions.y, SDL_WINDOW_SHOWN);
@@ -277,7 +277,7 @@ int main(int argc, char** argv) {
 
   const float board_width = (float)mc_gol_board_width(board);
   const float board_height = (float)mc_gol_board_height(board);
-  const as_vec3f board_top_left_cell_center = (as_vec3f){
+  const as_vec3f board_top_left_cell_center = as_vec3f{
     .x = (-board_width * 0.5f) + 0.5f, .y = (board_height * 0.5f) - 0.5f};
 
   float delay = 0.1f;
@@ -303,8 +303,8 @@ int main(int argc, char** argv) {
           const as_vec3f cell_top_left_corner = as_vec3f_sub_vec3f(
             as_vec3f_add_vec3f(
               board_top_left_cell_center,
-              (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f}),
-            (as_vec3f){.x = 0.5f, .y = -0.5f});
+              as_vec3f{.x = (float)x, .y = (float)-y, .z = 0.5f}),
+            as_vec3f{.x = 0.5f, .y = -0.5f});
           if (
             position.x > cell_top_left_corner.x
             && position.x <= cell_top_left_corner.x + 1.0f
@@ -389,44 +389,44 @@ int main(int argc, char** argv) {
     // horizontal lines
     for (int32_t y = 0; y <= board_height; ++y) {
       const as_vec3f board_top_left_cell_corner =
-        (as_vec3f){.x = -board_width * 0.5f, .y = board_height * 0.5f};
+        as_vec3f{.x = -board_width * 0.5f, .y = board_height * 0.5f};
       pos_color_lines_add_line(
         pos_color_lines,
-        (pos_color_line_t){
+        pos_color_line_t{
           .begin =
-            (pos_color_vertex_t){
+            pos_color_vertex_t{
               .pos = as_vec3f_sub_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.y = 1.0f}, (float)y)),
+                as_vec3f_mul_float(as_vec3f{.y = 1.0f}, (float)y)),
               .abgr = line_color},
-          .end = (pos_color_vertex_t){
+          .end = pos_color_vertex_t{
             .pos = as_vec3f_add_vec3f(
               as_vec3f_sub_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.y = 1.0f}, (float)y)),
-              (as_vec3f){board_width, 0.0f, 0.0f}),
+                as_vec3f_mul_float(as_vec3f{.y = 1.0f}, (float)y)),
+              as_vec3f{board_width, 0.0f, 0.0f}),
             .abgr = line_color}});
     }
 
     // vertical lines
     for (int32_t x = 0; x <= board_width; ++x) {
       const as_vec3f board_top_left_cell_corner =
-        (as_vec3f){.x = -board_width * 0.5f, .y = board_height * 0.5f};
+        as_vec3f{.x = -board_width * 0.5f, .y = board_height * 0.5f};
       pos_color_lines_add_line(
         pos_color_lines,
-        (pos_color_line_t){
+        pos_color_line_t{
           .begin =
-            (pos_color_vertex_t){
+            pos_color_vertex_t{
               .pos = as_vec3f_add_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.x = 1.0f}, (float)x)),
+                as_vec3f_mul_float(as_vec3f{.x = 1.0f}, (float)x)),
               .abgr = line_color},
-          .end = (pos_color_vertex_t){
+          .end = pos_color_vertex_t{
             .pos = as_vec3f_add_vec3f(
               as_vec3f_add_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.x = 1.0f}, (float)x)),
-              (as_vec3f){0.0f, -board_height, 0.0f}),
+                as_vec3f_mul_float(as_vec3f{.x = 1.0f}, (float)x)),
+              as_vec3f{0.0f, -board_height, 0.0f}),
             .abgr = line_color}});
     }
 
@@ -435,14 +435,14 @@ int main(int argc, char** argv) {
       for (int32_t x = 0; x < board_width; x++) {
         const color4f_t cell_color =
           mc_gol_board_cell(board, x, y)
-            ? (color4f_t){.r = 0.95f, .g = 0.71f, .b = 0.41f, .a = 1.0f}
-            : (color4f_t){.r = 0.33f, .g = 0.48f, .b = 0.67f, .a = 1.0f};
+            ? color4f_t{.r = 0.95f, .g = 0.71f, .b = 0.41f, .a = 1.0f}
+            : color4f_t{.r = 0.33f, .g = 0.48f, .b = 0.67f, .a = 1.0f};
         const as_vec3f position = as_vec3f_add_vec3f(
           board_top_left_cell_center,
-          (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f});
+          as_vec3f{.x = (float)x, .y = (float)-y, .z = 0.5f});
         pos_color_quads_add_quad(
           pos_color_quads,
-          (pos_color_quad_t){.position = position, .color = cell_color});
+          pos_color_quad_t{.position = position, .color = cell_color});
       }
     }
 

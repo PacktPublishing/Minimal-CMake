@@ -43,6 +43,7 @@ function(add_common_libraries TARGET_NAME)
             SDL2::SDL2
             SDL2::SDL2main
             bgfx::bgfx
+            bgfx::bx
             imgui-test-engine.cmake::imgui-test-engine.cmake)
 endfunction()
 
@@ -140,6 +141,7 @@ if(MC_GOL_APP_BUILD_TESTING)
                                                    src/viewport/screen.test.cpp)
   target_link_libraries(${PROJECT_NAME}-unit-test Catch2::Catch2WithMain
                         as-c-math)
+  target_compile_features(${PROJECT_NAME}-unit-test PRIVATE cxx_std_20)
 
   add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
 
