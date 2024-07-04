@@ -138,8 +138,8 @@ bool ImGui_Implbgfx_CreateFontsTexture() {
 bool ImGui_Implbgfx_CreateDeviceObjects() {
   bgfx_renderer_type renderer_type = bgfx_get_renderer_type();
 
-  const bgfx_memory_t* vs_mem;
-  const bgfx_memory_t* fs_mem;
+  const bgfx_memory_t* vs_mem = nullptr;
+  const bgfx_memory_t* fs_mem = nullptr;
 
   switch (renderer_type) {
     case BGFX_RENDERER_TYPE_DIRECT3D11:
