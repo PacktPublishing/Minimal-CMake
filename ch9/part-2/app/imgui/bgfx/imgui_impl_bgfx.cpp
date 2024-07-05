@@ -1,7 +1,7 @@
 // Derived from this Gist by Richard Gale:
 //     https://gist.github.com/RichardGale/6e2b74bc42b3005e08397236e4be0fd0
 
-// ImGui BFFX binding
+// ImGui bgfx binding
 // In this binding, ImTextureID is used to store an OpenGL 'GLuint' texture
 // identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
@@ -13,28 +13,26 @@
 // https://github.com/ocornut/imgui
 
 #include "imgui_impl_bgfx.h"
-#include "imgui.h"
+#include <imgui.h>
 
-// BGFX/BX
-#include "bgfx/bgfx.h"
-#include "bgfx/embedded_shader.h"
-#include "bx/math.h"
-#include "bx/timer.h"
+// bgfx/bx
+#include <bgfx/c99/bgfx.h>
+#include <bx/math.h>
+#include <stdio.h>
 
 // Data
 static uint8_t g_View = 255;
-static bgfx::TextureHandle g_FontTexture = BGFX_INVALID_HANDLE;
-static bgfx::ProgramHandle g_ShaderHandle = BGFX_INVALID_HANDLE;
-static bgfx::UniformHandle g_AttribLocationTex = BGFX_INVALID_HANDLE;
-static bgfx::VertexLayout g_VertexLayout;
+static bgfx_texture_handle_t g_FontTexture = BGFX_INVALID_HANDLE;
+static bgfx_program_handle_t g_ShaderHandle = BGFX_INVALID_HANDLE;
+static bgfx_uniform_handle_t g_AttribLocationTex = BGFX_INVALID_HANDLE;
+static bgfx_vertex_layout_t g_VertexLayout;
 
 // This is the main rendering function that you have to implement and call after
 // ImGui::Render(). Pass ImGui::GetDrawData() to this function.
 // Note: If text or lines are blurry when integrating ImGui into your engine,
 // in your Render function, try translating your projection matrix by
 // (0.5f,0.5f) or (0.375f,0.375f)
-void ImGui_Implbgfx_RenderDrawLists(ImDrawData* draw_data)
-{
+void ImGui_Implbgfx_RenderDrawLists(ImDrawData* draw_data) {
   // Avoid rendering when minimized, scale coordinates for retina displays
   // (screen coordinates != framebuffer coordinates)
   ImGuiIO& io = ImGui::GetIO();
@@ -53,36 +51,36 @@ void ImGui_Implbgfx_RenderDrawLists(ImDrawData* draw_data)
     | BGFX_STATE_BLEND_FUNC(
       BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA);
 
-  const bgfx::Caps* caps = bgfx::getCaps();
+  const bgfx_caps_t* caps = bgfx_get_caps();
 
   // Setup viewport, orthographic projection matrix
   float ortho[16];
   bx::mtxOrtho(
     ortho, 0.0f, io.DisplaySize.x, io.DisplaySize.y, 0.0f, 0.0f, 1000.0f, 0.0f,
     caps->homogeneousDepth);
-  bgfx::setViewTransform(g_View, NULL, ortho);
-  bgfx::setViewRect(g_View, 0, 0, (uint16_t)fb_width, (uint16_t)fb_height);
+  bgfx_set_view_transform(g_View, NULL, ortho);
+  bgfx_set_view_rect(g_View, 0, 0, (uint16_t)fb_width, (uint16_t)fb_height);
 
   // Render command lists
   for (int n = 0; n < draw_data->CmdListsCount; n++) {
     const ImDrawList* cmd_list = draw_data->CmdLists[n];
 
-    bgfx::TransientVertexBuffer tvb;
-    bgfx::TransientIndexBuffer tib;
+    bgfx_transient_vertex_buffer_t tvb;
+    bgfx_transient_index_buffer_t tib;
 
     uint32_t numVertices = (uint32_t)cmd_list->VtxBuffer.size();
     uint32_t numIndices = (uint32_t)cmd_list->IdxBuffer.size();
 
     if (
       (numVertices
-       != bgfx::getAvailTransientVertexBuffer(numVertices, g_VertexLayout))
-      || (numIndices != bgfx::getAvailTransientIndexBuffer(numIndices))) {
+       != bgfx_get_avail_transient_vertex_buffer(numVertices, &g_VertexLayout))
+      || (numIndices != bgfx_get_avail_transient_index_buffer(numIndices, false))) {
       // not enough space in transient buffer, quit drawing the rest...
       break;
     }
 
-    bgfx::allocTransientVertexBuffer(&tvb, numVertices, g_VertexLayout);
-    bgfx::allocTransientIndexBuffer(&tib, numIndices);
+    bgfx_alloc_transient_vertex_buffer(&tvb, numVertices, &g_VertexLayout);
+    bgfx_alloc_transient_index_buffer(&tib, numIndices, false);
 
     ImDrawVert* verts = (ImDrawVert*)tvb.data;
     memcpy(
@@ -100,24 +98,23 @@ void ImGui_Implbgfx_RenderDrawLists(ImDrawData* draw_data)
       } else {
         const uint16_t xx = (uint16_t)bx::max(pcmd->ClipRect.x, 0.0f);
         const uint16_t yy = (uint16_t)bx::max(pcmd->ClipRect.y, 0.0f);
-        bgfx::setScissor(
+        bgfx_set_scissor(
           xx, yy, (uint16_t)bx::min(pcmd->ClipRect.z, 65535.0f) - xx,
           (uint16_t)bx::min(pcmd->ClipRect.w, 65535.0f) - yy);
 
-        bgfx::setState(state);
-        bgfx::TextureHandle texture = {
+        bgfx_set_state(state, 0);
+        bgfx_texture_handle_t texture = {
           (uint16_t)((intptr_t)pcmd->TextureId & 0xffff)};
-        bgfx::setTexture(0, g_AttribLocationTex, texture);
-        bgfx::setVertexBuffer(0, &tvb, 0, numVertices);
-        bgfx::setIndexBuffer(&tib, pcmd->IdxOffset, pcmd->ElemCount);
-        bgfx::submit(g_View, g_ShaderHandle);
+        bgfx_set_texture(0, g_AttribLocationTex, texture, UINT32_MAX);
+        bgfx_set_transient_vertex_buffer(0, &tvb, 0, numVertices);
+        bgfx_set_transient_index_buffer(&tib, pcmd->IdxOffset, pcmd->ElemCount);
+        bgfx_submit(g_View, g_ShaderHandle, 0, BGFX_DISCARD_ALL);
       }
     }
   }
 }
 
-bool ImGui_Implbgfx_CreateFontsTexture()
-{
+bool ImGui_Implbgfx_CreateFontsTexture() {
   // Build texture atlas
   ImGuiIO& io = ImGui::GetIO();
   unsigned char* pixels;
@@ -125,9 +122,9 @@ bool ImGui_Implbgfx_CreateFontsTexture()
   io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
 
   // Upload texture to graphics system
-  g_FontTexture = bgfx::createTexture2D(
-    (uint16_t)width, (uint16_t)height, false, 1, bgfx::TextureFormat::BGRA8, 0,
-    bgfx::copy(pixels, width * height * 4));
+  g_FontTexture = bgfx_create_texture_2d(
+    (uint16_t)width, (uint16_t)height, false, 1, BGFX_TEXTURE_FORMAT_BGRA8, 0,
+    bgfx_copy(pixels, width * height * 4));
 
   // Store our identifier
   io.Fonts->TexID = (void*)(intptr_t)g_FontTexture.idx;
@@ -138,57 +135,82 @@ bool ImGui_Implbgfx_CreateFontsTexture()
 #include "fs_ocornut_imgui.bin.h"
 #include "vs_ocornut_imgui.bin.h"
 
-static const bgfx::EmbeddedShader s_embeddedShaders[] = {
-  BGFX_EMBEDDED_SHADER(vs_ocornut_imgui),
-  BGFX_EMBEDDED_SHADER(fs_ocornut_imgui), BGFX_EMBEDDED_SHADER_END()};
+bool ImGui_Implbgfx_CreateDeviceObjects() {
+  bgfx_renderer_type renderer_type = bgfx_get_renderer_type();
 
-bool ImGui_Implbgfx_CreateDeviceObjects()
-{
-  bgfx::RendererType::Enum type = bgfx::getRendererType();
-  g_ShaderHandle = bgfx::createProgram(
-    bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_ocornut_imgui"),
-    bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_ocornut_imgui"),
-    true);
+  const bgfx_memory_t* vs_mem = nullptr;
+  const bgfx_memory_t* fs_mem = nullptr;
 
-  g_VertexLayout.begin()
-    .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
-    .add(bgfx::Attrib::TexCoord0, 2, bgfx::AttribType::Float)
-    .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Uint8, true)
-    .end();
+  switch (renderer_type) {
+    case BGFX_RENDERER_TYPE_DIRECT3D11:
+      vs_mem =
+        bgfx_make_ref(vs_ocornut_imgui_dx11, sizeof(vs_ocornut_imgui_dx11));
+      fs_mem =
+        bgfx_make_ref(fs_ocornut_imgui_dx11, sizeof(fs_ocornut_imgui_dx11));
+      break;
+    case BGFX_RENDERER_TYPE_OPENGL:
+      vs_mem =
+        bgfx_make_ref(vs_ocornut_imgui_glsl, sizeof(vs_ocornut_imgui_glsl));
+      fs_mem =
+        bgfx_make_ref(fs_ocornut_imgui_glsl, sizeof(fs_ocornut_imgui_glsl));
+      break;
+    case BGFX_RENDERER_TYPE_METAL:
+      vs_mem =
+        bgfx_make_ref(vs_ocornut_imgui_mtl, sizeof(vs_ocornut_imgui_mtl));
+      fs_mem =
+        bgfx_make_ref(fs_ocornut_imgui_mtl, sizeof(fs_ocornut_imgui_mtl));
+      break;
+    default:
+      fprintf(stderr, "Unsupported renderer");
+      exit(0);
+      break;
+  }
+
+  bgfx_shader_handle_t vsh = bgfx_create_shader(vs_mem);
+  bgfx_shader_handle_t fsh = bgfx_create_shader(fs_mem);
+  g_ShaderHandle = bgfx_create_program(vsh, fsh, true);
+
+  bgfx_vertex_layout_begin(&g_VertexLayout, renderer_type);
+  bgfx_vertex_layout_add(
+    &g_VertexLayout, BGFX_ATTRIB_POSITION, 2, BGFX_ATTRIB_TYPE_FLOAT, false,
+    false);
+  bgfx_vertex_layout_add(
+    &g_VertexLayout, BGFX_ATTRIB_TEXCOORD0, 2, BGFX_ATTRIB_TYPE_FLOAT, true,
+    false);
+  bgfx_vertex_layout_add(
+    &g_VertexLayout, BGFX_ATTRIB_COLOR0, 4, BGFX_ATTRIB_TYPE_UINT8, true,
+    false);
+  bgfx_vertex_layout_end(&g_VertexLayout);
 
   g_AttribLocationTex =
-    bgfx::createUniform("g_AttribLocationTex", bgfx::UniformType::Sampler);
+    bgfx_create_uniform("g_AttribLocationTex", BGFX_UNIFORM_TYPE_SAMPLER, 1);
 
   ImGui_Implbgfx_CreateFontsTexture();
 
   return true;
 }
 
-void ImGui_Implbgfx_InvalidateDeviceObjects()
-{
-  bgfx::destroy(g_AttribLocationTex);
-  bgfx::destroy(g_ShaderHandle);
+void ImGui_Implbgfx_InvalidateDeviceObjects() {
+  bgfx_destroy_uniform(g_AttribLocationTex);
+  bgfx_destroy_program(g_ShaderHandle);
 
-  if (isValid(g_FontTexture)) {
-    bgfx::destroy(g_FontTexture);
+  if (BGFX_HANDLE_IS_VALID(g_FontTexture)) {
+    bgfx_destroy_texture(g_FontTexture);
     ImGui::GetIO().Fonts->TexID = 0;
-    g_FontTexture.idx = bgfx::kInvalidHandle;
+    g_FontTexture.idx = BGFX_INVALID_HANDLE;
   }
 }
 
-void ImGui_Implbgfx_Init(int view)
-{
+void ImGui_Implbgfx_Init(int view) {
   g_View = (uint8_t)(view & 0xff);
 }
 
-void ImGui_Implbgfx_Shutdown()
-{
+void ImGui_Implbgfx_Shutdown() {
   ImGui_Implbgfx_InvalidateDeviceObjects();
 }
 
-void ImGui_Implbgfx_NewFrame()
-{
-  if (!isValid(g_FontTexture)) {
+void ImGui_Implbgfx_NewFrame() {
+  if (!BGFX_HANDLE_IS_VALID(g_FontTexture)) {
     ImGui_Implbgfx_CreateDeviceObjects();
   }
 }
