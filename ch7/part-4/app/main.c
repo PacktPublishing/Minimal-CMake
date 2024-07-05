@@ -310,9 +310,9 @@ int main(int argc, char** argv) {
                 (as_vec3f){.x = 0.5f, .y = -0.5f});
               if (
                 position.x > cell_top_left_corner.x
-                && position.x < cell_top_left_corner.x + 1.0f
+                && position.x <= cell_top_left_corner.x + 1.0f
                 && position.y < cell_top_left_corner.y
-                && position.y > cell_top_left_corner.y - 1.0f) {
+                && position.y >= cell_top_left_corner.y - 1.0f) {
                 pressed_cell = true;
                 mc_gol_set_board_cell(
                   board, x, y, !mc_gol_board_cell(board, x, y));
