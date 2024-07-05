@@ -12,6 +12,10 @@
 #include <minimal-cmake/draw/pos-color-quad.h>
 #include <minimal-cmake/draw/pos-color-vertex.h>
 
+#if defined(Status)
+#	undef Status
+#endif // defined(Status)
+
 #include <imgui_te_engine.h>
 #include <imgui_te_exporters.h>
 #include <imgui_te_ui.h>
