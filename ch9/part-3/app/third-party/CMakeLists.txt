@@ -44,7 +44,7 @@ ExternalProject_Add(
 ExternalProject_Add(
   bgfxt
   GIT_REPOSITORY https://github.com/bkaradzic/bgfx.cmake.git
-  GIT_TAG v1.127.8710-464
+  GIT_TAG v1.127.8765-472
   GIT_SHALLOW TRUE
   PREFIX ${PREFIX_DIR}/bgfxt
   BINARY_DIR ${PREFIX_DIR}/bgfxt/build/${build_type_dir}

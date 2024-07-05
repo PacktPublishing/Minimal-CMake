@@ -39,6 +39,7 @@ target_link_libraries(
           SDL2::SDL2
           SDL2::SDL2main
           bgfx::bgfx
+          bgfx::bx
           imgui.cmake::imgui.cmake)
 
 set_target_properties(

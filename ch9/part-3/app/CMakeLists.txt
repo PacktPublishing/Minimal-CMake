@@ -41,6 +41,7 @@ function(add_common_libraries TARGET_NAME)
             SDL2::SDL2
             SDL2::SDL2main
             bgfx::bgfx
+            bgfx::bx
             imgui-test-engine.cmake::imgui-test-engine.cmake)
 endfunction()
 

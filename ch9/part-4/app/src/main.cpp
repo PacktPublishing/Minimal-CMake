@@ -13,7 +13,7 @@
 #include <minimal-cmake/draw/pos-color-vertex.h>
 
 #if defined(Status)
-#	undef Status
+#undef Status
 #endif // defined(Status)
 
 #include <imgui_te_engine.h>
