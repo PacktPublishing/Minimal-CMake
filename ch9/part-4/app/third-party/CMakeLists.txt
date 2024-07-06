@@ -7,6 +7,7 @@ include(ExternalProject)
 # options to pass through to third-party libraries
 option(MC_GOL_SHARED "Enable shared library for Game of Life" OFF)
 option(MC_DRAW_SHARED "Enable shared library for Draw" OFF)
+option(MC_GOL_APP_BUILD_TESTING "Enable testing" OFF)
 
 get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT isMultiConfig)
@@ -110,10 +111,26 @@ ExternalProject_Add(
              -DMC_GOL_SHARED=${MC_GOL_SHARED}
   CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
 
+if(MC_GOL_APP_BUILD_TESTING)
+  ExternalProject_Add(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.6.0
+    PREFIX ${PREFIX_DIR}/Catch2
+    BINARY_DIR ${PREFIX_DIR}/Catch2/build/${build_type_dir}
+    INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install
+    CMAKE_ARGS ${build_type_arg} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+    CMAKE_CACHE_ARGS -DCMAKE_DEBUG_POSTFIX:STRING=d)
+endif()
+
 if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
+  if(MC_GOL_APP_BUILD_TESTING)
+    set(TEST_DEPENDENCIES Catch2)
+  endif()
   ExternalProject_Add(
     ${CMAKE_PROJECT_NAME}_superbuild
     DEPENDS SDL2 bgfx imgui-test-engine.cmake mc-gol mc-draw
+            ${TEST_DEPENDENCIES}
     SOURCE_DIR ${CMAKE_SOURCE_DIR}
     BINARY_DIR ${CMAKE_BINARY_DIR}
     CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DSUPERBUILD=OFF

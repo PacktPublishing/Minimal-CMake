@@ -113,7 +113,6 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
 
 if(MC_GOL_APP_BUILD_TESTING)
   include(CTest)
-  include(FetchContent)
   add_executable(${PROJECT_NAME}-test)
   add_common_sources(${PROJECT_NAME}-test)
   add_common_libraries(${PROJECT_NAME}-test)
@@ -131,11 +130,7 @@ if(MC_GOL_APP_BUILD_TESTING)
     COMMAND ${PROJECT_NAME}-test
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-  FetchContent_Declare(
-    Catch2
-    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    GIT_TAG v3.6.0)
-  FetchContent_MakeAvailable(Catch2)
+  find_package(Catch2 REQUIRED CONFIG)
   add_executable(${PROJECT_NAME}-unit-test)
   target_sources(${PROJECT_NAME}-unit-test PRIVATE src/viewport/screen.cpp
                                                    src/viewport/screen.test.cpp)
