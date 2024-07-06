@@ -141,8 +141,8 @@ if(MC_GOL_APP_BUILD_TESTING)
   add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
   # cmake-format: off
   # example of using PASS_REGULAR_EXPRESSION property for pass/fail check
-  # set_property(TEST "game of life unit tests" PROPERTY PASS_REGULAR_EXPRESSION
-  #                                                      "All tests passed")
+  # set_tests_properties("game of life unit tests"
+  #                     PROPERTIES PASS_REGULAR_EXPRESSION "All tests passed")
   # cmake-format: on
 
   add_test(
