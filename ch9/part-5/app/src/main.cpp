@@ -12,6 +12,10 @@
 #include <minimal-cmake/draw/pos-color-quad.h>
 #include <minimal-cmake/draw/pos-color-vertex.h>
 
+#if defined(Status)
+#undef Status
+#endif // defined(Status)
+
 #include <imgui_te_engine.h>
 #include <imgui_te_exporters.h>
 #include <imgui_te_ui.h>
@@ -65,14 +69,14 @@ static bgfx_shader_handle_t create_shader(
   const char* shader, const int size, const char* name) {
   const bgfx_memory_t* mem = bgfx_copy(shader, size);
   const bgfx_shader_handle_t handle = bgfx_create_shader(mem);
-  bgfx_set_shader_name(handle, name, strlen(name));
+  bgfx_set_shader_name(handle, name, static_cast<int>(strlen(name)));
   return handle;
 }
 
 double seconds_elapsed(
   const uint64_t previous_counter, const uint64_t current_counter) {
-  return (double)(current_counter - previous_counter)
-       / (double)SDL_GetPerformanceFrequency();
+  return static_cast<double>(current_counter - previous_counter)
+       / static_cast<double>(SDL_GetPerformanceFrequency());
 }
 
 void clear_board(mc_gol_board_t* board) {
@@ -154,7 +158,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  const as_vec2i screen_dimensions = (as_vec2i){.x = 800, .y = 600};
+  const as_vec2i screen_dimensions = as_vec2i{.x = 800, .y = 600};
   SDL_Window* window = SDL_CreateWindow(
     argv[0], SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     screen_dimensions.x, screen_dimensions.y, SDL_WINDOW_SHOWN);
@@ -243,10 +247,10 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  const bgfx_shader_handle_t vertex_shader =
-    create_shader(vs_shader.data(), vs_shader.size(), "vs_shader");
-  const bgfx_shader_handle_t fragment_shader =
-    create_shader(fs_shader.data(), fs_shader.size(), "fs_shader");
+  const bgfx_shader_handle_t vertex_shader = create_shader(
+    vs_shader.data(), static_cast<int>(vs_shader.size()), "vs_shader");
+  const bgfx_shader_handle_t fragment_shader = create_shader(
+    fs_shader.data(), static_cast<int>(fs_shader.size()), "fs_shader");
   const bgfx_program_handle_t program =
     bgfx_create_program(vertex_shader, fragment_shader, true);
 
@@ -268,16 +272,16 @@ int main(int argc, char** argv) {
   bool simulating = true;
   const float zoom = 20.0f;
   const as_mat44f identity = as_mat44f_identity();
-  const float aspect_ratio =
-    (float)screen_dimensions.x / (float)screen_dimensions.y;
+  const float aspect_ratio = static_cast<float>(screen_dimensions.x)
+                           / static_cast<float>(screen_dimensions.y);
   const as_mat44f orthographic_projection = as_mat44f_transpose_v(
     as_mat44f_orthographic_projection_depth_zero_to_one_lh(
       -zoom * aspect_ratio, zoom * aspect_ratio, -zoom, zoom, 0.0f, 1.0f));
   bgfx_set_view_transform(0, identity.elem, orthographic_projection.elem);
 
-  const float board_width = (float)mc_gol_board_width(board);
-  const float board_height = (float)mc_gol_board_height(board);
-  const as_vec3f board_top_left_cell_center = (as_vec3f){
+  const float board_width = static_cast<float>(mc_gol_board_width(board));
+  const float board_height = static_cast<float>(mc_gol_board_height(board));
+  const as_vec3f board_top_left_cell_center = as_vec3f{
     .x = (-board_width * 0.5f) + 0.5f, .y = (board_height * 0.5f) - 0.5f};
 
   float delay = 0.1f;
@@ -303,8 +307,11 @@ int main(int argc, char** argv) {
           const as_vec3f cell_top_left_corner = as_vec3f_sub_vec3f(
             as_vec3f_add_vec3f(
               board_top_left_cell_center,
-              (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f}),
-            (as_vec3f){.x = 0.5f, .y = -0.5f});
+              as_vec3f{
+                .x = static_cast<float>(x),
+                .y = static_cast<float>(-y),
+                .z = 0.5f}),
+            as_vec3f{.x = 0.5f, .y = -0.5f});
           if (
             position.x > cell_top_left_corner.x
             && position.x <= cell_top_left_corner.x + 1.0f
@@ -389,44 +396,44 @@ int main(int argc, char** argv) {
     // horizontal lines
     for (int32_t y = 0; y <= board_height; ++y) {
       const as_vec3f board_top_left_cell_corner =
-        (as_vec3f){.x = -board_width * 0.5f, .y = board_height * 0.5f};
+        as_vec3f{.x = -board_width * 0.5f, .y = board_height * 0.5f};
       pos_color_lines_add_line(
         pos_color_lines,
-        (pos_color_line_t){
+        pos_color_line_t{
           .begin =
-            (pos_color_vertex_t){
+            pos_color_vertex_t{
               .pos = as_vec3f_sub_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.y = 1.0f}, (float)y)),
+                as_vec3f_mul_float(as_vec3f{.y = 1.0f}, static_cast<float>(y))),
               .abgr = line_color},
-          .end = (pos_color_vertex_t){
+          .end = pos_color_vertex_t{
             .pos = as_vec3f_add_vec3f(
               as_vec3f_sub_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.y = 1.0f}, (float)y)),
-              (as_vec3f){board_width, 0.0f, 0.0f}),
+                as_vec3f_mul_float(as_vec3f{.y = 1.0f}, static_cast<float>(y))),
+              as_vec3f{board_width, 0.0f, 0.0f}),
             .abgr = line_color}});
     }
 
     // vertical lines
     for (int32_t x = 0; x <= board_width; ++x) {
       const as_vec3f board_top_left_cell_corner =
-        (as_vec3f){.x = -board_width * 0.5f, .y = board_height * 0.5f};
+        as_vec3f{.x = -board_width * 0.5f, .y = board_height * 0.5f};
       pos_color_lines_add_line(
         pos_color_lines,
-        (pos_color_line_t){
+        pos_color_line_t{
           .begin =
-            (pos_color_vertex_t){
+            pos_color_vertex_t{
               .pos = as_vec3f_add_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.x = 1.0f}, (float)x)),
+                as_vec3f_mul_float(as_vec3f{.x = 1.0f}, static_cast<float>(x))),
               .abgr = line_color},
-          .end = (pos_color_vertex_t){
+          .end = pos_color_vertex_t{
             .pos = as_vec3f_add_vec3f(
               as_vec3f_add_vec3f(
                 board_top_left_cell_corner,
-                as_vec3f_mul_float((as_vec3f){.x = 1.0f}, (float)x)),
-              (as_vec3f){0.0f, -board_height, 0.0f}),
+                as_vec3f_mul_float(as_vec3f{.x = 1.0f}, static_cast<float>(x))),
+              as_vec3f{0.0f, -board_height, 0.0f}),
             .abgr = line_color}});
     }
 
@@ -435,14 +442,16 @@ int main(int argc, char** argv) {
       for (int32_t x = 0; x < board_width; x++) {
         const color4f_t cell_color =
           mc_gol_board_cell(board, x, y)
-            ? (color4f_t){.r = 0.95f, .g = 0.71f, .b = 0.41f, .a = 1.0f}
-            : (color4f_t){.r = 0.33f, .g = 0.48f, .b = 0.67f, .a = 1.0f};
+            ? color4f_t{.r = 0.95f, .g = 0.71f, .b = 0.41f, .a = 1.0f}
+            : color4f_t{.r = 0.33f, .g = 0.48f, .b = 0.67f, .a = 1.0f};
         const as_vec3f position = as_vec3f_add_vec3f(
-          board_top_left_cell_center,
-          (as_vec3f){.x = (float)x, .y = (float)-y, .z = 0.5f});
+          board_top_left_cell_center, as_vec3f{
+                                        .x = static_cast<float>(x),
+                                        .y = static_cast<float>(-y),
+                                        .z = 0.5f});
         pos_color_quads_add_quad(
           pos_color_quads,
-          (pos_color_quad_t){.position = position, .color = cell_color});
+          pos_color_quad_t{.position = position, .color = cell_color});
       }
     }
 
