@@ -125,6 +125,9 @@ if(MC_GOL_APP_BUILD_TESTING)
       MC_GOL_APP_BUILD_TESTING
       $<$<BOOL:${MC_GOL_APP_INTERACTIVE_TESTING}>:MC_GOL_APP_INTERACTIVE_TESTING>
   )
+  target_compile_options(${PROJECT_NAME}-test PRIVATE -fprofile-arcs
+                                                      -ftest-coverage)
+  target_link_options(${PROJECT_NAME}-test PRIVATE -coverage)
   add_test(
     NAME "game of life end-to-end tests"
     COMMAND ${PROJECT_NAME}-test
@@ -137,6 +140,9 @@ if(MC_GOL_APP_BUILD_TESTING)
   target_link_libraries(${PROJECT_NAME}-unit-test Catch2::Catch2WithMain
                         as-c-math)
   target_compile_features(${PROJECT_NAME}-unit-test PRIVATE cxx_std_20)
+  target_compile_options(${PROJECT_NAME}-unit-test PRIVATE -fprofile-arcs
+                                                           -ftest-coverage)
+  target_link_options(${PROJECT_NAME}-unit-test PRIVATE -coverage)
 
   add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
   # cmake-format: off
