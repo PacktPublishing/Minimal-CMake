@@ -317,6 +317,7 @@ int main(int argc, char** argv) {
   const as_vec3f board_top_left_cell_center = as_vec3f{
     .x = (-board_width * 0.5f) + 0.5f, .y = (board_height * 0.5f) - 0.5f};
 
+  int return_code = 0;
   float delay = 0.1f;
   double timer = 0.0;
   double previous_frame_time = SDL_GetPerformanceFrequency();
@@ -405,10 +406,9 @@ int main(int argc, char** argv) {
       ImGuiTestEngine_GetResult(engine, count_tested, count_success);
       ImGuiTestEngine_PrintResultSummary(engine);
       if (count_tested != count_success) {
-        return 1;
-      } else {
-        return 0;
+        return_code = 1;
       }
+      running = false;
     }
 #endif // MC_GOL_APP_INTERACTIVE_TESTING
 #endif // MC_GOL_APP_BUILD_TESTING
@@ -521,5 +521,5 @@ int main(int argc, char** argv) {
   SDL_DestroyWindow(window);
   SDL_Quit();
 
-  return 0;
+  return return_code;
 }
