@@ -139,6 +139,11 @@ if(MC_GOL_APP_BUILD_TESTING)
   target_compile_features(${PROJECT_NAME}-unit-test PRIVATE cxx_std_20)
 
   add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
+  # cmake-format: off
+  # example of using PASS_REGULAR_EXPRESSION property for pass/fail check
+  # set_property(TEST "game of life unit tests" PROPERTY PASS_REGULAR_EXPRESSION
+  #                                                      "All tests passed")
+  # cmake-format: on
 
   add_test(
     NAME "shaders compiled"
