@@ -112,6 +112,13 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
         DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
 
 if(MC_GOL_APP_BUILD_TESTING)
+  function(enable_coverage TARGET_NAME)
+    set(coverage_flags
+        "$<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:--coverage>"
+    )
+    target_compile_options(${TARGET_NAME} PRIVATE ${coverage_flags})
+    target_link_options(${TARGET_NAME} PRIVATE ${coverage_flags})
+  endfunction()
   include(CTest)
   add_executable(${PROJECT_NAME}-test)
   add_common_sources(${PROJECT_NAME}-test)
@@ -125,9 +132,7 @@ if(MC_GOL_APP_BUILD_TESTING)
       MC_GOL_APP_BUILD_TESTING
       $<$<BOOL:${MC_GOL_APP_INTERACTIVE_TESTING}>:MC_GOL_APP_INTERACTIVE_TESTING>
   )
-  target_compile_options(${PROJECT_NAME}-test PRIVATE -fprofile-arcs
-                                                      -ftest-coverage)
-  target_link_options(${PROJECT_NAME}-test PRIVATE -coverage)
+  enable_coverage(${PROJECT_NAME}-test)
   add_test(
     NAME "game of life end-to-end tests"
     COMMAND ${PROJECT_NAME}-test
@@ -140,9 +145,7 @@ if(MC_GOL_APP_BUILD_TESTING)
   target_link_libraries(${PROJECT_NAME}-unit-test Catch2::Catch2WithMain
                         as-c-math)
   target_compile_features(${PROJECT_NAME}-unit-test PRIVATE cxx_std_20)
-  target_compile_options(${PROJECT_NAME}-unit-test PRIVATE -fprofile-arcs
-                                                           -ftest-coverage)
-  target_link_options(${PROJECT_NAME}-unit-test PRIVATE -coverage)
+  enable_coverage(${PROJECT_NAME}-unit-test)
 
   add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
   # cmake-format: off
@@ -155,4 +158,7 @@ if(MC_GOL_APP_BUILD_TESTING)
     NAME "shaders compiled"
     COMMAND ${CMAKE_COMMAND} -P tests/shaders-compiled.cmake
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+  configure_file(CTestCustom.cmake.in ${CMAKE_BINARY_DIR}/CTestCustom.cmake
+                 COPYONLY)
 endif()
