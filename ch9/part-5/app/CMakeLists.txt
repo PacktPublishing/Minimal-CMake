@@ -148,11 +148,6 @@ if(MC_GOL_APP_BUILD_TESTING)
   enable_coverage(${PROJECT_NAME}-unit-test)
 
   add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
-  # cmake-format: off
-  # example of using PASS_REGULAR_EXPRESSION property for pass/fail check
-  # set_tests_properties("game of life unit tests"
-  #                      PROPERTIES PASS_REGULAR_EXPRESSION "All tests passed")
-  # cmake-format: on
 
   add_test(
     NAME "shaders compiled"
