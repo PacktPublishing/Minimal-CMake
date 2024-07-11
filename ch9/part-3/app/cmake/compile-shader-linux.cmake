@@ -1,4 +1,11 @@
-get_filename_component(COMPILE_SHADER_DIR ${CMAKE_SCRIPT_MODE_FILE} DIRECTORY)
+if(NOT CMAKE_SCRIPT_MODE_FILE)
+  message(
+    WARNING
+      "This script cannot be included, it must be executed using `cmake -P`")
+  return()
+endif()
+
+cmake_path(GET CMAKE_SCRIPT_MODE_FILE PARENT_PATH COMPILE_SHADER_DIR)
 cmake_path(GET COMPILE_SHADER_DIR PARENT_PATH COMPILE_SHADER_WORKING_DIR)
 
 option(USE_VERBOSE_SHADER_OUTPUT "Show output from shader compilation" OFF)
