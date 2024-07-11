@@ -37,11 +37,8 @@ target_link_libraries(
           SDL2::SDL2main bgfx::bgfx as-c-math)
 
 set_target_properties(
-  ${PROJECT_NAME}
-  PROPERTIES
-    BUILD_RPATH
-    $<IF:$<PLATFORM_ID:Linux>,$ORIGIN,$<IF:$<PLATFORM_ID:Darwin>,@loader_path,>>
-)
+  ${PROJECT_NAME} PROPERTIES BUILD_RPATH $<$<PLATFORM_ID:Linux>:$ORIGIN>
+                             BUILD_RPATH $<$<PLATFORM_ID:Darwin>:@loader_path>)
 
 if(WIN32)
   # copy dlls to the same folder as the executable
