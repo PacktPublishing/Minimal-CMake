@@ -25,7 +25,13 @@ if(NOT isMultiConfig)
 endif()
 
 if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
-  set(PREFIX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
+  set(THIRD_PARTY_BINARY_DIR
+      "${CMAKE_SOURCE_DIR}/build-third-party"
+      CACHE STRING "Third-party build folder")
+  if(NOT IS_ABSOLUTE ${THIRD_PARTY_BINARY_DIR})
+    set(THIRD_PARTY_BINARY_DIR "${CMAKE_SOURCE_DIR}/${THIRD_PARTY_BINARY_DIR}")
+  endif()
+  set(PREFIX_DIR ${THIRD_PARTY_BINARY_DIR})
 else()
   set(PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR})
 endif()
