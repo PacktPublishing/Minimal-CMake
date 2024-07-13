@@ -20,7 +20,16 @@ if(NOT isMultiConfig)
 endif()
 
 if(SUPERBUILD AND NOT PROJECT_IS_TOP_LEVEL)
-  set(PREFIX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
+  # cache variable, set to `full/path/to.../third-party/build` by default
+  set(THIRD_PARTY_BINARY_DIR
+      "${CMAKE_SOURCE_DIR}/build-third-party"
+      CACHE STRING "Third-party build folder")
+  # if the user provides an override, handle the case where it's a relative path
+  # note: this also works with use of `~/` on macOS and Linux
+  if(NOT IS_ABSOLUTE ${THIRD_PARTY_BINARY_DIR})
+    set(THIRD_PARTY_BINARY_DIR "${CMAKE_SOURCE_DIR}/${THIRD_PARTY_BINARY_DIR}")
+  endif()
+  set(PREFIX_DIR ${THIRD_PARTY_BINARY_DIR})
 else()
   set(PREFIX_DIR ${CMAKE_CURRENT_BINARY_DIR})
 endif()
