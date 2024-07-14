@@ -61,6 +61,9 @@ add_common_sources(${PROJECT_NAME})
 add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+# set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
+# set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION
+# "MacOS")
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT
@@ -98,6 +101,7 @@ add_custom_command(
   VERBATIM)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+# BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(
   FILES
     $<TARGET_FILE:SDL2::SDL2>
@@ -157,3 +161,12 @@ if(MC_GOL_APP_BUILD_TESTING)
   configure_file(CTestCustom.cmake.in ${CMAKE_BINARY_DIR}/CTestCustom.cmake
                  COPYONLY)
 endif()
+
+set(CPACK_PACKAGE_NAME "mc-game-of-life")
+set(CPACK_BUNDLE_NAME "mc-game-of-life-bundle")
+set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/info.plist")
+set(CPACK_BUNDLE_ICON "gol.icns")
+set(CPACK_BUNDLE_STARTUP_COMMAND "run.sh")
+# set(CPACK_BUNDLE_STARTUP_COMMAND
+#     "install/bin/minimal-cmake_game-of-life_window")
+include(CPack)
