@@ -238,14 +238,28 @@ int main(int argc, char** argv) {
   const bgfx_vertex_layout_t pos_col_vert_layout =
     create_pos_col_vert_layout(renderer_type);
 
-  std::vector<char> vs_shader = read_file("shader/build/vs_vertcol.bin");
-  std::vector<char> fs_shader = read_file("shader/build/fs_vertcol.bin");
+  char* base_path = SDL_GetBasePath();
+  const char* vs_shader_path = "shader/build/vs_vertcol.bin";
+  const char* fs_shader_path = "shader/build/fs_vertcol.bin";
+
+  std::string vs_shader_full_path;
+  vs_shader_full_path.append(base_path);
+  vs_shader_full_path.append(vs_shader_path);
+
+  std::string fs_shader_full_path;
+  fs_shader_full_path.append(base_path);
+  fs_shader_full_path.append(fs_shader_path);
+
+  std::vector<char> vs_shader = read_file(vs_shader_full_path.c_str());
+  std::vector<char> fs_shader = read_file(fs_shader_full_path.c_str());
   if (vs_shader.empty() || fs_shader.empty()) {
     fprintf(
       stderr, "Shaders not found. Have you built them using "
               "compile-shader-<platform>.sh/bat script?\n");
     return 1;
   }
+
+  SDL_free(base_path);
 
   const bgfx_shader_handle_t vertex_shader = create_shader(
     vs_shader.data(), static_cast<int>(vs_shader.size()), "vs_shader");

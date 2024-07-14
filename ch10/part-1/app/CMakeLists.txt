@@ -98,6 +98,8 @@ add_custom_command(
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shader/build
+          $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader/build
   VERBATIM)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
@@ -168,5 +170,5 @@ set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/info.plist")
 set(CPACK_BUNDLE_ICON "gol.icns")
 set(CPACK_BUNDLE_STARTUP_COMMAND "run.sh")
 # set(CPACK_BUNDLE_STARTUP_COMMAND
-#     "install/bin/minimal-cmake_game-of-life_window")
+# "install/bin/minimal-cmake_game-of-life_window")
 include(CPack)
