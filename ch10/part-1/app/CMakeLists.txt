@@ -85,8 +85,13 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   VERBATIM)
 
-# copy dynamic libraries to the same folder as the executable and copy compiled
-# shaders to nested shader folder
+add_custom_target(create_frameworks_dir ALL
+  COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/../Frameworks
+  COMMENT "Creating Frameworks directory"
+)
+add_dependencies(${PROJECT_NAME} create_frameworks_dir)
+  
+# copy dynamic libraries to the same folder as the executable
 add_custom_command(
   TARGET ${PROJECT_NAME}
   POST_BUILD
@@ -98,9 +103,11 @@ add_custom_command(
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    # ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.app/Contents/Frameworks
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/../Frameworks
+    # $<TARGET_FILE_DIR:${PROJECT_NAME}>
   # COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shader/build
-  # $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader/build
+  #         $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader/build
   VERBATIM)
 
 set_source_files_properties(
@@ -113,15 +120,19 @@ target_sources(${PROJECT_NAME} PRIVATE shader/build/vs_vertcol.bin
 
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
-# install( FILES $<TARGET_FILE:SDL2::SDL2>
-# $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
-# $<TARGET_FILE:bgfx::bgfx>
-# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::game-of-life,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::game-of-life>>
-# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
-# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
-# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
-# DESTINATION ${CMAKE_INSTALL_BINDIR}) install(DIRECTORY
-# ${CMAKE_SOURCE_DIR}/shader/build DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
+# install(
+#   FILES
+#     $<TARGET_FILE:SDL2::SDL2>
+#     $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
+#     $<TARGET_FILE:bgfx::bgfx>
+#     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::game-of-life,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::game-of-life>>
+#     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
+#     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
+#     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
+#   DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+# install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
+#         DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
 
 set_target_properties(
   ${PROJECT_NAME}
