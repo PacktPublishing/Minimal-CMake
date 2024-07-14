@@ -61,6 +61,9 @@ add_common_sources(${PROJECT_NAME})
 add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
+# set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION
+# "MacOS")
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT
@@ -96,26 +99,39 @@ add_custom_command(
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shader/build
-          $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
+  # COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shader/build
+  # $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader/build
   VERBATIM)
 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(
-  FILES
-    $<TARGET_FILE:SDL2::SDL2>
-    $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
-    $<TARGET_FILE:bgfx::bgfx>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::game-of-life,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::game-of-life>>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
-  DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(
-  DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build/
-  DESTINATION ${CMAKE_INSTALL_BINDIR}/shader
-  FILES_MATCHING
-  PATTERN "*.bin")
+set_source_files_properties(
+  shader/build/vs_vertcol.bin shader/build/fs_vertcol.bin
+  PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/shader/build")
+set_source_files_properties(gol.icns PROPERTIES MACOSX_PACKAGE_LOCATION
+                                                "Resources")
+target_sources(${PROJECT_NAME} PRIVATE shader/build/vs_vertcol.bin
+                                       shader/build/fs_vertcol.bin gol.icns)
+
+install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
+
+# install( FILES $<TARGET_FILE:SDL2::SDL2>
+# $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
+# $<TARGET_FILE:bgfx::bgfx>
+# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::game-of-life,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::game-of-life>>
+# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
+# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
+# $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
+# DESTINATION ${CMAKE_INSTALL_BINDIR}) install(DIRECTORY
+# ${CMAKE_SOURCE_DIR}/shader/build DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
+
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "game-of-life"
+             MACOSX_BUNDLE_GUI_IDENTIFIER "com.minimal-cmake.game-of-life"
+             MACOSX_BUNDLE_INFO_STRING "Game of Life"
+             MACOSX_BUNDLE_ICON_FILE "gol.icns"
+             MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0"
+             MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
+             MACOSX_BUNDLE_BUNDLE_VERSION "1.0.0")
 
 if(MC_GOL_APP_BUILD_TESTING)
   function(enable_coverage TARGET_NAME)
@@ -165,8 +181,13 @@ if(MC_GOL_APP_BUILD_TESTING)
 endif()
 
 set(CPACK_PACKAGE_NAME "mc-game-of-life")
-set(CPACK_BUNDLE_NAME "mc-game-of-life-bundle")
-set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/info.plist")
-set(CPACK_BUNDLE_ICON "gol.icns")
-set(CPACK_BUNDLE_STARTUP_COMMAND "run.sh")
+set(CPACK_PACKAGE_ICON "gol.icns")
+
+# set(CPACK_DMG_INSTALL_FOLDER "/Applications")
+
+# set(CPACK_BUNDLE_NAME "mc-game-of-life-bundle") set(CPACK_BUNDLE_PLIST
+# "${CMAKE_SOURCE_DIR}/info.plist") set(CPACK_BUNDLE_ICON "gol.icns")
+# set(CPACK_BUNDLE_STARTUP_COMMAND "run.sh") set(CPACK_BUNDLE_STARTUP_COMMAND
+# "install/bin/minimal-cmake_game-of-life_window")
+
 include(CPack)
