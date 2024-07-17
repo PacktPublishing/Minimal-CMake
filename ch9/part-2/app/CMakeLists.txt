@@ -44,9 +44,10 @@ target_link_libraries(
 
 set_target_properties(
   ${PROJECT_NAME}
-  PROPERTIES INSTALL_RPATH $<$<PLATFORM_ID:Linux>:$ORIGIN>
-             INSTALL_RPATH $<$<PLATFORM_ID:Darwin>:@loader_path>
-             BUILD_WITH_INSTALL_RPATH TRUE)
+  PROPERTIES
+    INSTALL_RPATH
+    "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+    BUILD_WITH_INSTALL_RPATH TRUE)
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT

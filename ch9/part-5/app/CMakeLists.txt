@@ -50,9 +50,10 @@ endfunction()
 function(set_common_properties TARGET_NAME)
   set_target_properties(
     ${TARGET_NAME}
-    PROPERTIES INSTALL_RPATH $<$<PLATFORM_ID:Linux>:$ORIGIN>
-               INSTALL_RPATH $<$<PLATFORM_ID:Darwin>:@loader_path>
-               BUILD_WITH_INSTALL_RPATH TRUE)
+    PROPERTIES
+      INSTALL_RPATH
+      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+      BUILD_WITH_INSTALL_RPATH TRUE)
 endfunction()
 
 add_executable(${PROJECT_NAME})

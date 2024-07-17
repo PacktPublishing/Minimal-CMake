@@ -37,8 +37,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE mc-gol SDL2::SDL2 SDL2::SDL2main
                                               as-c-math)
 
 set_target_properties(
-  ${PROJECT_NAME} PROPERTIES BUILD_RPATH $<$<PLATFORM_ID:Linux>:$ORIGIN>
-                             BUILD_RPATH $<$<PLATFORM_ID:Darwin>:@loader_path>)
+  ${PROJECT_NAME}
+  PROPERTIES
+    BUILD_RPATH
+    "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>")
 
 if(WIN32)
   # copy SDL2.dll to the same folder as the executable
