@@ -52,7 +52,7 @@ function(set_common_properties TARGET_NAME)
     ${TARGET_NAME}
     PROPERTIES
       INSTALL_RPATH
-      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path;@loader_path/../Frameworks>"
       BUILD_WITH_INSTALL_RPATH TRUE)
 endfunction()
 
@@ -85,12 +85,13 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   VERBATIM)
 
-add_custom_target(create_frameworks_dir ALL
-  COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/../Frameworks
-  COMMENT "Creating Frameworks directory"
-)
+add_custom_target(
+  create_frameworks_dir ALL
+  COMMAND ${CMAKE_COMMAND} -E make_directory
+          $<TARGET_FILE_DIR:${PROJECT_NAME}>/../Frameworks
+  COMMENT "Creating Frameworks directory")
 add_dependencies(${PROJECT_NAME} create_frameworks_dir)
-  
+
 # copy dynamic libraries to the same folder as the executable
 add_custom_command(
   TARGET ${PROJECT_NAME}
