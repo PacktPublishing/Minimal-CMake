@@ -28,6 +28,7 @@
 #include <stdlib.h>
 
 #include <vector>
+#include <string>
 
 extern void RegisterGolTests(ImGuiTestEngine* engine, mc_gol_board_t* board);
 
@@ -239,16 +240,14 @@ int main(int argc, char** argv) {
     create_pos_col_vert_layout(renderer_type);
 
   char* base_path = SDL_GetBasePath();
-  const char* vs_shader_path = "shader/build/vs_vertcol.bin";
-  const char* fs_shader_path = "shader/build/fs_vertcol.bin";
 
   std::string vs_shader_full_path;
   vs_shader_full_path.append(base_path);
-  vs_shader_full_path.append(vs_shader_path);
+  vs_shader_full_path.append("shader/vs_vertcol.bin");
 
   std::string fs_shader_full_path;
   fs_shader_full_path.append(base_path);
-  fs_shader_full_path.append(fs_shader_path);
+  fs_shader_full_path.append("shader/fs_vertcol.bin");
 
   std::vector<char> vs_shader = read_file(vs_shader_full_path.c_str());
   std::vector<char> fs_shader = read_file(fs_shader_full_path.c_str());
@@ -258,8 +257,6 @@ int main(int argc, char** argv) {
               "compile-shader-<platform>.sh/bat script?\n");
     return 1;
   }
-
-  SDL_free(base_path);
 
   const bgfx_shader_handle_t vertex_shader = create_shader(
     vs_shader.data(), static_cast<int>(vs_shader.size()), "vs_shader");
@@ -271,6 +268,8 @@ int main(int argc, char** argv) {
   // deallocate buffers
   std::vector<char>().swap(vs_shader);
   std::vector<char>().swap(fs_shader);
+  // deallocate base path
+  SDL_free(base_path);
 
   const bgfx_uniform_handle_t u_color =
     bgfx_create_uniform("u_color", BGFX_UNIFORM_TYPE_VEC4, 1);

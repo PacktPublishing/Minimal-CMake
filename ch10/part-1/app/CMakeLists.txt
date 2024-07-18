@@ -61,9 +61,6 @@ add_common_sources(${PROJECT_NAME})
 add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
-# set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
-# set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_PACKAGE_LOCATION
-# "MacOS")
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT
@@ -85,7 +82,8 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   VERBATIM)
 
-# copy dynamic libraries to the same folder as the executable
+# copy dynamic libraries to the same folder as the executable and copy compiled
+# shaders to nested shader folder
 add_custom_command(
   TARGET ${PROJECT_NAME}
   POST_BUILD
@@ -99,11 +97,10 @@ add_custom_command(
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shader/build
-          $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader/build
+          $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
   VERBATIM)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-# BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(
   FILES
     $<TARGET_FILE:SDL2::SDL2>
@@ -114,8 +111,11 @@ install(
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
   DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
-        DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
+install(
+  DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build/
+  DESTINATION ${CMAKE_INSTALL_BINDIR}/shader
+  FILES_MATCHING
+  PATTERN "*.bin")
 
 if(MC_GOL_APP_BUILD_TESTING)
   function(enable_coverage TARGET_NAME)
@@ -169,6 +169,4 @@ set(CPACK_BUNDLE_NAME "mc-game-of-life-bundle")
 set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/info.plist")
 set(CPACK_BUNDLE_ICON "gol.icns")
 set(CPACK_BUNDLE_STARTUP_COMMAND "run.sh")
-# set(CPACK_BUNDLE_STARTUP_COMMAND
-# "install/bin/minimal-cmake_game-of-life_window")
 include(CPack)
