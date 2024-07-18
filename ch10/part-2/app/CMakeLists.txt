@@ -163,3 +163,14 @@ if(MC_GOL_APP_BUILD_TESTING)
   configure_file(CTestCustom.cmake.in ${CMAKE_BINARY_DIR}/CTestCustom.cmake
                  COPYONLY)
 endif()
+
+# general CPack options
+set(CPACK_PACKAGE_NAME "mc-game-of-life")
+
+# macOS bundle specific options
+set(CPACK_BUNDLE_NAME "mc-game-of-life")
+set(CPACK_BUNDLE_PLIST "packaging/info.plist")
+set(CPACK_BUNDLE_ICON "packaging/gol.icns")
+set(CPACK_BUNDLE_STARTUP_COMMAND "packaging/bundle-run.sh")
+
+include(CPack)
