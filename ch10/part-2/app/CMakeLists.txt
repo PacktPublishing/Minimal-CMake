@@ -166,6 +166,7 @@ endif()
 
 # general CPack options
 set(CPACK_PACKAGE_NAME "mc-game-of-life")
+set(CPACK_PACKAGE_CONTACT "<maintainer-email>") # required for DEB installer
 
 # macOS bundle specific options
 set(CPACK_BUNDLE_NAME "mc-game-of-life")
