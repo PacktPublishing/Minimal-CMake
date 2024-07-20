@@ -56,7 +56,7 @@ function(set_common_properties TARGET_NAME)
       BUILD_WITH_INSTALL_RPATH TRUE)
 endfunction()
 
-add_executable(${PROJECT_NAME} WIN32)
+add_executable(${PROJECT_NAME})
 add_common_sources(${PROJECT_NAME})
 add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
@@ -65,6 +65,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 if (WIN32)
   # windows icon
   target_sources(${PROJECT_NAME} PRIVATE packaging/icon.rc)
+  set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 endif()
 
 if(WIN32)
