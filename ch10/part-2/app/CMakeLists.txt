@@ -56,7 +56,7 @@ function(set_common_properties TARGET_NAME)
       BUILD_WITH_INSTALL_RPATH TRUE)
 endfunction()
 
-add_executable(${PROJECT_NAME})
+add_executable(${PROJECT_NAME} WIN32 packaging/icon.rc)
 add_common_sources(${PROJECT_NAME})
 add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
@@ -116,6 +116,7 @@ install(
   DESTINATION ${CMAKE_INSTALL_BINDIR}/shader
   FILES_MATCHING
   PATTERN "*.bin")
+install(FILES ${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico ${CMAKE_SOURCE_DIR}/packaging/icon.rc DESTINATION ".")
 
 if(MC_GOL_APP_BUILD_TESTING)
   function(enable_coverage TARGET_NAME)
@@ -167,6 +168,7 @@ endif()
 # general CPack options
 set(CPACK_PACKAGE_NAME "mc-game-of-life")
 set(CPACK_PACKAGE_CONTACT "<maintainer-email>") # required for DEB installer
+set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life") # required for NSIS installer - Start Menu icon
 
 # macOS bundle specific options
 set(CPACK_BUNDLE_NAME "mc-game-of-life")
@@ -176,5 +178,7 @@ set(CPACK_BUNDLE_STARTUP_COMMAND "packaging/bundle-run.sh")
 
 # Windows NSIS specific options
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico")
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'")
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "Delete '$DESKTOP\\\\Minimal CMake - Game of Life.lnk'")
 
 include(CPack)
