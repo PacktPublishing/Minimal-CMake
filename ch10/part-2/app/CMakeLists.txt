@@ -56,11 +56,16 @@ function(set_common_properties TARGET_NAME)
       BUILD_WITH_INSTALL_RPATH TRUE)
 endfunction()
 
-add_executable(${PROJECT_NAME} WIN32 packaging/icon.rc)
+add_executable(${PROJECT_NAME} WIN32)
 add_common_sources(${PROJECT_NAME})
 add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+
+if (WIN32)
+  # windows icon
+  target_sources(${PROJECT_NAME} PRIVATE packaging/icon.rc)
+endif()
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT
@@ -116,7 +121,6 @@ install(
   DESTINATION ${CMAKE_INSTALL_BINDIR}/shader
   FILES_MATCHING
   PATTERN "*.bin")
-install(FILES ${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico ${CMAKE_SOURCE_DIR}/packaging/icon.rc DESTINATION ".")
 
 if(MC_GOL_APP_BUILD_TESTING)
   function(enable_coverage TARGET_NAME)
