@@ -123,6 +123,7 @@ install(
   FILES_MATCHING
   PATTERN "*.bin")
 if(LINUX)
+  # linux icon
   install(
     FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
