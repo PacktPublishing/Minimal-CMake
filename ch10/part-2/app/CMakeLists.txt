@@ -122,6 +122,14 @@ install(
   DESTINATION ${CMAKE_INSTALL_BINDIR}/shader
   FILES_MATCHING
   PATTERN "*.bin")
+if(LINUX)
+  install(
+    FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+  install(
+    FILES packaging/mc-logo.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+endif()
 
 if(MC_GOL_APP_BUILD_TESTING)
   function(enable_coverage TARGET_NAME)
