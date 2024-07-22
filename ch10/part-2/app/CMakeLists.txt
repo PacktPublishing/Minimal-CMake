@@ -62,10 +62,11 @@ add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
-if (WIN32)
+if(WIN32)
   # windows icon
   target_sources(${PROJECT_NAME} PRIVATE packaging/icon.rc)
-  set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
+  set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE
+                                                   $<CONFIG:Release>)
 endif()
 
 if(WIN32)
@@ -124,12 +125,10 @@ install(
   PATTERN "*.bin")
 if(LINUX)
   # linux icon
-  install(
-    FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
-  install(
-    FILES packaging/mc-logo.png
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+  install(FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
+          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+  install(FILES packaging/mc-logo.png
+          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 endif()
 
 if(MC_GOL_APP_BUILD_TESTING)
@@ -181,8 +180,10 @@ endif()
 
 # general CPack options
 set(CPACK_PACKAGE_NAME "mc-game-of-life")
-set(CPACK_PACKAGE_CONTACT "<maintainer-email>") # required for DEB installer
-set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life") # required for NSIS installer - Start Menu icon
+# required for DEB installer
+set(CPACK_PACKAGE_CONTACT "<maintainer-email>")
+# required for NSIS installer - Start Menu icon
+set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
 
 # macOS bundle specific options
 set(CPACK_BUNDLE_NAME "mc-game-of-life")
@@ -192,7 +193,10 @@ set(CPACK_BUNDLE_STARTUP_COMMAND "packaging/bundle-run.sh")
 
 # Windows NSIS specific options
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico")
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'")
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "Delete '$DESKTOP\\\\Minimal CMake - Game of Life.lnk'")
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+    "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'"
+)
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
+    "Delete '$DESKTOP\\\\Minimal CMake - Game of Life.lnk'")
 
 include(CPack)
