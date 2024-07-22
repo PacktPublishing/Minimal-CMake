@@ -52,7 +52,7 @@ function(set_common_properties TARGET_NAME)
     ${TARGET_NAME}
     PROPERTIES
       INSTALL_RPATH
-      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path;@loader_path/../Frameworks>"
       BUILD_WITH_INSTALL_RPATH TRUE)
 endfunction()
 
@@ -62,10 +62,16 @@ add_common_libraries(${PROJECT_NAME})
 set_common_properties(${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
-if (WIN32)
+if(WIN32)
   # windows icon
   target_sources(${PROJECT_NAME} PRIVATE packaging/icon.rc)
-  set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
+  set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE
+                                                   $<CONFIG:Release>)
+endif()
+
+if(APPLE)
+  # build application as macOS bundle
+  set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE)
 endif()
 
 if(WIN32)
@@ -88,8 +94,16 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   VERBATIM)
 
-# copy dynamic libraries to the same folder as the executable and copy compiled
-# shaders to nested shader folder
+if(APPLE)
+  add_custom_target(
+    create_frameworks_directory ALL
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/../Frameworks
+    COMMENT "Creating Frameworks directory")
+  add_dependencies(${PROJECT_NAME} create_frameworks_directory)
+endif()
+
+# copy dynamic libraries to the same folder as the executable
 add_custom_command(
   TARGET ${PROJECT_NAME}
   POST_BUILD
@@ -101,35 +115,65 @@ add_custom_command(
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
     $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shader/build
-          $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
+    $<$<PLATFORM_ID:Linux>:$<TARGET_FILE_DIR:${PROJECT_NAME}>>
+    $<$<PLATFORM_ID:Windows>:$<TARGET_FILE_DIR:${PROJECT_NAME}>>
+    $<$<PLATFORM_ID:Darwin>:$<TARGET_FILE_DIR:${PROJECT_NAME}>/../Frameworks>
   VERBATIM)
 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(
-  FILES
-    $<TARGET_FILE:SDL2::SDL2>
-    $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
-    $<TARGET_FILE:bgfx::bgfx>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::game-of-life,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::game-of-life>>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
-    $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
-  DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(
-  DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build/
-  DESTINATION ${CMAKE_INSTALL_BINDIR}/shader
-  FILES_MATCHING
-  PATTERN "*.bin")
+if(WIN32 OR LINUX)
+  # copy compiled shaders to nested shader folder
+  add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shader/build
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader)
+  # install library and resource files
+  install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  install(
+    FILES
+      $<TARGET_FILE:SDL2::SDL2>
+      $<$<PLATFORM_ID:Linux>:$<TARGET_SONAME_FILE:SDL2::SDL2>>
+      $<TARGET_FILE:bgfx::bgfx>
+      $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::game-of-life,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::game-of-life>>
+      $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::vertex,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::vertex>>
+      $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::quad,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::quad>>
+      $<$<STREQUAL:$<TARGET_PROPERTY:minimal-cmake::line,TYPE>,SHARED_LIBRARY>:$<TARGET_FILE:minimal-cmake::line>>
+    DESTINATION ${CMAKE_INSTALL_BINDIR})
+  install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build/
+    DESTINATION ${CMAKE_INSTALL_BINDIR}/shader
+    FILES_MATCHING
+    PATTERN "*.bin")
+endif()
+
+if(APPLE)
+  set_source_files_properties(
+    shader/build/vs_vertcol.bin shader/build/fs_vertcol.bin
+    PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/shader")
+  set_source_files_properties(packaging/gol.icns
+                              PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+  target_sources(
+    ${PROJECT_NAME} PRIVATE shader/build/vs_vertcol.bin
+                            shader/build/fs_vertcol.bin packaging/gol.icns)
+  set_target_properties(
+    ${PROJECT_NAME}
+    PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "game-of-life"
+               MACOSX_BUNDLE_GUI_IDENTIFIER "com.minimal-cmake.game-of-life"
+               MACOSX_BUNDLE_INFO_STRING "Game of Life"
+               MACOSX_BUNDLE_ICON_FILE "gol.icns"
+               MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0"
+               MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
+               MACOSX_BUNDLE_BUNDLE_VERSION "1.0.0")
+
+  install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
+endif()
+
 if(LINUX)
   # linux icon
-  install(
-    FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
-  install(
-    FILES packaging/mc-logo.png
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
+  install(FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
+          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+  install(FILES packaging/mc-logo.png
+          DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 endif()
 
 if(MC_GOL_APP_BUILD_TESTING)
@@ -181,18 +225,18 @@ endif()
 
 # general CPack options
 set(CPACK_PACKAGE_NAME "mc-game-of-life")
-set(CPACK_PACKAGE_CONTACT "<maintainer-email>") # required for DEB installer
-set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life") # required for NSIS installer - Start Menu icon
-
-# macOS bundle specific options
-set(CPACK_BUNDLE_NAME "mc-game-of-life")
-set(CPACK_BUNDLE_PLIST "packaging/info.plist")
-set(CPACK_BUNDLE_ICON "packaging/gol.icns")
-set(CPACK_BUNDLE_STARTUP_COMMAND "packaging/bundle-run.sh")
+# required for DEB installer
+set(CPACK_PACKAGE_CONTACT "<maintainer-email>")
+# required for NSIS installer - Start Menu icon
+set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
+set(CPACK_PACKAGE_ICON "packaging/gol.icns")
 
 # Windows NSIS specific options
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico")
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'")
-set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "Delete '$DESKTOP\\\\Minimal CMake - Game of Life.lnk'")
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+    "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'"
+)
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
+    "Delete '$DESKTOP\\\\Minimal CMake - Game of Life.lnk'")
 
 include(CPack)
