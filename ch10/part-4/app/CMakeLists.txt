@@ -187,9 +187,9 @@ set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
 
 # macOS bundle specific options
 set(CPACK_BUNDLE_NAME "mc-game-of-life")
-set(CPACK_BUNDLE_PLIST "packaging/info.plist")
-set(CPACK_BUNDLE_ICON "packaging/gol.icns")
-set(CPACK_BUNDLE_STARTUP_COMMAND "packaging/bundle-run.sh")
+set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/packaging/info.plist")
+set(CPACK_BUNDLE_ICON "${CMAKE_SOURCE_DIR}/packaging/gol.icns")
+set(CPACK_BUNDLE_STARTUP_COMMAND "${CMAKE_SOURCE_DIR}/packaging/bundle-run.sh")
 
 # Windows NSIS specific options
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico")

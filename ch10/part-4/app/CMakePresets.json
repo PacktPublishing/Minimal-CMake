@@ -92,6 +92,19 @@
       "configuration": "Debug"
     }
   ],
+  "packagePresets": [
+    {
+      "name": "macos",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "configurePreset": "multi-ninja-super",
+      "generators": ["Bundle"],
+      "packageDirectory": "package"
+    }
+  ],
   "workflowPresets": [
     {
       "name": "default",
