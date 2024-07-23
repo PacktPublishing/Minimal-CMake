@@ -1,3 +1,0 @@
-set(CTEST_CUSTOM_COVERAGE_EXCLUDE
-    ${CTEST_CUSTOM_COVERAGE_EXCLUDE} "src/imgui/sdl2"
-    "third-party/install/include")
