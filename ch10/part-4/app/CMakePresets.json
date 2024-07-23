@@ -103,6 +103,17 @@
       "configurePreset": "multi-ninja-super",
       "generators": ["Bundle"],
       "packageDirectory": "package"
+    },
+    {
+      "name": "linux",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "configurePreset": "multi-ninja-super",
+      "generators": ["DEB"],
+      "packageDirectory": "package"
     }
   ],
   "workflowPresets": [
