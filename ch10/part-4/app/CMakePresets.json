@@ -114,6 +114,17 @@
       "configurePreset": "multi-ninja-super",
       "generators": ["DEB"],
       "packageDirectory": "package"
+    },
+    {
+      "name": "windows",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "configurePreset": "multi-ninja-super",
+      "generators": ["NSIS"],
+      "packageDirectory": "package"
     }
   ],
   "workflowPresets": [
