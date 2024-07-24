@@ -94,15 +94,20 @@
   ],
   "packagePresets": [
     {
+      "name": "base",
+      "configurePreset": "multi-ninja-super",
+      "packageDirectory": "${sourceDir}/package",
+      "hidden": true
+    },
+    {
       "name": "macos",
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Darwin"
       },
-      "configurePreset": "multi-ninja-super",
       "generators": ["Bundle"],
-      "packageDirectory": "package"
+      "inherits": ["base"]
     },
     {
       "name": "linux",
@@ -111,9 +116,8 @@
         "lhs": "${hostSystemName}",
         "rhs": "Linux"
       },
-      "configurePreset": "multi-ninja-super",
       "generators": ["DEB"],
-      "packageDirectory": "package"
+      "inherits": ["base"]
     },
     {
       "name": "windows",
@@ -122,9 +126,8 @@
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
       },
-      "configurePreset": "multi-ninja-super",
       "generators": ["NSIS"],
-      "packageDirectory": "package"
+      "inherits": ["base"]
     }
   ],
   "workflowPresets": [
