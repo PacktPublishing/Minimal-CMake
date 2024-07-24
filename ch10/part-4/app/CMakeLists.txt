@@ -179,14 +179,14 @@ if(MC_GOL_APP_BUILD_TESTING)
 endif()
 
 # general CPack options
-set(CPACK_PACKAGE_NAME "mc-game-of-life")
+set(CPACK_PACKAGE_NAME "Minimal CMake - Game of Life")
 # required for DEB installer
 set(CPACK_PACKAGE_CONTACT "<maintainer-email>")
 # required for NSIS installer - Start Menu icon
 set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
 
 # macOS bundle specific options
-set(CPACK_BUNDLE_NAME "mc-game-of-life")
+set(CPACK_BUNDLE_NAME "Minimal CMake - Game of Life")
 set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/packaging/info.plist")
 set(CPACK_BUNDLE_ICON "${CMAKE_SOURCE_DIR}/packaging/gol.icns")
 set(CPACK_BUNDLE_STARTUP_COMMAND "${CMAKE_SOURCE_DIR}/packaging/bundle-run.sh")
