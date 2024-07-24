@@ -155,7 +155,8 @@ if(APPLE)
                             shader/build/fs_vertcol.bin packaging/gol.icns)
   set_target_properties(
     ${PROJECT_NAME}
-    PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "game-of-life"
+    PROPERTIES OUTPUT_NAME "Minimal CMake - Game of Life"
+               MACOSX_BUNDLE_BUNDLE_NAME "Minimal CMake - Game of Life"
                MACOSX_BUNDLE_GUI_IDENTIFIER "com.minimal-cmake.game-of-life"
                MACOSX_BUNDLE_INFO_STRING "Game of Life"
                MACOSX_BUNDLE_ICON_FILE "gol.icns"
