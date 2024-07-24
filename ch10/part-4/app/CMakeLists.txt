@@ -179,7 +179,7 @@ if(MC_GOL_APP_BUILD_TESTING)
 endif()
 
 # general CPack options
-set(CPACK_PACKAGE_NAME "Minimal CMake - Game of Life")
+set(CPACK_PACKAGE_NAME "minimal-cmake_game-of-life")
 # required for DEB installer
 set(CPACK_PACKAGE_CONTACT "<maintainer-email>")
 # required for NSIS installer - Start Menu icon
