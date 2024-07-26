@@ -26,15 +26,13 @@ find_package(mc-gol CONFIG REQUIRED)
 find_package(imgui-test-engine.cmake REQUIRED CONFIG)
 find_package(mc-draw 3.0 CONFIG REQUIRED COMPONENTS line quad vertex)
 
-function(add_common_sources TARGET_NAME)
-  target_sources(${TARGET_NAME} PRIVATE main.cpp imgui/sdl2/imgui_impl_sdl2.cpp
-                                        imgui/bgfx/imgui_impl_bgfx.cpp)
-endfunction()
-
-function(add_common_libraries TARGET_NAME)
-  target_link_libraries(
-    ${TARGET_NAME}
-    PRIVATE minimal-cmake::game-of-life
+add_library(${PROJECT_NAME}-common INTERFACE)
+target_sources(
+  ${PROJECT_NAME}-common INTERFACE main.cpp imgui/sdl2/imgui_impl_sdl2.cpp
+                                   imgui/bgfx/imgui_impl_bgfx.cpp)
+target_link_libraries(
+  ${PROJECT_NAME}-common
+  INTERFACE minimal-cmake::game-of-life
             minimal-cmake::vertex
             minimal-cmake::line
             minimal-cmake::quad
@@ -43,21 +41,15 @@ function(add_common_libraries TARGET_NAME)
             bgfx::bgfx
             bgfx::bx
             imgui-test-engine.cmake::imgui-test-engine.cmake)
-endfunction()
-
-function(set_common_properties TARGET_NAME)
-  set_target_properties(
-    ${TARGET_NAME}
-    PROPERTIES
-      INSTALL_RPATH
-      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
-      BUILD_WITH_INSTALL_RPATH TRUE)
-endfunction()
+set_target_properties(
+  ${PROJECT_NAME}-common
+  PROPERTIES
+    INSTALL_RPATH
+    "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+    BUILD_WITH_INSTALL_RPATH TRUE)
 
 add_executable(${PROJECT_NAME})
-add_common_sources(${PROJECT_NAME})
-add_common_libraries(${PROJECT_NAME})
-set_common_properties(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-common)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 if(WIN32)
@@ -112,9 +104,7 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
 if(MC_GOL_APP_BUILD_TESTING)
   include(CTest)
   add_executable(${PROJECT_NAME}-test)
-  add_common_sources(${PROJECT_NAME}-test)
-  add_common_libraries(${PROJECT_NAME}-test)
-  set_common_properties(${PROJECT_NAME}-test)
+  target_link_libraries(${PROJECT_NAME}-test PRIVATE ${PROJECT_NAME}-common)
   target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
   target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
   target_compile_definitions(
