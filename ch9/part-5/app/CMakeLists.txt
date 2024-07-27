@@ -26,17 +26,14 @@ find_package(mc-gol CONFIG REQUIRED)
 find_package(imgui-test-engine.cmake REQUIRED CONFIG)
 find_package(mc-draw 3.0 CONFIG REQUIRED COMPONENTS line quad vertex)
 
-function(add_common_sources TARGET_NAME)
-  target_sources(
-    ${TARGET_NAME}
-    PRIVATE src/main.cpp src/imgui/sdl2/imgui_impl_sdl2.cpp
+add_library(${PROJECT_NAME}-common INTERFACE)
+target_sources(
+  ${PROJECT_NAME}-common
+  INTERFACE src/main.cpp src/imgui/sdl2/imgui_impl_sdl2.cpp
             src/imgui/bgfx/imgui_impl_bgfx.cpp src/viewport/screen.cpp)
-endfunction()
-
-function(add_common_libraries TARGET_NAME)
-  target_link_libraries(
-    ${TARGET_NAME}
-    PRIVATE minimal-cmake::game-of-life
+target_link_libraries(
+  ${PROJECT_NAME}-common
+  INTERFACE minimal-cmake::game-of-life
             minimal-cmake::vertex
             minimal-cmake::line
             minimal-cmake::quad
@@ -45,21 +42,15 @@ function(add_common_libraries TARGET_NAME)
             bgfx::bgfx
             bgfx::bx
             imgui-test-engine.cmake::imgui-test-engine.cmake)
-endfunction()
-
-function(set_common_properties TARGET_NAME)
-  set_target_properties(
-    ${TARGET_NAME}
-    PROPERTIES
-      INSTALL_RPATH
-      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
-      BUILD_WITH_INSTALL_RPATH TRUE)
-endfunction()
+set_target_properties(
+  ${PROJECT_NAME}-common
+  PROPERTIES
+    INSTALL_RPATH
+    "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+    BUILD_WITH_INSTALL_RPATH TRUE)
 
 add_executable(${PROJECT_NAME})
-add_common_sources(${PROJECT_NAME})
-add_common_libraries(${PROJECT_NAME})
-set_common_properties(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-common)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 if(WIN32)
@@ -112,18 +103,16 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/shader/build
         DESTINATION ${CMAKE_INSTALL_BINDIR}/shader)
 
 if(MC_GOL_APP_BUILD_TESTING)
-  function(enable_coverage TARGET_NAME)
-    set(coverage_flags
-        "$<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:--coverage>"
-    )
-    target_compile_options(${TARGET_NAME} PRIVATE ${coverage_flags})
-    target_link_options(${TARGET_NAME} PRIVATE ${coverage_flags})
-  endfunction()
+  add_library(${PROJECT_NAME}-coverage INTERFACE)
+  set(coverage_flags
+      "$<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:--coverage>"
+  )
+  target_compile_options(${PROJECT_NAME}-coverage INTERFACE ${coverage_flags})
+  target_link_options(${PROJECT_NAME}-coverage INTERFACE ${coverage_flags})
   include(CTest)
   add_executable(${PROJECT_NAME}-test)
-  add_common_sources(${PROJECT_NAME}-test)
-  add_common_libraries(${PROJECT_NAME}-test)
-  set_common_properties(${PROJECT_NAME}-test)
+  target_link_libraries(${PROJECT_NAME}-test PRIVATE ${PROJECT_NAME}-common
+                                                     ${PROJECT_NAME}-coverage)
   target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
   target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
   target_compile_definitions(
@@ -132,7 +121,6 @@ if(MC_GOL_APP_BUILD_TESTING)
       MC_GOL_APP_BUILD_TESTING
       $<$<BOOL:${MC_GOL_APP_INTERACTIVE_TESTING}>:MC_GOL_APP_INTERACTIVE_TESTING>
   )
-  enable_coverage(${PROJECT_NAME}-test)
   add_test(
     NAME "game of life end-to-end tests"
     COMMAND ${PROJECT_NAME}-test
@@ -143,9 +131,8 @@ if(MC_GOL_APP_BUILD_TESTING)
   target_sources(${PROJECT_NAME}-unit-test PRIVATE src/viewport/screen.cpp
                                                    src/viewport/screen.test.cpp)
   target_link_libraries(${PROJECT_NAME}-unit-test Catch2::Catch2WithMain
-                        as-c-math)
+                        as-c-math ${PROJECT_NAME}-coverage)
   target_compile_features(${PROJECT_NAME}-unit-test PRIVATE cxx_std_20)
-  enable_coverage(${PROJECT_NAME}-unit-test)
 
   add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
 
