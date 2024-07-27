@@ -45,6 +45,13 @@
       }
     },
     {
+      "name": "multi-ninja-test-interactive",
+      "inherits": "multi-ninja-test",
+      "cacheVariables": {
+        "MC_GOL_APP_INTERACTIVE_TESTING": "ON"
+      }
+    },
+    {
       "name": "multi-ninja-super-test",
       "inherits": ["multi-ninja-test", "super"]
     },
