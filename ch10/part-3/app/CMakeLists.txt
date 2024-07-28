@@ -189,6 +189,8 @@ if(MC_GOL_APP_BUILD_TESTING)
     NAME "game of life end-to-end tests"
     COMMAND ${PROJECT_NAME}-test
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  set_tests_properties("game of life end-to-end tests"
+                       PROPERTIES LABELS "end-to-end;slow")
 
   find_package(Catch2 REQUIRED CONFIG)
   add_executable(${PROJECT_NAME}-unit-test)
