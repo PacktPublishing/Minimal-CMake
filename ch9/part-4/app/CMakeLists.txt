@@ -42,16 +42,20 @@ target_link_libraries(
             bgfx::bgfx
             bgfx::bx
             imgui-test-engine.cmake::imgui-test-engine.cmake)
-set_target_properties(
-  ${PROJECT_NAME}-common
-  PROPERTIES
-    INSTALL_RPATH
-    "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
-    BUILD_WITH_INSTALL_RPATH TRUE)
+
+function(set_common_target_properties TARGET_NAME)
+  set_target_properties(
+    ${TARGET_NAME}
+    PROPERTIES
+      INSTALL_RPATH
+      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+      BUILD_WITH_INSTALL_RPATH TRUE)
+endfunction()
 
 add_executable(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-common)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+set_common_target_properties(${PROJECT_NAME})
 
 if(WIN32)
   set(COMPILE_SHADER_SCRIPT
@@ -107,6 +111,7 @@ if(MC_GOL_APP_BUILD_TESTING)
   add_executable(${PROJECT_NAME}-test)
   target_link_libraries(${PROJECT_NAME}-test PRIVATE ${PROJECT_NAME}-common)
   target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
+  set_common_target_properties(${PROJECT_NAME}-test)
   target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
   target_compile_definitions(
     ${PROJECT_NAME}-test
