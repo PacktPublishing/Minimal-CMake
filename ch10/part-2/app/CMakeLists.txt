@@ -174,10 +174,11 @@ endif()
 
 # general CPack options
 set(CPACK_PACKAGE_NAME "minimal-cmake_game-of-life")
-# required for DEB installer
-set(CPACK_PACKAGE_CONTACT "<maintainer-email>")
 # required for NSIS installer - Start Menu icon
 set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
+
+# Linux debian specific options
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>") # required for DEB installer
 
 # macOS bundle specific options
 set(CPACK_BUNDLE_NAME "Minimal CMake - Game of Life")
