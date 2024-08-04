@@ -48,7 +48,7 @@ function(set_common_target_properties TARGET_NAME)
     ${TARGET_NAME}
     PROPERTIES
       INSTALL_RPATH
-      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path>"
+      "$<$<PLATFORM_ID:Linux>:$ORIGIN>$<$<PLATFORM_ID:Darwin>:@loader_path;@loader_path/../Frameworks>"
       BUILD_WITH_INSTALL_RPATH TRUE)
 endfunction()
 
