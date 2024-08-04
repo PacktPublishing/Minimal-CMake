@@ -59,7 +59,7 @@ set_common_target_properties(${PROJECT_NAME})
 
 if(WIN32)
   # windows icon
-  target_sources(${PROJECT_NAME} PRIVATE packaging/icon.rc)
+  target_sources(${PROJECT_NAME} PRIVATE packaging/windows/icon.rc)
   set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE
                                                    $<CONFIG:Release>)
 endif()
@@ -143,11 +143,11 @@ if(APPLE)
   set_source_files_properties(
     shader/build/vs_vertcol.bin shader/build/fs_vertcol.bin
     PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/shader")
-  set_source_files_properties(packaging/gol.icns
+  set_source_files_properties(packaging/macos/gol.icns
                               PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
   target_sources(
     ${PROJECT_NAME} PRIVATE shader/build/vs_vertcol.bin
-                            shader/build/fs_vertcol.bin packaging/gol.icns)
+                            shader/build/fs_vertcol.bin packaging/macos/gol.icns)
   set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES OUTPUT_NAME "Minimal CMake - Game of Life"
@@ -164,9 +164,9 @@ endif()
 
 if(LINUX)
   # linux icon
-  install(FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
+  install(FILES ${CMAKE_SOURCE_DIR}/packaging/linux/mc-gol.desktop
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
-  install(FILES packaging/mc-logo.png
+  install(FILES packaging/linux/mc-logo.png
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 endif()
 
@@ -225,7 +225,7 @@ set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>") # required for DEB installer
 
 # Windows NSIS specific options
-set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico")
+set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/windows/mc_icon.ico")
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
     "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'"
 )
