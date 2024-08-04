@@ -59,7 +59,7 @@ set_common_target_properties(${PROJECT_NAME})
 
 if(WIN32)
   # windows icon
-  target_sources(${PROJECT_NAME} PRIVATE packaging/icon.rc)
+  target_sources(${PROJECT_NAME} PRIVATE packaging/windows/icon.rc)
   set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE
                                                    $<CONFIG:Release>)
 endif()
@@ -120,9 +120,9 @@ install(
   PATTERN "*.bin")
 if(LINUX)
   # linux icon
-  install(FILES ${CMAKE_SOURCE_DIR}/packaging/mc-gol.desktop
+  install(FILES ${CMAKE_SOURCE_DIR}/packaging/linux/mc-gol.desktop
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
-  install(FILES packaging/mc-logo.png
+  install(FILES packaging/linux/mc-logo.png
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 endif()
 
@@ -182,12 +182,12 @@ set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>") # required for DEB ins
 
 # macOS bundle specific options
 set(CPACK_BUNDLE_NAME "Minimal CMake - Game of Life")
-set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/packaging/info.plist")
-set(CPACK_BUNDLE_ICON "${CMAKE_SOURCE_DIR}/packaging/gol.icns")
-set(CPACK_BUNDLE_STARTUP_COMMAND "${CMAKE_SOURCE_DIR}/packaging/bundle-run.sh")
+set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/packaging/macos/info.plist")
+set(CPACK_BUNDLE_ICON "${CMAKE_SOURCE_DIR}/packaging/macos/gol.icns")
+set(CPACK_BUNDLE_STARTUP_COMMAND "${CMAKE_SOURCE_DIR}/packaging/macos/bundle-run.sh")
 
 # Windows NSIS specific options
-set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/mc_icon.ico")
+set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/windows/mc_icon.ico")
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
     "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'"
 )

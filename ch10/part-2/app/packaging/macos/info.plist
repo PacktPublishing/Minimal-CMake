@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
   <key>CFBundleIconFile</key>
-  <string>mc-game-of-life.icns</string>
+  <string>Minimal CMake - Game of Life.icns</string>
 </dict>
 </plist>
