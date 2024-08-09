@@ -2,7 +2,7 @@
 Name=Minimal CMake - Game of Life
 Comment=Interactive Game of Life simulation
 Exec=minimal-cmake_game-of-life_window
-Icon=mc-logo
+Icon=mc-gol-logo
 Terminal=false
 Type=Application
 Categories=Development

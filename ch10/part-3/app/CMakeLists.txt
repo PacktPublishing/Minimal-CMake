@@ -166,7 +166,7 @@ if(LINUX)
   # linux icon
   install(FILES ${CMAKE_SOURCE_DIR}/packaging/linux/mc-gol.desktop
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
-  install(FILES packaging/linux/mc-logo.png
+  install(FILES packaging/linux/mc-gol-logo.png
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 endif()
 
