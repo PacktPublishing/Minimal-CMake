@@ -153,7 +153,6 @@ if(APPLE)
     PROPERTIES OUTPUT_NAME "Minimal CMake - Game of Life"
                MACOSX_BUNDLE_BUNDLE_NAME "Minimal CMake - Game of Life"
                MACOSX_BUNDLE_GUI_IDENTIFIER "com.minimal-cmake.game-of-life"
-               MACOSX_BUNDLE_INFO_STRING "Game of Life"
                MACOSX_BUNDLE_ICON_FILE "gol.icns"
                MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0"
                MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
