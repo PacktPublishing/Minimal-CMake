@@ -180,6 +180,57 @@
           "name": "multi-ninja-super-test"
         }
       ]
+    },
+    {
+      "name": "multi-ninja-super-package-macos",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "package",
+          "name": "macos"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super-package-windows",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "package",
+          "name": "windows"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super-package-linux",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "package",
+          "name": "linux"
+        }
+      ]
     }
   ]
 }
