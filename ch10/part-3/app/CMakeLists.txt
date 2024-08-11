@@ -224,6 +224,8 @@ set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>") # required for DEB installer
 
 # Windows NSIS specific options
+set(CPACK_NSIS_PACKAGE_NAME "Minimal CMake - Game of Life")
+set(CPACK_NSIS_MANIFEST_DPI_AWARE true)
 set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/packaging/windows/mc_icon.ico")
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
     "CreateShortCut '$DESKTOP\\\\Minimal CMake - Game of Life.lnk' '$INSTDIR\\\\bin\\\\${PROJECT_NAME}.exe'"
