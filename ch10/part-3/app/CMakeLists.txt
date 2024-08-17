@@ -146,8 +146,9 @@ if(APPLE)
   set_source_files_properties(packaging/macos/gol.icns
                               PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
   target_sources(
-    ${PROJECT_NAME} PRIVATE shader/build/vs_vertcol.bin
-                            shader/build/fs_vertcol.bin packaging/macos/gol.icns)
+    ${PROJECT_NAME}
+    PRIVATE shader/build/vs_vertcol.bin shader/build/fs_vertcol.bin
+            packaging/macos/gol.icns)
   set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES OUTPUT_NAME "Minimal CMake - Game of Life"
@@ -221,7 +222,7 @@ set(CPACK_PACKAGE_NAME "minimal-cmake_game-of-life")
 set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
 
 # Linux debian specific options
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>") # required for DEB installer
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>")
 
 # Windows NSIS specific options
 set(CPACK_NSIS_PACKAGE_NAME "Minimal CMake - Game of Life")

@@ -178,16 +178,18 @@ set(CPACK_PACKAGE_NAME "minimal-cmake_game-of-life")
 set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Minimal CMake - Game of Life")
 
 # Linux debian specific options
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>") # required for DEB installer
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "<maintainer-email>")
 
 # macOS bundle specific options
 set(CPACK_BUNDLE_NAME "Minimal CMake - Game of Life")
 set(CPACK_BUNDLE_PLIST "${CMAKE_SOURCE_DIR}/packaging/macos/info.plist")
 set(CPACK_BUNDLE_ICON "${CMAKE_SOURCE_DIR}/packaging/macos/gol.icns")
-set(CPACK_BUNDLE_STARTUP_COMMAND "${CMAKE_SOURCE_DIR}/packaging/macos/bundle-run.sh")
+set(CPACK_BUNDLE_STARTUP_COMMAND
+    "${CMAKE_SOURCE_DIR}/packaging/macos/bundle-run.sh")
 # macOS dmg specific options (used by bundle as well)
 set(CPACK_DMG_DS_STORE "${CMAKE_SOURCE_DIR}/packaging/macos/custom_DS_Store")
-set(CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_SOURCE_DIR}/packaging/macos/dmg-background.png")
+set(CPACK_DMG_BACKGROUND_IMAGE
+    "${CMAKE_SOURCE_DIR}/packaging/macos/dmg-background.png")
 
 # Windows NSIS specific options
 set(CPACK_NSIS_PACKAGE_NAME "Minimal CMake - Game of Life")
