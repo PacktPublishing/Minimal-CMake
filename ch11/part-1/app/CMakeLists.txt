@@ -134,6 +134,7 @@ if(MC_GOL_APP_BUILD_TESTING)
   target_compile_options(${PROJECT_NAME}-coverage INTERFACE ${coverage_flags})
   target_link_options(${PROJECT_NAME}-coverage INTERFACE ${coverage_flags})
   include(CTest)
+  enable_testing()
   add_executable(${PROJECT_NAME}-test)
   target_link_libraries(${PROJECT_NAME}-test PRIVATE ${PROJECT_NAME}-common
                                                      ${PROJECT_NAME}-coverage)

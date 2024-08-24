@@ -108,11 +108,6 @@
     },
     {
       "name": "macos",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Darwin"
-      },
       "generators": ["Bundle"],
       "inherits": ["base"]
     },
@@ -123,11 +118,6 @@
     },
     {
       "name": "windows",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      },
       "generators": ["NSIS"],
       "inherits": ["base"]
     }
