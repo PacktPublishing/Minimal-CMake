@@ -2,3 +2,4 @@ build/
 build-*/
 .vscode/
 CMakeUserPresets.json
+.idea/
