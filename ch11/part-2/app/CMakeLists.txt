@@ -62,18 +62,18 @@ set_common_target_properties(${PROJECT_NAME})
 string(
   APPEND
   compile_options
-  "$<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
-     -Weverything;-Wno-c++98-compat;-Wno-;-Wno-global-constructors;
-     -Wno-;-Wno-c++98-compat-pedantic;-Wno-;-Wno-padded;-Wno->"
-  "$<$<CXX_COMPILER_ID:MSVC>:
-    /W4;/WX;/permissive-;/w14640;/w14242;/w14254;/w14263;/w14265;/w14287;
-    /we4289;/w14296;/w14311;/w14545;/w14546;/w14547;/w14549;/w14555;
-    /w14619;/w14640;/w14826;/w14928;/w14800>"
-  "$<$<CXX_COMPILER_ID:GNU>:
-    -Wall;-Wextra;-Wshadow;-Wnon-virtual-dtor;-Wpedantic;-Wold-style-cast;
-    -Wcast-align;-Wunused;-Wconversion;
-    -Wmisleading-indentation;-Wduplicated-cond;-Wduplicated-branches;
-    -Wlogical-op;-Wnull-dereference;-Wdouble-promotion;-Wuseless-cast>")
+  "$<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:"
+     "-Weverything;-Wno-c++98-compat;-Wno-;-Wno-global-constructors;"
+     "-Wno-;-Wno-c++98-compat-pedantic;-Wno-;-Wno-padded;-Wno->"
+  "$<$<CXX_COMPILER_ID:MSVC>:"
+    "/W4;/WX;/permissive-;/w14640;/w14242;/w14254;/w14263;/w14265;/w14287;"
+    "/we4289;/w14296;/w14311;/w14545;/w14546;/w14547;/w14549;/w14555;"
+    "/w14619;/w14640;/w14826;/w14928;/w14800>"
+  "$<$<CXX_COMPILER_ID:GNU>:"
+    "-Wall;-Wextra;-Wshadow;-Wnon-virtual-dtor;-Wpedantic;-Wold-style-cast;"
+    "-Wcast-align;-Wunused;-Wconversion;"
+    "-Wmisleading-indentation;-Wduplicated-cond;-Wduplicated-branches;"
+    "-Wlogical-op;-Wnull-dereference;-Wdouble-promotion;-Wuseless-cast>")
 target_compile_options(${PROJECT_NAME} PRIVATE ${compile_options})
 
 if(WIN32)
