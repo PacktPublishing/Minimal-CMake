@@ -1,0 +1,16 @@
+@PACKAGE_INIT@
+
+# valid components that can be searched for
+set(_draw_supported_components vertex line quad)
+
+# iterate through components attempting to be found
+foreach(component ${${CMAKE_FIND_PACKAGE_NAME}_FIND_COMPONENTS})
+  # if we couldn't find the component, set the draw library to no
+  # longer be found and notify the user about the missing component
+  if (NOT ${component} IN_LIST _draw_supported_components)
+    set(mc-draw_FOUND False)
+    set(mc-draw_NOT_FOUND_MESSAGE "Unsupported component: ${component}")
+  else()
+    include(${CMAKE_CURRENT_LIST_DIR}/${component}-config.cmake)
+  endif()
+endforeach()
