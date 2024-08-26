@@ -42,6 +42,7 @@ target_link_libraries(
             bgfx::bgfx
             bgfx::bx
             imgui-test-engine.cmake::imgui-test-engine.cmake)
+target_compile_features(${PROJECT_NAME}-common INTERFACE cxx_std_20)
 
 function(set_common_target_properties TARGET_NAME)
   set_target_properties(
@@ -54,7 +55,6 @@ endfunction()
 
 add_executable(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-common)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 set_common_target_properties(${PROJECT_NAME})
 
 if(WIN32)
@@ -110,7 +110,6 @@ if(MC_GOL_APP_BUILD_TESTING)
   include(CTest)
   add_executable(${PROJECT_NAME}-test)
   target_link_libraries(${PROJECT_NAME}-test PRIVATE ${PROJECT_NAME}-common)
-  target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
   set_common_target_properties(${PROJECT_NAME}-test)
   target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
   target_compile_definitions(

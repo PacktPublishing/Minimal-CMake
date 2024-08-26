@@ -42,6 +42,27 @@ target_link_libraries(
             bgfx::bgfx
             bgfx::bx
             imgui-test-engine.cmake::imgui-test-engine.cmake)
+target_compile_features(${PROJECT_NAME}-common INTERFACE cxx_std_20)
+
+# cmake-format: off
+string(
+  APPEND
+  compile_options
+  "$<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:"
+    "-Weverything;-Wno-c++98-compat;-Wno-;-Wno-global-constructors;"
+    "-Wno-;-Wno-c++98-compat-pedantic;-Wno-;-Wno-padded;-Wno->"
+  "$<$<CXX_COMPILER_ID:MSVC>:"
+    "/W4;/permissive-;/w14640;/w14242;/w14254;/w14263;/w14265;/w14287;"
+    "/we4289;/w14296;/w14311;/w14545;/w14546;/w14547;/w14549;/w14555;"
+    "/w14619;/w14640;/w14826;/w14928;/w14800>"
+  "$<$<CXX_COMPILER_ID:GNU>:"
+    "-Wall;-Wextra;-Wshadow;-Wnon-virtual-dtor;-Wpedantic;-Wold-style-cast;"
+    "-Wcast-align;-Wunused;-Wconversion;"
+    "-Wmisleading-indentation;-Wduplicated-cond;-Wduplicated-branches;"
+    "-Wlogical-op;-Wnull-dereference;-Wdouble-promotion;-Wuseless-cast>")
+# cmake-format: on
+
+target_compile_options(${PROJECT_NAME}-common INTERFACE ${compile_options})
 
 function(set_common_target_properties TARGET_NAME)
   set_target_properties(
@@ -56,25 +77,7 @@ endfunction()
 
 add_executable(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-common)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 set_common_target_properties(${PROJECT_NAME})
-
-string(
-  APPEND
-  compile_options
-  "$<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:"
-     "-Weverything;-Wno-c++98-compat;-Wno-;-Wno-global-constructors;"
-     "-Wno-;-Wno-c++98-compat-pedantic;-Wno-;-Wno-padded;-Wno->"
-  "$<$<CXX_COMPILER_ID:MSVC>:"
-    "/W4;/permissive-;/w14640;/w14242;/w14254;/w14263;/w14265;/w14287;"
-    "/we4289;/w14296;/w14311;/w14545;/w14546;/w14547;/w14549;/w14555;"
-    "/w14619;/w14640;/w14826;/w14928;/w14800>"
-  "$<$<CXX_COMPILER_ID:GNU>:"
-    "-Wall;-Wextra;-Wshadow;-Wnon-virtual-dtor;-Wpedantic;-Wold-style-cast;"
-    "-Wcast-align;-Wunused;-Wconversion;"
-    "-Wmisleading-indentation;-Wduplicated-cond;-Wduplicated-branches;"
-    "-Wlogical-op;-Wnull-dereference;-Wdouble-promotion;-Wuseless-cast>")
-target_compile_options(${PROJECT_NAME} PRIVATE ${compile_options})
 
 if(WIN32)
   # windows icon
@@ -141,7 +144,7 @@ if(LINUX)
   # linux icon
   install(FILES ${CMAKE_SOURCE_DIR}/packaging/linux/mc-gol.desktop
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
-  install(FILES packaging/linux/mc-gol-logo.png
+  install(FILES ${CMAKE_SOURCE_DIR}/packaging/linux/mc-gol-logo.png
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons)
 endif()
 
@@ -157,7 +160,6 @@ if(MC_GOL_APP_BUILD_TESTING)
   add_executable(${PROJECT_NAME}-test)
   target_link_libraries(${PROJECT_NAME}-test PRIVATE ${PROJECT_NAME}-common
                                                      ${PROJECT_NAME}-coverage)
-  target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
   set_common_target_properties(${PROJECT_NAME}-test)
   target_sources(${PROJECT_NAME}-test PRIVATE tests/gol-tests.cpp)
   target_compile_definitions(
