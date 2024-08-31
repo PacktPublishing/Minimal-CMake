@@ -120,6 +120,13 @@
       "name": "windows",
       "generators": ["NSIS"],
       "inherits": ["base"]
+    },
+    {
+      "name": "source",
+      "generators": ["ZIP"],
+      "packageDirectory": "${sourceDir}/package-source",
+      "configFile": "CPackSourceConfig.cmake",
+      "inherits": ["base"]
     }
   ],
   "workflowPresets": [
