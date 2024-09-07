@@ -12,22 +12,22 @@ jobs:
     env:
       CC: gcc
       CXX: g++
-    strategy:
-      matrix:
-        cmake-version: [3.28]
       fail-fast: true
     defaults:
       run:
         working-directory: ch11/part-4/app
     steps:
       - uses: actions/checkout@v4
-      - uses: seanmiddleditch/gha-setup-ninja@v5
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: ${{ matrix.cmake-version }}
-      - name: Compiler version
-        run: >
-          gcc --version
-          g++ --version
+          cmake-version: '3.28.x'
+      - name: C compiler
+        run: gcc --version
+      - name: C++ compiler
+        run: g++ --version
       - name: Configure and build
         run: >
           cmake --workflow --preset multi-ninja-super-test
