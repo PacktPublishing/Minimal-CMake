@@ -1,0 +1,228 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "${sourceDir}/third-party/install",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
+      }
+    },
+    {
+      "name": "super",
+      "hidden": true,
+      "cacheVariables": {
+        "SUPERBUILD": "ON",
+        "MC_GOL_SHARED": "ON",
+        "MC_DRAW_SHARED": "ON"
+      }
+    },
+    {
+      "name": "ninja",
+      "generator": "Ninja",
+      "inherits": "base"
+    },
+    {
+      "name": "multi-ninja",
+      "generator": "Ninja Multi-Config",
+      "inherits": "base"
+    },
+    {
+      "name": "ninja-super",
+      "inherits": ["ninja", "super"]
+    },
+    {
+      "name": "multi-ninja-super",
+      "inherits": ["multi-ninja", "super"]
+    },
+    {
+      "name": "multi-ninja-test",
+      "inherits": "multi-ninja",
+      "cacheVariables": {
+        "MC_GOL_APP_BUILD_TESTING": "ON"
+      }
+    },
+    {
+      "name": "multi-ninja-test-interactive",
+      "inherits": "multi-ninja-test",
+      "cacheVariables": {
+        "MC_GOL_APP_INTERACTIVE_TESTING": "ON"
+      }
+    },
+    {
+      "name": "multi-ninja-super-test",
+      "inherits": ["multi-ninja-test", "super"]
+    },
+    {
+      "name": "vs",
+      "inherits": "base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 17 2022"
+    },
+    {
+      "name": "xcode",
+      "inherits": "base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "generator": "Xcode"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "multi-ninja"
+    },
+    {
+      "name": "multi-ninja-super",
+      "configurePreset": "multi-ninja-super",
+      "configuration": "Release"
+    },
+    {
+      "name": "multi-ninja-super-test",
+      "configurePreset": "multi-ninja-super-test",
+      "configuration": "Debug"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "multi-ninja-super-test",
+      "configurePreset": "multi-ninja-super-test",
+      "configuration": "Debug"
+    }
+  ],
+  "packagePresets": [
+    {
+      "name": "base",
+      "configurePreset": "multi-ninja-super",
+      "packageDirectory": "${sourceDir}/package",
+      "hidden": true
+    },
+    {
+      "name": "macos",
+      "generators": ["Bundle"],
+      "inherits": ["base"]
+    },
+    {
+      "name": "linux",
+      "generators": ["DEB"],
+      "inherits": ["base"]
+    },
+    {
+      "name": "windows",
+      "generators": ["NSIS"],
+      "inherits": ["base"]
+    },
+    {
+      "name": "source",
+      "generators": ["ZIP"],
+      "packageDirectory": "${sourceDir}/package-source",
+      "configFile": "CPackSourceConfig.cmake",
+      "inherits": ["base"]
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "default",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja"
+        },
+        {
+          "type": "build",
+          "name": "default"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super-test",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super-test"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super-test"
+        },
+        {
+          "type": "test",
+          "name": "multi-ninja-super-test"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super-package-macos",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "package",
+          "name": "macos"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super-package-windows",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "package",
+          "name": "windows"
+        }
+      ]
+    },
+    {
+      "name": "multi-ninja-super-package-linux",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "build",
+          "name": "multi-ninja-super"
+        },
+        {
+          "type": "package",
+          "name": "linux"
+        }
+      ]
+    }
+  ]
+}
