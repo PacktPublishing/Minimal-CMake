@@ -18,7 +18,7 @@ jobs:
       run:
         working-directory: ch11/part-4/app
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up CMake
         uses: actions/setup-cmake@v2
         with:
