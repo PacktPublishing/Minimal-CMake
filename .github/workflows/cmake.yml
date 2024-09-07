@@ -21,8 +21,6 @@ jobs:
         working-directory: ch11/part-4/app
     steps:
       - uses: actions/checkout@v4
-      - name: Set up CMake
-        uses: actions/setup-cmake@v2
         with:
           cmake-version: ${{ matrix.cmake-version }}
       - name: Configure and build
