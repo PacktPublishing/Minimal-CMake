@@ -149,6 +149,7 @@ if(LINUX)
 endif()
 
 if(MC_GOL_APP_BUILD_TESTING)
+  enable_testing()
   add_subdirectory(tests)
 endif()
 

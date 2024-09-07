@@ -6,12 +6,13 @@ target_compile_options(${PROJECT_NAME}-coverage INTERFACE ${coverage_flags})
 target_link_options(${PROJECT_NAME}-coverage INTERFACE ${coverage_flags})
 
 include(CTest)
-enable_testing()
 add_executable(${PROJECT_NAME}-test)
 target_link_libraries(${PROJECT_NAME}-test PRIVATE ${PROJECT_NAME}-common
                                                    ${PROJECT_NAME}-coverage)
 target_compile_features(${PROJECT_NAME}-test PRIVATE cxx_std_20)
 set_common_target_properties(${PROJECT_NAME}-test)
+set_target_properties(${PROJECT_NAME}-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+                                                      ${CMAKE_BINARY_DIR})
 target_sources(${PROJECT_NAME}-test
                PRIVATE ${CMAKE_SOURCE_DIR}/tests/gol-tests.cpp)
 target_compile_definitions(
@@ -40,7 +41,7 @@ add_test(NAME "game of life unit tests" COMMAND ${PROJECT_NAME}-unit-test)
 
 add_test(
   NAME "shaders compiled"
-  COMMAND ${CMAKE_COMMAND} -P shaders-compiled.cmake
+  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/tests/shaders-compiled.cmake
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake.in
