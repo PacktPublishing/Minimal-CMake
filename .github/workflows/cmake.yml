@@ -28,9 +28,9 @@ jobs:
         run: sudo apt-get install libgles2-mesa-dev
       - name: Compiler version
         run: gcc --version
-      # - name: Configure and build (Debug)
-        # run: >
-          # cmake --workflow --preset multi-ninja-super-test
+      - name: Configure and build (Debug)
+        run: >
+          cmake --workflow --preset multi-ninja-super-test
       - name: Run tests          
         run: >
           ctest --preset multi-ninja-super-test --verbose
