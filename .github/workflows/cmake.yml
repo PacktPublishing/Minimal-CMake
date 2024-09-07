@@ -10,8 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CC: gcc-13
-      CXX: g++-13
+      CC: gcc
+      CXX: g++
     strategy:
       matrix:
         cmake-version: [3.28]
@@ -24,6 +24,10 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@v5
         with:
           cmake-version: ${{ matrix.cmake-version }}
+      - name: Compiler version
+        run: >
+          gcc --version
+          g++ --version
       - name: Configure and build
         run: >
           cmake --workflow --preset multi-ninja-super-test
