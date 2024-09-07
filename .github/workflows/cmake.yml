@@ -24,10 +24,10 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: '3.28.x'
-      - name: C compiler
+      - name: OpenGL
+        run: sudo apt-get install libgles2-mesa-dev
+      - name: Compiler
         run: gcc --version
-      - name: C++ compiler
-        run: g++ --version
       - name: Build third-party
         run: |
           cmake -B build -G "Ninja Multi-Config"
