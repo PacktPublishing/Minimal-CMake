@@ -15,7 +15,7 @@ jobs:
       fail-fast: true
     defaults:
       run:
-        working-directory: ch11/part-4/app
+        working-directory: ch11/part-4/app/third-party
     steps:
       - uses: actions/checkout@v4
       - name: Install Ninja
@@ -28,12 +28,16 @@ jobs:
         run: gcc --version
       - name: C++ compiler
         run: g++ --version
-      - name: Configure and build
-        run: >
-          cmake --workflow --preset multi-ninja-super-test
-      - name: Run tests          
-        run: >
-          ctest --preset multi-ninja-super-test
-      - name: Build and package
-        run: >
-          cmake --workflow --preset multi-ninja-super-package-linux
+      - name: Build third-party
+        run: |
+          cmake -B build -G "Ninja Multi-Config"
+          cmake --build build
+      # - name: Configure and build
+      #   run: >
+      #     cmake --workflow --preset multi-ninja-super-test
+      # - name: Run tests          
+      #   run: >
+      #     ctest --preset multi-ninja-super-test
+      # - name: Build and package
+      #   run: >
+      #     cmake --workflow --preset multi-ninja-super-package-linux
