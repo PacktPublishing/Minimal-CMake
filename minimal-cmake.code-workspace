@@ -5,13 +5,205 @@
       "path": "."
     },
     {
-        "name": "ch8_part-2_app",
-        "path": "ch8/part-2/app"
+      "name": "ch2_part-1",
+      "path": "ch2/part-1"
+    },
+    {
+      "name": "ch2_part-2",
+      "path": "ch2/part-2"
+    },
+    {
+      "name": "ch2_part-3",
+      "path": "ch2/part-3"
+    },
+    {
+      "name": "ch3_part-1",
+      "path": "ch3/part-1"
+    },
+    {
+      "name": "ch3_part-2",
+      "path": "ch3/part-2"
+    },
+    {
+      "name": "ch3_part-3",
+      "path": "ch3/part-3"
+    },
+    {
+      "name": "ch3_part-4",
+      "path": "ch3/part-4"
+    },
+    {
+      "name": "ch3_part-5",
+      "path": "ch3/part-5"
+    },
+    {
+      "name": "ch3_part-6",
+      "path": "ch3/part-6"
+    },
+    {
+      "name": "ch3_part-7",
+      "path": "ch3/part-7"
+    },
+    {
+      "name": "ch4_part-1_app",
+      "path": "ch4/part-1/app"
+    },
+    {
+      "name": "ch4_part-2_app",
+      "path": "ch4/part-2/app"
+    },
+    {
+      "name": "ch4_part-3_app",
+      "path": "ch4/part-3/app"
+    },
+    {
+      "name": "ch4_part-4_app",
+      "path": "ch4/part-4/app"
+    },
+    {
+      "name": "ch4_part-5_app",
+      "path": "ch4/part-5/app"
+    },
+    {
+      "name": "ch4_part-6_app",
+      "path": "ch4/part-6/app"
+    },
+    {
+      "name": "ch5_part-1_app",
+      "path": "ch5/part-1/app"
+    },
+    {
+      "name": "ch5_part-2_app",
+      "path": "ch5/part-2/app"
+    },
+    {
+      "name": "ch5_part-3_app",
+      "path": "ch5/part-3/app"
+    },
+    {
+      "name": "ch5_part-4_app",
+      "path": "ch5/part-4/app"
+    },
+    {
+      "name": "ch5_part-5_app",
+      "path": "ch5/part-5/app"
+    },
+    {
+      "name": "ch6_part-1_app",
+      "path": "ch6/part-1/app"
+    },
+    {
+      "name": "ch6_part-2_app",
+      "path": "ch6/part-2/app"
+    },
+    {
+      "name": "ch6_part-3_app",
+      "path": "ch6/part-3/app"
+    },
+    {
+      "name": "ch6_part-4_app",
+      "path": "ch6/part-4/app"
+    },
+    {
+      "name": "ch7_part-1_app",
+      "path": "ch7/part-1/app"
+    },
+    {
+      "name": "ch7_part-2_app",
+      "path": "ch7/part-2/app"
+    },
+    {
+      "name": "ch7_part-3_app",
+      "path": "ch7/part-3/app"
+    },
+    {
+      "name": "ch7_part-4_app",
+      "path": "ch7/part-4/app"
+    },
+    {
+      "name": "ch7_part-5_app",
+      "path": "ch7/part-5/app"
+    },
+    {
+      "name": "ch7_part-6_app",
+      "path": "ch7/part-6/app"
+    },
+    {
+      "name": "ch7_part-7_app",
+      "path": "ch7/part-7/app"
+    },
+    {
+      "name": "ch8_part-1_app",
+      "path": "ch8/part-1/app"
+    },
+    {
+      "name": "ch8_part-2_app",
+      "path": "ch8/part-2/app"
+    },
+    {
+      "name": "ch8_part-3_app",
+      "path": "ch8/part-3/app"
+    },
+    {
+      "name": "ch8_part-4_app",
+      "path": "ch8/part-4/app"
+    },
+    {
+      "name": "ch8_part-5_app",
+      "path": "ch8/part-5/app"
+    },
+    {
+      "name": "ch9_part-1_app",
+      "path": "ch9/part-1/app"
+    },
+    {
+      "name": "ch9_part-2_app",
+      "path": "ch9/part-2/app"
+    },
+    {
+      "name": "ch9_part-3_app",
+      "path": "ch9/part-3/app"
+    },
+    {
+      "name": "ch9_part-4_app",
+      "path": "ch9/part-4/app"
+    },
+    {
+      "name": "ch9_part-5_app",
+      "path": "ch9/part-5/app"
+    },
+    {
+      "name": "ch10_part-1_app",
+      "path": "ch10/part-1/app"
+    },
+    {
+      "name": "ch10_part-2_app",
+      "path": "ch10/part-2/app"
+    },
+    {
+      "name": "ch10_part-3_app",
+      "path": "ch10/part-3/app"
+    },
+    {
+      "name": "ch10_part-4_app",
+      "path": "ch10/part-4/app"
+    },
+    {
+      "name": "ch10_part-5_app",
+      "path": "ch10/part-5/app"
+    },
+    {
+      "name": "ch11_part-1_app",
+      "path": "ch11/part-1/app"
+    },
+    {
+      "name": "ch11_part-2_app",
+      "path": "ch11/part-2/app"
     },
     {
       "name": "ch11_part-3_app",
       "path": "ch11/part-3/app"
-    }
+    },
   ],
   "settings": {}
 }
