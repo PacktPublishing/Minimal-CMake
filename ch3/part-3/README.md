@@ -14,3 +14,14 @@ code .
 
 code ch3/part-3
 ```
+
+## Commands
+
+```bash
+# configure
+cmake -B build -G "Ninja Multi-Config"
+# build
+cmake --build build
+# run
+./build/Debug/minimal-cmake_game-of-life
+```
