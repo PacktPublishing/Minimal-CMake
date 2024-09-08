@@ -34,7 +34,7 @@ jobs:
       - name: Run tests
         id: failing
         run: |
-          ./build/multi-ninja-super-test/Debug/minimal-cmake_game-of-life_window 2> errors.txt
+          ./build/multi-ninja-super-test/Debug/minimal-cmake_game-of-life_window-test 2> errors.txt
           echo ::set-output name=errors::$(cat errors.txt)
       - name: Show errors  
         run: >
