@@ -1,8 +1,21 @@
 # ch7/part-1
 
-Add install support to mc-array.
+Add install support to `mc-array`.
 
-## Build commands
+## Usage
+
+Open Visual Studio Code from `ch7/part-1/app`
+
+```bash
+cd ch7/part-1/app
+code .
+
+# or
+
+code ch7/part-1/app
+```
+
+## Commands
 
 ```bash
 # to be run from ch7/part-1
