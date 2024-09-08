@@ -24,8 +24,8 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: '3.28.x'
-      - name: Install OpenGL
-        run: sudo apt-get install libgles2-mesa-dev
+      # - name: Install OpenGL
+      #   run: sudo apt-get install libgles2-mesa-dev
       - name: Compiler version
         run: gcc --version
       - name: Configure and build (Debug)
@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         # skip end-to-end tests for now...
         run: >
-          ctest --test-dir build/multi-ninja-super-test -C Debug  -LE slow -D Continuous
+          ctest --preset multi-ninja-super-test -LE slow
       - name: Build and package (Release)
         run: >
           cmake --workflow --preset multi-ninja-super-package-linux
