@@ -32,8 +32,9 @@ jobs:
         run: >
           cmake --workflow --preset multi-ninja-super-test
       - name: Run tests          
+        run: |
+          ctest --preset multi-ninja-super-test > test.log
+          cat test.log
+      - name: Build and package (Release)
         run: >
-          ctest --preset multi-ninja-super-test --verbose --rerun-failed --output-on-failure
-      # - name: Build and package (Release)
-        # run: >
-          # cmake --workflow --preset multi-ninja-super-package-linux
+          cmake --workflow --preset multi-ninja-super-package-linux

@@ -197,7 +197,6 @@ int main(int argc, char** argv) {
   bgfx_init_t bgfx;
   bgfx_init_ctor(&bgfx);
   bgfx.type = renderer_type;
-  bgfx.vendorId = BGFX_PCI_ID_SOFTWARE_RASTERIZER;
   bgfx.resolution.width = screen_dimensions.x;
   bgfx.resolution.height = screen_dimensions.y;
   bgfx.resolution.reset = BGFX_RESET_VSYNC;
