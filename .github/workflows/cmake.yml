@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         # skip end-to-end tests for now...
         run: >
-          ctest --preset multi-ninja-super-test -LE slow -D Continuous
+          ctest --test-dir build/multi-ninja-super-test -C Debug  -LE slow -D Continuous
       - name: Build and package (Release)
         run: >
           cmake --workflow --preset multi-ninja-super-package-linux
