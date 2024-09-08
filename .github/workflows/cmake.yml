@@ -31,10 +31,17 @@ jobs:
       - name: Configure and build (Debug)
         run: >
           cmake --workflow --preset multi-ninja-super-test
-      - name: Run tests          
+      - name: Run tests
+        id: failing
         run: |
-          ctest --preset multi-ninja-super-test > test.log
-          cat test.log
+          ./build/multi-ninja-super-test/Debug/minimal-cmake_game-of-life_window 2> errors.txt
+          echo ::set-output name=errors::$(cat errors.txt)
+      - name: Show errors  
+        run: >
+          echo "${{ steps.failing.outputs.errors }}"
+        # run: |
+          # ctest --preset multi-ninja-super-test > test.log
+          # cat test.log
       - name: Build and package (Release)
         run: >
           cmake --workflow --preset multi-ninja-super-package-linux
