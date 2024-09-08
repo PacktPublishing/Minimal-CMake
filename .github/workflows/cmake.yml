@@ -34,6 +34,8 @@ jobs:
           cmake --build build/multi-ninja-super-test
       - name: Run tests
         # skip end-to-end tests for now...
+        # note: ctest --preset does not work with -D labels (e.g. Continuous,
+        # Nightly), instead use `ctest --test-dir <dir> ...`
         run: >
           ctest --preset multi-ninja-super-test -LE slow
       - name: Build and package (Release)
