@@ -153,8 +153,6 @@ int main(int argc, char** argv) {
   (void)argc;
   (void)argv;
 
-  SDL_SetHint(SDL_HINT_VIDEODRIVER, "offscreen");
-
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     fprintf(
       stderr, "SDL could not initialize. SDL_Error: %s\n", SDL_GetError());
