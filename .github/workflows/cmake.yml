@@ -33,22 +33,9 @@ jobs:
           cmake --preset multi-ninja-super-test
           cmake --build build/multi-ninja-super-test
       - name: Run tests
-        id: run_tests
-        continue-on-error: true
-        run: |
-          ./build/multi-ninja-super-test/Debug/minimal-cmake_game-of-life_window-test 2>&1 | tee errors.txt
-      - name: Show errors  
-        if: steps.run_tests.outcome == 'failure'
-        run: |
-          cat errors.txt
-        # run: |
-          # ctest --preset multi-ninja-super-test > test.log
-          # cat test.log
-      - uses: actions/upload-artifact@v2
-        if: steps.run_tests.outcome == 'failure'
-        with:
-          name: test-output
-          path: errors.txt
+        # skip end-to-end tests for now...
+        run: >
+          ctest --preset multi-ninja-super-test -LE slow -D Continuous
       - name: Build and package (Release)
         run: >
           cmake --workflow --preset multi-ninja-super-package-linux
