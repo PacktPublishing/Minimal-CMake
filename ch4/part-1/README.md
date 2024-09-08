@@ -2,7 +2,7 @@
 
 Array extracted to static library
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch4/part-1/app`
 

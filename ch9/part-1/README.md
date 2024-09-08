@@ -2,7 +2,7 @@
 
 Show an example of library tests using CTest.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch9/part-1/app`
 

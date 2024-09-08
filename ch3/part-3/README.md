@@ -2,7 +2,7 @@
 
 Showing an example of an embedded third-party project.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch3/part-3`
 

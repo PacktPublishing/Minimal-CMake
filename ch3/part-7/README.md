@@ -2,7 +2,7 @@
 
 Updating example to us x/y coordinates and `as-c-math` instead of rows/cols.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch3/part-7`
 

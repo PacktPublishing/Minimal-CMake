@@ -2,7 +2,7 @@
 
 Show how to add versioning to a library when installing.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch7/part-6/app`
 

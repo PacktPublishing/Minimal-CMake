@@ -2,7 +2,7 @@
 
 Show an example of building shaders using `add_custom_command`.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch8/part-3/app`
 

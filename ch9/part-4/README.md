@@ -2,7 +2,7 @@
 
 Show an example of combining different kinds of tests with CTest.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch9/part-4/app`
 

@@ -2,7 +2,7 @@
 
 Updating our use of ExternalProject_Add to handle different config types with single and multi-config generators.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch6/part-3/app`
 

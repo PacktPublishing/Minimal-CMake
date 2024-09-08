@@ -2,7 +2,7 @@
 
 Show an example of a Visual Studio Code CMake Tools compatible setup.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch11/part-1/app`
 

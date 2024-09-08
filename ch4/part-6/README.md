@@ -2,7 +2,7 @@
 
 Addition of interface (header-only) library.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch4/part-6/app`
 

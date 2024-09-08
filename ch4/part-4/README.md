@@ -2,7 +2,7 @@
 
 Improved application RPATH handling for Game of Life shared library
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch4/part-4/app`
 

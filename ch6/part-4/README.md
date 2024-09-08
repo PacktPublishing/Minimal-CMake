@@ -2,7 +2,7 @@
 
 Add another dependency (bgfx) using ExternalProject_Add.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch6/part-4/app`
 

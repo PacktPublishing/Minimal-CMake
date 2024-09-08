@@ -2,7 +2,7 @@
 
 Symbol visibility and export header improvements for Game of Life shared library
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch4/part-5/app`
 

@@ -2,7 +2,7 @@
 
 Show an example of passing settings to dependencies and scripts.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch8/part-4/app`
 

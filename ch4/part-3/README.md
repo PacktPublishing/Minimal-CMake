@@ -2,7 +2,7 @@
 
 Game of Life converted to shared library
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch4/part-3/app`
 

@@ -2,7 +2,7 @@
 
 Showing adding an additional third-party dependency with `FetchContent`.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch3/part-5`
 

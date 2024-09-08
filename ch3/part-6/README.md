@@ -2,7 +2,7 @@
 
 Showing an example of setting properties on a third-party dependency, added with `FetchContent`.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch3/part-6`
 

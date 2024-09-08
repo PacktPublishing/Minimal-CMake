@@ -2,7 +2,7 @@
 
 An introduction to `CMakePresets.json`.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch5/part-2/app`
 

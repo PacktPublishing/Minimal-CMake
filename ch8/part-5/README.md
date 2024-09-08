@@ -2,7 +2,7 @@
 
 Show an example of installing the application.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch8/part-5/app`
 

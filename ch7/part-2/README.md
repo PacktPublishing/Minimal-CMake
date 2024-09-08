@@ -2,7 +2,7 @@
 
 Show how to name project and library differently in mc-array.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch7/part-2/app`
 

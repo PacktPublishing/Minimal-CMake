@@ -2,7 +2,7 @@
 
 Show an example of setting-up a superbuild.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch8/part-2/app`
 

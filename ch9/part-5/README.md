@@ -2,7 +2,7 @@
 
 Show an example integrating CTest with CDash.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch9/part-5/app`
 

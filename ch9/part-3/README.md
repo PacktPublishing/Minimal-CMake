@@ -2,7 +2,7 @@
 
 Show an example of testing an application using Dear ImGui and CTest.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch9/part-3/app`
 

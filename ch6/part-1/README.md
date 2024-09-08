@@ -2,7 +2,7 @@
 
 Manually installing SDL2 and using it from our updated windowed application.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch6/part-1/app`
 

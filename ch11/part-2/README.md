@@ -2,7 +2,7 @@
 
 Show an example of adding warnings and C/C++ conformance.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch11/part-2/app`
 

@@ -2,7 +2,7 @@
 
 Add install support to `mc-array`.
 
-## Usage
+## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch7/part-1/app`
 
