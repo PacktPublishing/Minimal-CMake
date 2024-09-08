@@ -24,8 +24,8 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: '3.28.x'
-      # - name: Install OpenGL
-      #   run: sudo apt-get install libgles2-mesa-dev
+      - name: Install OpenGL
+        run: sudo apt-get install libgles2-mesa-dev
       - name: Compiler version
         run: gcc --version
       - name: Configure and build (Debug)
