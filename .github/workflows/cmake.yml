@@ -29,8 +29,9 @@ jobs:
       - name: Compiler version
         run: gcc --version
       - name: Configure and build (Debug)
-        run: >
-          cmake --workflow --preset multi-ninja-super-test
+        run: |
+          cmake --preset multi-ninja-super-test
+          cmake --build build/multi-ninja-super-test
       - name: Run tests
         id: failing
         run: |
