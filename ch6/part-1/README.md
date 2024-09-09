@@ -14,3 +14,18 @@ code .
 
 code ch6/part-1/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch6/part-1
+# setup third-party
+cd third-party
+./everything.sh # (or everything.bat)
+# configure and build
+cd ../app
+./configure-default-and-build.sh # (or configure-default-and-build.bat)
+# run
+./build/Debug/minimal-cmake_game-of-life_window
+```

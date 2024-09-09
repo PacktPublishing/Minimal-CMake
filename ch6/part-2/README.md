@@ -14,3 +14,20 @@ code .
 
 code ch6/part-2/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch6/part-2
+# setup third-party
+cd third-party
+cmake -B build -G "Ninja Multi-Config"
+cmake --build build --config Debug
+# configure and build
+cd ../app
+cmake --preset shared-ninja
+cmake --build build/shared-ninja --config Debug
+# run
+./build/shared-ninja/Debug/minimal-cmake_game-of-life_window
+```
