@@ -14,3 +14,16 @@ code .
 
 code ch4/part-3/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch4/part-3/app
+# configure
+cmake -B build -G "Ninja Multi-Config"
+# build
+cmake --build build
+# run
+./build/Debug/minimal-cmake_game-of-life_console
+```
