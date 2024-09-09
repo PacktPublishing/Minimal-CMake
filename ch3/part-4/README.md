@@ -18,6 +18,8 @@ code ch3/part-4
 ## Commands
 
 ```bash
+# start
+cd ch3/part-4
 # manually setup dependencies
 cd third-party
 git clone https://github.com/pr0g/timer_lib.git

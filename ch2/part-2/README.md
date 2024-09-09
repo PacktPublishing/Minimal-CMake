@@ -18,6 +18,8 @@ code ch2/part-2
 ## Commands
 
 ```bash
+# start
+cd ch2/part-2
 # configure
 cmake -B build -G "Ninja Multi-Config"
 # build
