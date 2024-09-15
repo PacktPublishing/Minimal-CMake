@@ -14,3 +14,29 @@ code .
 
 code ch9/part-1/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch9/part-1
+# test libraries
+cd lib/array
+cmake --preset test
+cmake --build build/test
+ctest --test-dir build/test -C Debug
+cmake --preset default
+cmake --build build/default --target install
+cd ../gol
+cmake --preset shared-ninja-test
+cmake --build build/shared-ninja-test
+ctest --test-dir build/shared-ninja-test -C Debug
+# configure and build
+cd ../../app
+cmake --preset multi-ninja-super
+cmake --build build/multi-ninja-super --config Debug
+# run (build folder)
+./build/multi-ninja/Debug/minimal-cmake_game-of-life_window
+# run (install folder)
+./install/bin/minimal-cmake_game-of-life_window
+```

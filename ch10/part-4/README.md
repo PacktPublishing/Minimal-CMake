@@ -14,3 +14,21 @@ code .
 
 code ch10/part-4/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch10/part-4
+# configure and build
+cd app
+cmake --preset multi-ninja-super
+cmake --build build/multi-ninja-super --config Release
+# package
+# windows
+cpack --preset windows
+# macos
+cpack --preset macos
+# linux
+cpack --preset linux
+```

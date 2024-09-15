@@ -74,5 +74,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mc_gol_export.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 if(MC_GOL_BUILD_TESTING)
+  enable_testing()
   add_subdirectory(tests)
 endif()
