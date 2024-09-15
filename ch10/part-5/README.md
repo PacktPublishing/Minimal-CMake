@@ -14,3 +14,18 @@ code .
 
 code ch10/part-5/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch10/part-5
+# configure and build
+cd app
+cmake --preset multi-ninja-super
+cmake --build build/multi-ninja-super --config Release
+# package source
+cpack --config build/multi-ninja-super/CPackSourceConfig.cmake -G TGZ -B package-source
+# package source (using preset)
+cpack --preset source
+```
