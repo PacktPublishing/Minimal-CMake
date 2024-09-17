@@ -14,3 +14,18 @@ code .
 
 code ch5/part-4/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch5/part-4
+# configure and build
+cd app
+cmake --preset static
+cmake --build --preset static
+cmake --workflow --preset shared
+# run
+./build/static/Debug/minimal-cmake_game-of-life_console
+./build/shared/Debug/minimal-cmake_game-of-life_console
+```

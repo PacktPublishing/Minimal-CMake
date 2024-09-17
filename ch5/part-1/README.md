@@ -14,3 +14,15 @@ code .
 
 code ch5/part-1/app
 ```
+
+## Commands
+
+```bash
+# start
+cd ch4/part-1
+# configure and build
+cd app
+./configure-default-and-build.sh
+# run
+./build/Debug/minimal-cmake_game-of-life_console
+```
