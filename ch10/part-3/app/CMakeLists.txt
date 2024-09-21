@@ -81,7 +81,7 @@ elseif(APPLE)
 endif()
 
 add_custom_target(
-  build-shaders ALL
+  build_shaders ALL
   BYPRODUCTS ${CMAKE_SOURCE_DIR}/shader/build/vs_vertcol.bin
              ${CMAKE_SOURCE_DIR}/shader/build/fs_vertcol.bin
   COMMAND
@@ -159,7 +159,6 @@ if(APPLE)
                MACOSX_BUNDLE_LONG_VERSION_STRING "1.0.0"
                MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
                MACOSX_BUNDLE_BUNDLE_VERSION "1.0.0")
-
   install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 endif()
 
