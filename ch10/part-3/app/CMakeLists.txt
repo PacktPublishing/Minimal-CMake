@@ -80,9 +80,10 @@ elseif(APPLE)
       ${CMAKE_SOURCE_DIR}/cmake/compile-shader-macos.cmake)
 endif()
 
-add_custom_command(
-  TARGET ${PROJECT_NAME}
-  POST_BUILD
+add_custom_target(
+  build-shaders ALL
+  BYPRODUCTS ${CMAKE_SOURCE_DIR}/shader/build/vs_vertcol.bin
+             ${CMAKE_SOURCE_DIR}/shader/build/fs_vertcol.bin
   COMMAND
     ${CMAKE_COMMAND} -D USE_VERBOSE_SHADER_OUTPUT=${USE_VERBOSE_SHADER_OUTPUT}
     -P ${COMPILE_SHADER_SCRIPT}
@@ -142,7 +143,7 @@ endif()
 if(APPLE)
   set_source_files_properties(
     shader/build/vs_vertcol.bin shader/build/fs_vertcol.bin
-    PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/shader")
+    PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/shader" GENERATED TRUE)
   set_source_files_properties(packaging/macos/gol.icns
                               PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
   target_sources(
