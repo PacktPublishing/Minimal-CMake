@@ -2,6 +2,8 @@
 
 Show an example of using MACOSX_BUNDLE and CPack, with add_custom_command using OUTPUT argument.
 
+_Note: See CMake issue [21364](https://gitlab.kitware.com/cmake/cmake/-/issues/21364) for why `add_custom_command` cannot be used for `create_frameworks_directory` functionality (generator expressions not currently supported for `OUTPUT` argument)._
+
 ## Visual Studio Code Debugging
 
 Open Visual Studio Code from `ch10/part-3a/app`
