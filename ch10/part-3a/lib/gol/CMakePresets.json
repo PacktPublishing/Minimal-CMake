@@ -1,0 +1,90 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/install",
+      "generator": "Ninja Multi-Config",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "${sourceDir}/../array/install"
+      }
+    },
+    {
+      "name": "shared-ninja",
+      "inherits": "base",
+      "cacheVariables": {
+        "MC_GOL_SHARED": "ON"
+      }
+    },
+    {
+      "name": "static-ninja",
+      "inherits": "base",
+      "cacheVariables": {
+        "MC_GOL_SHARED": "OFF"
+      }
+    },
+    {
+      "name": "shared-ninja-test",
+      "inherits": "shared-ninja",
+      "cacheVariables": {
+        "MC_GOL_BUILD_TESTING": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "shared-debug",
+      "configurePreset": "shared-ninja",
+      "configuration": "Debug"
+    },
+    {
+      "name": "static-debug",
+      "configurePreset": "static-ninja",
+      "configuration": "Debug"
+    },
+    {
+      "name": "shared-release",
+      "configurePreset": "shared-ninja",
+      "configuration": "Release"
+    },
+    {
+      "name": "static-release",
+      "configurePreset": "static-ninja",
+      "configuration": "Release"
+    },
+    {
+      "name": "shared-debug-test",
+      "configurePreset": "shared-ninja-test",
+      "configuration": "Debug"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "shared-test",
+      "displayName": "Test Game of Life",
+      "configurePreset": "shared-ninja-test",
+      "configuration": "Debug"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "test",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "shared-ninja-test"
+        },
+        {
+          "type": "build",
+          "name": "shared-debug-test"
+        },
+        {
+          "type": "test",
+          "name": "shared-test"
+        }
+      ]
+    }
+  ]
+}

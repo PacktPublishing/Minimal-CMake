@@ -185,6 +185,10 @@
       "path": "ch10/part-3/app"
     },
     {
+      "name": "ch10_part-3a_app",
+      "path": "ch10/part-3a/app"
+    },
+    {
       "name": "ch10_part-4_app",
       "path": "ch10/part-4/app"
     },
@@ -204,6 +208,10 @@
       "name": "ch11_part-3_app",
       "path": "ch11/part-3/app"
     },
+    {
+      "name": "ch11_part-4_app",
+      "path": "ch11/part-4/app"
+    }
   ],
   "settings": {}
 }
