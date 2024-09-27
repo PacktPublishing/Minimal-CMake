@@ -1,6 +1,6 @@
 # Minimal CMake
 
-<a href="https://www.packtpub.com/en-in/product/minimal-cmake-9781835087312"> <img src="	https://content.packt.com/_/image/original/B21152/cover_image_large.jpg" alt="Minimal CMake" itemprop="url" height="256px" align="right">
+<a href="https://www.packtpub.com/en-in/product/minimal-cmake-9781835087312"> <img src="https://content.packt.com/_/image/original/B21152/cover_image_large.jpg" alt="Minimal CMake" itemprop="url" height="256px" align="right">
 
 This is the code repository for [Minimal CMake](https://www.packtpub.com/en-in/product/minimal-cmake-9781835087312), published by Packt.
 
