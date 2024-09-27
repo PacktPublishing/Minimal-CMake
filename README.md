@@ -28,7 +28,7 @@ If you feel this book is for you, get your [copy](https://a.co/d/ahsF7Gd) today!
 
 ## Instructions and Navigations
 
-All of the code is organized into folders. For example, Ch2.
+All of the code is organized into folders. For example, ch2.
 
 The code will look like the following:
 
@@ -53,7 +53,7 @@ With the following software and hardware list you can run all code files present
 
 ## Get to Know the Author
 **Tom Hulton-Harrop**
-is a soft ware developer with over 10 years of experience in game and engine development. Tom started his career in 2011 at Electronic Arts working on the Need for Speed series of racing games. In 2014, he joined Fireproof Games where he worked on Th e Room Th ree and a little-known VR game called Omega Agent. Aft er a stint at a small start-up called Glowmade, Tom joined Amazon as part of the Lumberyard Game Engine team (later becoming Open 3D Engine). During this time, Tom became interested in open source development and started sharing multiple hobby projects on GitHub. It was this experience that led Tom to CMake, where he slowly came to appreciate the power and simplicity of the tool. Tom now works at a start-up called Amutri, helping deliver 3D experiences to engineering, manufacturing, and lighting customers.
+is a software developer with over 10 years of experience in game and engine development. Tom started his career in 2011 at Electronic Arts working on the Need for Speed series of racing games. In 2014, he joined Fireproof Games where he worked on Th e Room Th ree and a little-known VR game called Omega Agent. After a stint at a small start-up called Glowmade, Tom joined Amazon as part of the Lumberyard Game Engine team (later becoming Open 3D Engine). During this time, Tom became interested in open source development and started sharing multiple hobby projects on GitHub. It was this experience that led Tom to CMake, where he slowly came to appreciate the power and simplicity of the tool. Tom now works at a start-up called Amutri, helping deliver 3D experiences to engineering, manufacturing, and lighting customers.
 
 
 
