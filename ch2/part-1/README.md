@@ -1,6 +1,6 @@
 # ch2/part-1
 
-_"Hello, ~~world~~ CMake!"_ application.
+Introduces _"Hello, ~~world~~ CMake!"_ application.
 
 ## Visual Studio Code Debugging
 

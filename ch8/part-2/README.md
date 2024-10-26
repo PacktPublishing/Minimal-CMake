@@ -1,6 +1,6 @@
 # ch8/part-2
 
-Show an example of setting-up a super build.
+Shows an example of setting-up a super build.
 
 ## Visual Studio Code Debugging
 

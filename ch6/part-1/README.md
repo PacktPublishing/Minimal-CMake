@@ -1,6 +1,6 @@
 # ch6/part-1
 
-Manually installing SDL2 and using it from our updated windowed application.
+Manually installs SDL2 and uses it from the updated windowed application.
 
 ## Visual Studio Code Debugging
 

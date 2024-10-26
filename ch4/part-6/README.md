@@ -1,6 +1,6 @@
 # ch4/part-6
 
-Addition of interface (header-only) library.
+Adds interface (header-only) library.
 
 ## Visual Studio Code Debugging
 

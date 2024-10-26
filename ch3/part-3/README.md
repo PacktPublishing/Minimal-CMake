@@ -1,6 +1,6 @@
 # ch3/part-3
 
-Showing an example of an embedded third-party project.
+Shows an example of an embedded third-party project.
 
 ## Visual Studio Code Debugging
 

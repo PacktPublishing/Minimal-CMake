@@ -1,6 +1,6 @@
 # ch9/part-1
 
-Show an example of library tests using CTest.
+Shows an example of a library tests using CTest.
 
 ## Visual Studio Code Debugging
 

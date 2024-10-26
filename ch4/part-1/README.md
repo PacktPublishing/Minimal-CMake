@@ -1,6 +1,6 @@
 # ch4/part-1
 
-Array extracted to static library.
+Extracts array to a static library.
 
 ## Visual Studio Code Debugging
 

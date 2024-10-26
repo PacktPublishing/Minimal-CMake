@@ -1,6 +1,6 @@
 # ch5/part-3
 
-Expanding our `CMakePresets.json` file.
+Expands our `CMakePresets.json` file.
 
 ## Visual Studio Code Debugging
 

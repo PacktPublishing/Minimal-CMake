@@ -1,6 +1,6 @@
 # ch10/part-1
 
-Show an example of loading relative to executable.
+Shows an example of loading resources relative to the executable.
 
 ## Visual Studio Code Debugging
 

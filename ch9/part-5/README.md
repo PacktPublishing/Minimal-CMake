@@ -1,6 +1,6 @@
 # ch9/part-5
 
-Show an example integrating CTest with CDash.
+Shows an example integrating CTest with CDash.
 
 ## Visual Studio Code Debugging
 

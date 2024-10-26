@@ -1,6 +1,6 @@
 # ch9/part-2
 
-Show an example of integrating Dear ImGui.
+Shows an example of integrating Dear ImGui.
 
 ## Visual Studio Code Debugging
 

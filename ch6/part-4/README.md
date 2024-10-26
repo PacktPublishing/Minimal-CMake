@@ -1,6 +1,6 @@
 # ch6/part-4
 
-Add another dependency (`bgfx`) using `ExternalProject_Add`.
+Adds another dependency (`bgfx`) using `ExternalProject_Add`.
 
 ## Visual Studio Code Debugging
 

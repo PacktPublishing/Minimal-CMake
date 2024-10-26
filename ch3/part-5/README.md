@@ -1,6 +1,6 @@
 # ch3/part-5
 
-Showing adding an additional third-party dependency with `FetchContent`.
+Shows adding an additional third-party dependency with `FetchContent`.
 
 ## Visual Studio Code Debugging
 

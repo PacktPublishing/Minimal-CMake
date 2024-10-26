@@ -1,6 +1,6 @@
 # ch10/part-3a
 
-Show an example of using MACOSX_BUNDLE and CPack, with add_custom_command using OUTPUT argument.
+Shows an example of using MACOSX_BUNDLE and CPack, with add_custom_command using OUTPUT argument.
 
 _Note: See CMake issue [21364](https://gitlab.kitware.com/cmake/cmake/-/issues/21364) for why `add_custom_command` cannot be used for `create_frameworks_directory` functionality (generator expressions not currently supported for `OUTPUT` argument)._
 

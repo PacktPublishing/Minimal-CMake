@@ -1,6 +1,6 @@
 # ch3/part-4 README
 
-Showing an example of an embedded third-party project added with git.
+Shows an example of an embedded third-party project added with Git.
 
 ## Visual Studio Code Debugging
 

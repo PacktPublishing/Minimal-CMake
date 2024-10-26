@@ -1,6 +1,6 @@
 # ch4/part-5
 
-Symbol visibility and export header improvements for Game of Life shared library.
+Improves symbol visibility and export header functionality for Game of Life shared library.
 
 ## Visual Studio Code Debugging
 

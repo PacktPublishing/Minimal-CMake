@@ -1,6 +1,6 @@
 # ch2/part-2
 
-Initial _Game of Life_ console application.
+Introduces initial _Game of Life_ console application.
 
 ## Visual Studio Code Debugging
 

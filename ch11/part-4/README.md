@@ -1,6 +1,6 @@
 # ch11/part-4
 
-Show an example of GitHub Actions.
+Shows an example of GitHub Actions.
 
 (_Note: See root `.github/workflows/cmake.yml` that uses this folder_).
 

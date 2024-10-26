@@ -1,6 +1,6 @@
 # ch10/part-4
 
-Show an example of CMake presets packaging step.
+Shows an example of CMake presets packaging step.
 
 ## Visual Studio Code Debugging
 

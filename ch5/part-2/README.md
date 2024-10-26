@@ -1,6 +1,6 @@
 # ch5/part-2
 
-An introduction to `CMakePresets.json`.
+Introduces to `CMakePresets.json`.
 
 ## Visual Studio Code Debugging
 

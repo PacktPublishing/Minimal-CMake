@@ -1,6 +1,6 @@
 # ch3/part-7
 
-Updating example to use x/y coordinates and `as-c-math` library instead of rows/cols.
+Updates example to use x/y coordinates and `as-c-math` library instead of rows/cols.
 
 ## Visual Studio Code Debugging
 

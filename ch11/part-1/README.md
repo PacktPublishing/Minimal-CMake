@@ -1,6 +1,6 @@
 # ch11/part-1
 
-Show an example of a Visual Studio Code CMake Tools compatible setup.
+Shows an example of a Visual Studio Code CMake Tools compatible setup.
 
 ## Visual Studio Code Debugging
 

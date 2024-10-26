@@ -1,6 +1,6 @@
 # ch9/part-3
 
-Show an example of testing an application using Dear ImGui and CTest.
+Shows an example of testing an application using Dear ImGui and CTest.
 
 ## Visual Studio Code Debugging
 

@@ -1,6 +1,6 @@
 # ch4/part-3
 
-Game of Life converted to shared library.
+Converts Game of Life to shared library.
 
 ## Visual Studio Code Debugging
 

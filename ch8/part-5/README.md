@@ -1,6 +1,6 @@
 # ch8/part-5
 
-Show an example of installing the application.
+Shows an example of installing the application.
 
 ## Visual Studio Code Debugging
 

@@ -1,6 +1,6 @@
 # ch7/part-6
 
-Show how to add versioning to a library when installing.
+Shows how to add versioning to a library when installing.
 
 ## Visual Studio Code Debugging
 

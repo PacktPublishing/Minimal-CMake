@@ -1,6 +1,6 @@
 # ch2/part-3
 
-Adding resizable array functionality in a separate file.
+Adds resizable array functionality in a separate file.
 
 ## Visual Studio Code Debugging
 

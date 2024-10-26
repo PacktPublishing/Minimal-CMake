@@ -1,6 +1,6 @@
 # ch7/part-1
 
-Add install support to `mc-array`.
+Adds install support for `mc-array`.
 
 ## Visual Studio Code Debugging
 

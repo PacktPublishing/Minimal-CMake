@@ -1,6 +1,6 @@
 # ch9/part-4
 
-Show an example of combining different kinds of tests with CTest.
+Shows an example of combining different kinds of tests with CTest.
 
 ## Visual Studio Code Debugging
 
