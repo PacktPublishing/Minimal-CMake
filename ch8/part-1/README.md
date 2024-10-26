@@ -1,6 +1,8 @@
 # ch8/part-1
 
-Show how to simplify configuration with `ExternalProject_Add`. _Note: continues from_ `ch7/part-6`.
+Show how to simplify configuration with `ExternalProject_Add`.
+
+(_Note: continues from_ `ch7/part-6`_).
 
 ## Visual Studio Code Debugging
 

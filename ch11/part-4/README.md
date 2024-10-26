@@ -1,6 +1,8 @@
 # ch11/part-4
 
-Show an example of GitHub Actions (see `.github/workflows/cmake.yml` that uses this folder).
+Show an example of GitHub Actions.
+
+(_Note: See root `.github/workflows/cmake.yml` that uses this folder_).
 
 ## Visual Studio Code Debugging
 

@@ -1,6 +1,6 @@
 # ch4/part-2
 
-Game of Life extracted to static library
+Game of Life extracted to static library.
 
 ## Visual Studio Code Debugging
 
