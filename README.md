@@ -28,7 +28,7 @@ This book covers the following exciting features:
 
 If you feel this book is for you, get your [copy](https://a.co/d/ahsF7Gd) today!
 
-## Instructions and Navigation
+## Instructions and navigation
 
 All of the code is organized into folders. For example, ch2.
 
@@ -43,7 +43,7 @@ project(mc-array LANGUAGES C)
 
 With the following software and hardware list you can run all code files present in the book.
 
-## Software and Hardware List
+## Software and hardware List
 
 | Software/ Hardware required | OS required/ Other requirements |
 | ------------------------------------ | ----------------------------------- |
@@ -54,6 +54,6 @@ With the following software and hardware list you can run all code files present
 * Modern CMake for C++ [[Packt]](https://www.packtpub.com/en-in/product/modern-cmake-for-c-9781801070058) [[Amazon]](https://a.co/d/eUzqeu4)
 * CMake Best Practices [[Packt]](https://www.packtpub.com/en-in/product/cmake-best-practices-9781803239729) [[Amazon]](https://a.co/d/eNC9Toa)
 
-## Get to Know the Author
+## Get to know the author
 
 **Tom Hulton-Harrop** is a software developer with over 10 years of experience in game and engine development. Tom started his career in 2011 at Electronic Arts working on the Need for Speed series of racing games. In 2014, he joined Fireproof Games where he worked on The Room Three and a little-known VR game called Omega Agent. After a stint at a small start-up called Glowmade, Tom joined Amazon as part of the Lumberyard Game Engine team (later becoming Open 3D Engine). During this time, Tom became interested in open source development and started sharing multiple hobby projects on GitHub. It was this experience that led Tom to CMake, where he slowly came to appreciate the power and simplicity of the tool. Tom now works at a start-up called Amutri, helping deliver 3D experiences to engineering, manufacturing, and lighting customers.
