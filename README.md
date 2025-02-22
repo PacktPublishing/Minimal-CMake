@@ -49,6 +49,12 @@ With the following software and hardware list you can run all code files present
 | ------------------------------------ | ----------------------------------- |
 | C, C++, CMake, CTest, CPack, Visual Studio Code | Windows, macOS, Linux |
 
+## What you'll create
+
+Below is a snapshot of the application you'll see take shape throughout the book.
+
+<img src="https://github.com/user-attachments/assets/da2731de-1df2-4f95-aa12-88ffaeebb296" alt="Game of Life" itemprop="url" height="300px">
+
 ## Related products
 
 * Modern CMake for C++ [[Packt]](https://www.packtpub.com/en-in/product/modern-cmake-for-c-9781801070058) [[Amazon]](https://a.co/d/eUzqeu4)
