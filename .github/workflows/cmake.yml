@@ -25,7 +25,7 @@ jobs:
         with:
           cmake-version: '3.28.x'
       - name: Install OpenGL
-        run: sudo apt-get install libgles2-mesa-dev
+        run: sudo apt-get install libgles2-mesa-dev libxext-dev
       - name: Compiler version
         run: gcc --version
       - name: Configure and build (Debug)
