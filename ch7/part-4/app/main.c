@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
   bgfx_render_frame(-1); // single threaded mode
 
   bgfx_renderer_type_t renderer_type = BGFX_RENDERER_TYPE_COUNT;
-  bgfx_platform_data_t pd = {};
+  bgfx_platform_data_t pd = {0};
 #if BX_PLATFORM_WINDOWS
   pd.nwh = wmi.info.win.window;
   renderer_type = BGFX_RENDERER_TYPE_DIRECT3D11;
@@ -263,7 +263,7 @@ int main(int argc, char** argv) {
     pos_color_lines, 0, program, &pos_col_vert_layout, u_color);
 
   bool simulating = true;
-  as_point2i mouse_now = {};
+  as_point2i mouse_now = {0};
   const float zoom = 20.0f;
   const as_mat44f identity = as_mat44f_identity();
   const float aspect_ratio =

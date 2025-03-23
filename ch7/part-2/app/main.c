@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
   bgfx_render_frame(-1); // single threaded mode
 
   bgfx_renderer_type_t renderer_type = BGFX_RENDERER_TYPE_COUNT;
-  bgfx_platform_data_t pd = {};
+  bgfx_platform_data_t pd = {0};
 #if BX_PLATFORM_WINDOWS
   pd.nwh = wmi.info.win.window;
   renderer_type = BGFX_RENDERER_TYPE_DIRECT3D11;
